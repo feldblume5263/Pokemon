@@ -1,5 +1,18 @@
 #include "../include/map.h"
 
+int			map::find_door(int *x, int *y)
+{
+	if (this->pokemon_map[*y - 1][*x] <= '9' && this->pokemon_map[*y - 1][*x] >= '1')
+		return (this->pokemon_map[*y - 1][*x] - 48);
+	else if (this->pokemon_map[*y + 1][*x] <= '9' && this->pokemon_map[*y + 1][*x] >= '1')
+		return (this->pokemon_map[*y + 1][*x] - 48);
+	else if (this->pokemon_map[*y][*x - 1] <= '9' && this->pokemon_map[*y][*x - 1] >= '1')
+		return (this->pokemon_map[*y][*x - 1] - 48);
+	else if (this->pokemon_map[*y][*x + 1] <= '9' && this->pokemon_map[*y][*x + 1] >= '1')
+		return (this->pokemon_map[*y][*x + 1] - 48);
+	return (0);
+}
+
 void		map::handle_key(int key, int *x, int *y)
 {
 	if (key == M_KEY_UP)
@@ -55,7 +68,7 @@ void		map::draw_map()
 
 void		map::draw_player(int x, int y)
 {
-	this->pokemon_map[y][x] = '0';
+	this->pokemon_map[y][x] = 'O';
 }
 
 int			map::noah_getch()
@@ -126,6 +139,8 @@ int				main(int argc, char *argv[])
 		map.draw_player(x, y);
 		map.draw_map();
 		map.handle_key(map.noah_getch(), &x, &y);
+		if (map.find_door(&x, &y))
+			cout << map.find_door(&x, &y) << endl;
 		cin.clear();
 		system("clear");
 	}

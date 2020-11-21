@@ -39,6 +39,7 @@ public:
 	vector<string> get_map_file();
 	void draw_player(int x, int y);
 	void draw_map();
+	int find_door(int *x, int *y);
 
 };
 
