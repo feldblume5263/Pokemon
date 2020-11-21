@@ -18,11 +18,20 @@ void		map::handle_key(int key)
 	{
 		std::cout << "left" << std::endl;
 	}
+	else if (key == M_KEY_SPACE)
+	{
+		std::cout << "space" << std::endl;
+	}
+	else if (key == M_KEY_ESC)
+	{
+		std::cout << "ESC" << std::endl;
+		exit(0);
+	}
 	else
 		return ;
 }
 
-int			map::pjh_getch()
+int			map::noah_getch()
 {
 	struct	termios oldt;
 	struct	termios newt;
@@ -44,7 +53,7 @@ int				main(void)
 
 	while (1)
 	{
-		pressed = map.pjh_getch();
+		pressed = map.noah_getch();
 		map.handle_key(pressed);
 	}
 }

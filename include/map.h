@@ -13,6 +13,7 @@
 # define M_KEY_RIGHT	100
 # define M_KEY_DOWN		115
 # define M_KEY_SPACE	32
+# define M_KEY_ESC		27
 
 
 class			map
@@ -23,7 +24,7 @@ public:
 	map();
 	~map();
 
-	int pjh_getch();
+	int noah_getch();
 	void handle_key(int key);
 
 };
