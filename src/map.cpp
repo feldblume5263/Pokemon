@@ -1,22 +1,30 @@
 #include "../include/map.h"
 
-void		map::handle_key(int key)
+void		map::handle_key(int key, int *x, int *y)
 {
 	if (key == M_KEY_UP)
 	{
-		std::cout << "up" << std::endl;
+		this->pokemon_map[*y][*x] = ' ';
+		if (this->pokemon_map[*y - 1][*x] == ' ' && this->pokemon_map[*y - 1][*x])
+			*y = *y - 1;
 	}
 	else if (key == M_KEY_DOWN)
 	{
-		std::cout << "down" << std::endl;
+		this->pokemon_map[*y][*x] = ' ';
+		if (this->pokemon_map[*y + 1][*x] == ' ' && this->pokemon_map[*y + 1][*x])
+			*y = *y + 1;
 	}
 	else if (key == M_KEY_RIGHT)
 	{
-		std::cout << "right" << std::endl;
+		this->pokemon_map[*y][*x] = ' ';
+		if (this->pokemon_map[*y][*x + 1] == ' ' && this->pokemon_map[*y][*x + 1])
+			*x = *x + 1;
 	}
 	else if (key == M_KEY_LEFT)
 	{
-		std::cout << "left" << std::endl;
+		this->pokemon_map[*y][*x] = ' ';
+		if (this->pokemon_map[*y][*x - 1] == ' ' && this->pokemon_map[*y][*x - 1] == ' ')
+			*x = *x - 1;
 	}
 	else if (key == M_KEY_SPACE)
 	{
@@ -24,11 +32,30 @@ void		map::handle_key(int key)
 	}
 	else if (key == M_KEY_ESC)
 	{
-		std::cout << "ESC" << std::endl;
 		exit(0);
 	}
 	else
 		return ;
+}
+
+void		map::draw_map()
+{
+	vector<string>	p_map;
+	int				idx;
+
+	idx = 0;
+	p_map = this->get_map_file();
+	idx = 0;
+	while (idx < p_map.size())
+	{
+		cout << p_map[idx] << endl;
+		idx++;
+	}
+}
+
+void		map::draw_player(int x, int y)
+{
+	this->pokemon_map[y][x] = '0';
 }
 
 int			map::noah_getch()
@@ -46,14 +73,61 @@ int			map::noah_getch()
 	return (ch);
 }
 
-int				main(void)
+int				map::check_valid(int argc)
+{
+	if (argc == 2)
+		return (TRUE);
+	else
+	{
+		cout << "input file errror" << endl;
+		return (ERROR);
+	}
+}
+
+vector<string> map::get_map_file()
+{
+	return (this->pokemon_map);
+}
+
+void			map::set_map_line(std::string string)
+{
+	this->pokemon_map.push_back(string);
+}
+
+void			map::set_map_file(int argc, char *file_path)
+{
+	string		buffer;
+	ifstream	map_file;
+
+
+	if (!(this->check_valid(argc)))
+		exit(0);
+	map_file.open(file_path);
+	while (map_file.peek() != EOF)
+	{
+		getline(map_file, buffer);
+		this->set_map_line(buffer);
+	}
+}
+
+int				main(int argc, char *argv[])
 {
 	map			map;
-	int			pressed;
+	int			x;
+	int			y;
+	int			idx;
 
+	x = 1;
+	y = 2;
+	map.set_map_file(argc, argv[1]);
+	system("clear");
 	while (1)
 	{
-		pressed = map.noah_getch();
-		map.handle_key(pressed);
+		map.draw_player(x, y);
+		map.draw_map();
+		map.handle_key(map.noah_getch(), &x, &y);
+		cin.clear();
+		system("clear");
 	}
+	return (0);
 }
