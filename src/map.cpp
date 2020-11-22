@@ -1,4 +1,4 @@
-#include "../include/map.h"
+#include "map.h"
 
 int			map::find_door(int *x, int *y)
 {

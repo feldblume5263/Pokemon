@@ -6,7 +6,6 @@
 # include <stdio.h>
 # include <vector>
 # include <termios.h>
-# include <unistd.h>
 # include <fstream>
 # include <string>
 
