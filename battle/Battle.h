@@ -20,8 +20,12 @@ private:
     bool changeState = false;
     bool endBattle = false;
 
+    int my_dialog_location[2] = { 5, 12 };
+    int other_dialog_location[2] = { 40, 2 };
+
 public:
     Battle(Player* _my_player, Player* _other_player);
+    Battle::Battle(Player* _my_player, Pokemon* _other_pokemon);
 
     void startBattle();
     void display();
@@ -40,6 +44,7 @@ public:
     // change
     void selectPokemon();
     void changePokemon();
+    void checkSpeed();;
 
     // bag
     void selectBag()
