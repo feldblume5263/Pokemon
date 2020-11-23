@@ -37,6 +37,8 @@ private:
 	double accuracy;
 	Type type;
 	DamageType damage_type;
+	int pp;
+	int remain_pp;
 
 
 
@@ -49,7 +51,11 @@ public:
 	double GetAccuracy();
 	Type GetType();
 	DamageType GetDamageType();
+	int GetPP();
 	void ShowInfo();
+	void ResetPP();
+	void ReducePP();
+	bool NoPP();
 
 };
 

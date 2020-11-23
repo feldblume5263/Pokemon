@@ -83,8 +83,6 @@ public:
 
         move.fire_blast();
 	}
-	
-
 
     void setNature()
     {
@@ -95,7 +93,8 @@ public:
 class Player
 {
 public:
-    std::vector<Pokemon> pokemons;
+    std::vector<Pokemon*> pokemons;
+    int test = 3;
 
     Player()
     {
@@ -106,13 +105,13 @@ public:
     {
         Pokemon pokemon1;
         pokemon1.charizard();
-        pokemons.push_back(pokemon1);
+        pokemons.push_back(&pokemon1);
     }
     void gyarados()
     {
         Pokemon pokemon1;
         pokemon1.gyarados();
-        pokemons.push_back(pokemon1);
+        pokemons.push_back(&pokemon1);
     }
 };
 
@@ -122,22 +121,16 @@ public:
 class Test
 {
 public:
-    int* i1;
-    int* i2;
 
-    Test(int* _i1, int* _i2)
+    Test(int& i1, int& i2)
     {
-        i1 = _i1;
-        i2 = _i2;
-
-        // _i1 += 2;
-        // _i2 += 2;
+        doSomething(i1, i2);
     }
 
-    void doSomething()
+    void doSomething(int& i1, int& i2)
     {
-        *i1 += 100;
-        *i2 += 100;
+        i1 += 100;
+        i2 += 100;
     }
 
 

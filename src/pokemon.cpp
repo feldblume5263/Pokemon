@@ -1,9 +1,10 @@
-#include"pokemon.h"
+#include"../include/pokemon.h"
 #include<random>
 #include<cmath>
 #include<iostream>
 
-Pokemon::Pokemon(){
+Pokemon::Pokemon() {
+	//from database//////////
 	this->name = "Pikachu";
 	this->base_health_point = 35;
 	this->base_attack = 55;
@@ -13,8 +14,11 @@ Pokemon::Pokemon(){
 	this->base_speed = 90;
 	this->type1 = Electric;
 	this->type2 = None;
+	/////////////////////////
 	SetIndiStat();
 	SetEffStat();
+
+	SetNature();
 	SetStat();
 	this->remain_hp = this->health_point;
 	for (int i = 0; i < 4; i++) {
@@ -22,25 +26,12 @@ Pokemon::Pokemon(){
 	}
 }
 Pokemon::Pokemon(string name) {
-//데이터 베이스에서 가져옴
+	//데이터 베이스에서 가져옴
 
 }
 Pokemon::~Pokemon() {}
-void Pokemon::SetStat() {
 
-	health_point = ceil((base_health_point * 2 + indi_health_point + eff_health_point / 4) / 2 + 10 + 50);
-	//(종족값 * 2 + 개체값 + 노력치 / 4) / 2 + 10 + 50(레벨)
-	attack = ceil((base_attack * 2 + indi_attack + eff_attack / 4) / 2 + 5);
-	block = ((base_block * 2 + indi_block + eff_block / 4) / 2 + 5);
-	contact = ceil((base_contact * 2 + indi_contact + eff_contact / 4) / 2 + 5);
-	defense = ceil((base_defense * 2 + indi_defense + eff_defense / 4) / 2 + 5);
-	speed = ceil((base_speed * 2 + indi_speed + eff_speed / 4) / 2 + 5);
-	//{(종족값*2+개체값+노력치/4)/2+5}*(성격 보정)
-
-
-
-}
-void Pokemon::SetIndiStat(){
+void Pokemon::SetIndiStat() {
 	random_device rd;
 	mt19937 gen(rd());
 	uniform_int_distribution<int> dis(0, 31);
@@ -58,8 +49,8 @@ void Pokemon::SetEffStat() {
 	this->eff_contact = 0;
 	this->eff_defense = 0;
 	this->eff_speed = 0;
-	
-	
+
+
 	int i = 0;
 	random_device rd;
 	mt19937 gen(rd());
@@ -70,37 +61,37 @@ void Pokemon::SetEffStat() {
 		case 1:
 			if (this->eff_health_point < 253) {
 				this->eff_health_point++;
-				
+
 			}
 			continue;
 
 		case 2:
 			if (this->eff_attack < 253) {
 				this->eff_attack++;
-				
+
 			}
 			continue;
 		case 3:
 			if (this->eff_block < 253) {
 				this->eff_block++;
-				
+
 
 			}
 			continue;
 		case 4:
 			if (this->eff_contact < 253) {
 				this->eff_contact++;
-				
+
 			}
 			continue;
 		case 5:
 			if (this->eff_defense < 253) {
 				this->eff_defense++;
-				
+
 			}
 			continue;
 
-		
+
 		case 6:
 			if (this->eff_speed < 253) {
 				this->eff_speed++;
@@ -108,26 +99,53 @@ void Pokemon::SetEffStat() {
 			}
 			continue;
 
+		}
 	}
-	}
+}
+
+
+void Pokemon::SetNature() {
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<int> dis(0, 24);
+	int num = dis(gen);
+	this->nature = static_cast<Nature>(num);
+	cout << this->nature << endl;
+
+
+}
+
+Nature Pokemon::GetNature() {
+	return this->nature;
+}
+void Pokemon::SetStat() {
+
+	health_point = ceil(((double)base_health_point * 2 + (double)indi_health_point + (double)eff_health_point / 4) / 2 + 10 + 50);
+	attack = (int)ceil((((double)base_attack * 2 + (double)indi_attack + (double)eff_attack / 4) / 2 + 5) * nature_stat_rate[GetNature()][0]);
+	block = (int)ceil((((double)base_block * 2 + (double)indi_block + (double)eff_block / 4) / 2 + 5) * nature_stat_rate[GetNature()][1]);
+	contact = (int)ceil((((double)base_contact * 2 + (double)indi_contact + (double)eff_contact / 4) / 2 + 5) * nature_stat_rate[GetNature()][2]);
+	defense = (int)ceil((((double)base_defense * 2 + (double)indi_defense + (double)eff_defense / 4) / 2 + 5) * nature_stat_rate[GetNature()][3]);
+	speed = (int)ceil((((double)base_speed * 2 + (double)indi_speed + (double)eff_speed / 4) / 2 + 5) * nature_stat_rate[GetNature()][4]);
+
+
 }
 bool Pokemon::Attack(Pokemon& target, Skill attack) {
 	double attack_power;
 	double defense_power;
-
 	double rate;
 	random_device rd;
 	mt19937 gen(rd());
 	uniform_int_distribution<int> dis(0, 99);
+	uniform_int_distribution<int> dis_1(85, 100);
 	if (dis(gen) < attack.GetAccuracy()) {
-		
+
 		if (attack.GetDamageType() == Physical) {
 
 			if (this->GetType1() == attack.GetType() || this->GetType2() == attack.GetType()) {
-				attack_power = this->GetAttack() * attack.GetPower() * 1.5;
+				attack_power = ceil((double)(this->GetAttack() * attack.GetPower() * 1.5) * (double)dis_1(gen) / 100);
 			}
 			else {
-				attack_power = this->GetAttack() * attack.GetPower();
+				attack_power = ceil((double)(this->GetAttack() * attack.GetPower()) * (double)dis_1(gen) / 100);
 			}
 			defense_power = ceil(target.GetBlock() * target.GetRemainHp() / 0.411);
 			rate = attack_power / defense_power * type_damage_rate[attack.GetType()][target.GetType1()] *
@@ -138,10 +156,10 @@ bool Pokemon::Attack(Pokemon& target, Skill attack) {
 		else {
 
 			if (this->GetType1() == attack.GetType() || this->GetType2() == attack.GetType()) {
-				attack_power = this->GetContact() * attack.GetPower() * 1.5;
+				attack_power = ceil((double)(this->GetContact() * attack.GetPower() * 1.5) * (double)dis_1(gen) / 100);
 			}
 			else {
-				attack_power = this->GetContact() * attack.GetPower();
+				attack_power = ceil((double)(this->GetContact() * attack.GetPower()) * (double)dis_1(gen) / 100);
 			}
 			defense_power = ceil(target.GetDefense() * target.GetRemainHp() / 0.411);
 			rate = attack_power / defense_power * type_damage_rate[attack.GetType()][target.GetType1()] *
@@ -152,7 +170,7 @@ bool Pokemon::Attack(Pokemon& target, Skill attack) {
 		return true;
 	}
 	else {
-		
+
 		false;
 	}
 
@@ -162,6 +180,7 @@ bool Pokemon::Attack(Pokemon& target, Skill attack) {
 void Pokemon::SetAlive(bool life) {
 	if (life) {
 		this->alive = true;
+		this->remain_hp = this->health_point;
 	}
 	else {
 		this->alive = false;
@@ -176,8 +195,16 @@ void Pokemon::SetRemainHp(double rate) {
 	}
 	else {
 		this->remain_hp = 0;
-		this->SetAlive(0);
+		this->SetAlive(false);
 	}
+
+}
+void Pokemon::SetRemainHp(int potion) {
+	this->remain_hp = this->remain_hp + potion;
+	if (this->remain_hp > this->health_point) {
+		this->remain_hp = this->health_point;
+	}
+
 
 }
 double Pokemon::GetRemainHp() {
@@ -209,7 +236,7 @@ Type Pokemon::GetType2() {
 }
 void Pokemon::ShowInfo() {
 	cout << this->name << endl;
-	cout << "hp:" << this->remain_hp <<"/" << this->health_point << endl;
+	cout << "hp:" << this->remain_hp << "/" << this->health_point << endl;
 
 	cout << "attack:" << this->attack << endl;
 
@@ -220,7 +247,7 @@ void Pokemon::ShowInfo() {
 	cout << "defense:" << this->defense << endl;
 
 	cout << "speed:" << this->speed << endl;
-	
+
 	for (int i = 0; i < 4; i++) {
 		this->moves[i].ShowInfo();
 	}
@@ -233,19 +260,30 @@ Skill Pokemon::GetSkill2() {
 	return this->moves[1];
 }
 
-Skill Pokemon::GetSkill3(){
+Skill Pokemon::GetSkill3() {
 	return this->moves[2];
 }
 Skill Pokemon::GetSkill4() {
 	return this->moves[3];
 }
-
-
+void Pokemon::Reset() {
+	this->SetAlive(true);
+	for (int i = 0; i < 4; i++) {
+		this->moves[i].ResetPP();
+	}
+}
+//test
 int main() {
+
+
 	Pokemon test = Pokemon();
 	Pokemon test1 = Pokemon();
 	test1.ShowInfo();
-	test.Attack(test1,test.GetSkill1());
+	test.Attack(test1, test.GetSkill1());
+	cout << "////////////////////////////////////////////\n";
+	test1.ShowInfo();
+	test.Attack(test1, test.GetSkill1());
+	cout << "////////////////////////////////////////////\n";
 	test1.ShowInfo();
 	return 0;
 }

@@ -1,7 +1,68 @@
 #ifndef POKEMON_H
 #define POKEMON_H
 
-#include"skill.h"
+#include"../include/skill.h"
+
+enum Nature {
+	Lonely,
+	Adamant,
+	Naughty,
+	Brave,
+	Bold,
+	Impish,
+	Lax,
+	Relaxed,
+	Modest,
+	Mild,
+	Rash,
+	Quiet,
+	Calm,
+	Gentle,
+	Careful,
+	Sassy,
+	Timid,
+	Hasty,
+	Jolly,
+	Naive,
+	Bashful,
+	Hardy,
+	Docile,
+	Quirky,
+	Serious
+};
+
+
+double nature_stat_rate[25][5] = {
+	//				a		b		c		d		s
+					{1.1,	0.9,	1.0,	1.0,	1.0},
+					{1.1,	1.0,	0.9,	1.0,	1.0},
+					{1.1,	1.0,	1.0,	0.9,	1.0},
+					{1.1,	1.0,	1.0,	1.0,	0.9},
+					{0.9,	1.1,	1.0,	1.0,	1.0},
+					{1.0,	1.1,	0.9,	1.0,	1.0},
+					{1.0,	1.1,	1.0,	0.9,	1.0},
+					{1.0,	1.1,	1.0,	1.0,	0.9},
+					{0.9,	1.0,	1.1,	1.0,	1.0},
+					{1.0,	0.9,	1.1,	1.0,	1.0},
+					{1.0,	1.0,	1.1,	0.9,	1.0},
+					{1.0,	1.0,	1.1,	1.0,	0.9},
+					{0.9,	1.0,	1.0,	1.1,	1.0},
+					{1.0,	0.9,	1.0,	1.1,	1.0},
+					{1.0,	1.0,	0.9,	1.1,	1.0},
+					{1.0,	1.0,	1.0,	1.1,	0.9},
+					{0.9,	1.0,	1.0,	1.0,	1.1},
+					{1.0,	0.9,	1.0,	1.0,	1.1},
+					{1.0,	1.0,	0.9,	1.0,	1.1},
+					{1.0,	1.0,	1.0,	0.9,	1.1},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0}
+
+
+
+};
 double type_damage_rate[19][19] = {
 	//			Normal	Fire	Water	Elect	Grass	Ice		Fight	Poison	Ground	Flying	Psych	Bug		Rock	Ghost	Dragon	Dark	Steel	Fiary	None
 	/*Normal*/	{1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	0.5,	1.0,	0.0,	1.0,	0.5,	1.0,	1.0},
@@ -29,9 +90,18 @@ class Pokemon {
 
 
 private:
+	//from database///////////
 	string name;
 	Type type1;
 	Type type2;
+	int base_health_point;
+	int base_attack;
+	int base_block;
+	int base_contact;
+	int base_defense;
+	int base_speed;
+	//////////////////////////
+	Nature nature;
 	int lv;
 	int health_point;
 	int attack;
@@ -39,12 +109,6 @@ private:
 	int contact;
 	int defense;
 	int speed;
-	int base_health_point;
-	int base_attack;
-	int base_block;
-	int base_contact;
-	int base_defense;
-	int base_speed;
 	int indi_health_point;
 	int indi_attack;
 	int indi_block;
@@ -72,7 +136,9 @@ public:
 	void SetEffStat();
 	bool Attack(Pokemon& target, Skill attack);
 	void SetAlive(bool life);
-	void SetRemainHp(double rate);  
+	void SetRemainHp(double rate);
+	void SetRemainHp(int potion);
+	void SetNature();
 	double GetRemainHp();
 	int GetHealthPoint();
 	int GetAttack();
@@ -82,12 +148,15 @@ public:
 	int GetSpeed();
 	Type GetType1();
 	Type GetType2();
+	Nature GetNature();
 	bool Alive();
 	void ShowInfo();
 	Skill GetSkill1();
 	Skill GetSkill2();
 	Skill GetSkill3();
 	Skill GetSkill4();
+	void Reset();
+
 
 };
 #endif 
