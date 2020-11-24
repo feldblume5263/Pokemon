@@ -12,12 +12,16 @@ Battle::Battle(MyPlayer* _my_player, OtherPlayer* _other_player)
 
 Battle::Battle(MyPlayer* _my_player, Pokemon* _other_pokemon)
 {
-   // todo
+    my_player = _my_player;
+    other_selected_pokemon = _other_pokemon;
+    my_selected_pokemon = my_player->pokemons[0];
+
     startHunting();
 }
 
 void Battle::startBattle()
 {
+
     pullPokemon();
 
     while (endBattle == false)
@@ -26,53 +30,104 @@ void Battle::startBattle()
     }
 
     // end battle
+    display();
+    gotoxy(message_x, message_x);
     if (my_win == true)
-    {
-        display();
-        gotoxy(5, 15);
         std::cout << "My Win" << std::endl;
-    }
     else
-    {
-        display();
-        gotoxy(5, 15);
         std::cout << "My Loose" << std::endl;
-    }
 }
 
 inline void Battle::startHunting()
 {
+    // todo
 }
 
 void Battle::display()
 {
     system("cls");
 
-    gotoxy(5, 12);
-    std::cout << my_selected_pokemon->name << std::endl;
-    gotoxy(5, 12 + 1);
-    printHPbar(my_selected_pokemon);
-    gotoxy(5, 12 + 1 + 1);
-    std::cout << "HP : " << my_selected_pokemon->HP << " / " << my_selected_pokemon->maxHP << std::endl;
+    // draw dialog box
+    gotoxy(5, 40);
+    for (int i = 0; i < 160; ++i)
+        std::cout << "-";
+    gotoxy(5, 60);
+    for (int i = 0; i < 160; ++i)
+        std::cout << "-";
+    gotoxy(0, 41);
+    for (int i = 0; i < 20; ++i)
+        std::cout << "     |\n";
+    for (int i = 0; i < 20; ++i)
+    {
+        gotoxy(164, 41 + i);
+        std::cout << "|";
+    }
+    
+    // draw emoji of pokemons
+    if (my_selected_pokemon != nullptr)
+        drawPokemon_emoji(my_selected_pokemon, 8, 18);
+    if (other_selected_pokemon != nullptr)
+        drawPokemon_emoji(other_selected_pokemon, 120, 4);
 
-    gotoxy(40, 2);
-    std::cout << other_selected_pokemon->name << std::endl;
-    gotoxy(40, 2 + 1);
-    printHPbar(other_selected_pokemon);
-    gotoxy(40, 2 + 1 + 1);
-    std::cout << "HP : " << other_selected_pokemon->HP << " / " << other_selected_pokemon->maxHP << std::endl;
+    // draw neme and HP of pokemons
+    {   // my pokemon
+        gotoxy(my_pokemon_state_x, my_pokemon_state_y);
+        std::cout << my_selected_pokemon->GetName() << std::endl;
+        gotoxy(my_pokemon_state_x, my_pokemon_state_y + 2);
+        printHPbar(my_selected_pokemon);
+        gotoxy(my_pokemon_state_x, my_pokemon_state_y + 4);
+        std::cout << "HP : " << my_selected_pokemon->GetRemainHp() << " / " << my_selected_pokemon->GetHealthPoint() << std::endl;
+
+        for (int i = 0; i < 30; ++i)
+        {
+            gotoxy(my_pokemon_state_x - 5 + i, my_pokemon_state_y - 2);
+            std::cout << "-";
+            gotoxy(my_pokemon_state_x - 5 + i, my_pokemon_state_y + 6);
+            std::cout << "-";
+        }
+        for (int i = 0; i < 7; ++i)
+        {
+            gotoxy(my_pokemon_state_x - 5, my_pokemon_state_y - 1 + i);
+            std::cout << "|";
+            gotoxy(my_pokemon_state_x + 24, my_pokemon_state_y - 1 + i);
+            std::cout << "|";
+        }
+    }
+    {   // other pokemon
+        gotoxy(other_pokemon_state_x, other_pokemon_state_y);
+        std::cout << other_selected_pokemon->GetName() << std::endl;
+        gotoxy(other_pokemon_state_x, other_pokemon_state_y + 2);
+        printHPbar(other_selected_pokemon);
+        gotoxy(other_pokemon_state_x, other_pokemon_state_y + 4);
+        std::cout << "HP : " << other_selected_pokemon->GetRemainHp() << " / " << other_selected_pokemon->GetHealthPoint() << std::endl;
+
+        for (int i = 0; i < 30; ++i)
+        {
+            gotoxy(other_pokemon_state_x - 5 + i, other_pokemon_state_y - 2);
+            std::cout << "-";
+            gotoxy(other_pokemon_state_x - 5 + i, other_pokemon_state_y + 6);
+            std::cout << "-";
+        }
+        for (int i = 0; i < 7; ++i)
+        {
+            gotoxy(other_pokemon_state_x - 5, other_pokemon_state_y - 1 + i);
+            std::cout << "|";
+            gotoxy(other_pokemon_state_x + 24, other_pokemon_state_y - 1 + i);
+            std::cout << "|";
+        }
+    }
 }
 
 void Battle::printHPbar(Pokemon* pokemon)
 {
     int num = 0;
     int checkHP = 0;
-    int standardHP = pokemon->maxHP / 10;
+    int standardHP = pokemon->GetHealthPoint() / 20;
 
     // max num is 10
-    while (num < 10)
+    while (num < 20)
     {
-        if (pokemon->HP > checkHP)
+        if (pokemon->GetRemainHp() > checkHP)
         {
             num += 1;
             checkHP += standardHP;
@@ -84,11 +139,34 @@ void Battle::printHPbar(Pokemon* pokemon)
 
     for (int i = 0; i < num; ++i)
     {
-        std::cout << "O";
-        //std::cout << i;
+        std::cout << "@";
     }
     std::cout << std::endl;
 
+}
+
+inline void Battle::drawPokemon_emoji(Pokemon* pokemon, int place_x, int place_y)
+{
+    for (int i = 0; i < 20; ++i)
+    {
+        for (int j = 0; j < 40; ++j)
+        {
+            gotoxy(place_x + j, place_y + i);
+            char c = pokemon->emoji[j + i * 40];
+            if (c == 'M')
+                std::cout << ' ';
+            else if (c == ' ')
+                std::cout << ' /b';
+            else
+                std::cout << c;
+        }
+        std::cout << std::endl;
+    }
+}
+
+inline void Battle::drawPoekomon(Pokemon* pokemon, int place_x, int place_y)
+{
+    // todo
 }
 
 void Battle::pullPokemon()
@@ -106,35 +184,28 @@ void Battle::selectAction()
 {
     display();
 
-    int x = 7; int y = 15;
-
+    // print actions
+    int x = 30; int y = 45; const int f_y = y;
     gotoxy(x, y);
     std::cout << "FIGHT" << std::endl;
-    gotoxy(x, ++y);
+    gotoxy(x, y + 3);
     std::cout << "BAG" << std::endl;
-    gotoxy(x, ++y);
+    gotoxy(x, y + 6);
     std::cout << "POKEMON" << std::endl;
-    gotoxy(x, ++y);
+    gotoxy(x, y + 9);
     std::cout << "RUN" << std::endl;
 
-    // todo : delete Overlapping code
-    y -= 3;
-    gotoxy(x - 2, y);
-    std::cout << ">\b";
-    while (getArrowkey(x, y) == false)
-    {
-        gotoxy(x - 2, y);
-        std::cout << ">\b";
-    }
+
+    printArrow(x, y);
 
     // select
-    if (y == 15)
+    if (y == f_y)
         selectMove();
-    else if (y == 16)
+    else if (y == f_y + 3)
         selectBag();
-    else if (y == 17)
+    else if (y == f_y + 6)
         changePokemon(my_player);
-    else if (y == 18)
+    else if (y == f_y + 9)
         selectRun();
 }
 
@@ -143,95 +214,130 @@ void Battle::selectMove()
 {
     display();
 
-    int x = 5, y = 14;
-    gotoxy(x, y);
-    std::cout << "     __MOVES__" << std::endl;
-    for (int i = 0; i < 4; ++i)
-        std::cout << "        | TYPE : " << my_selected_pokemon->move[i].type << " | PP : " << 
-            my_selected_pokemon->move[i].pp << " |" << my_selected_pokemon->move[i].name << std::endl;;
-
-    gotoxy(x, ++y);
-    std::cout << ">\b";
-    while (getArrowkey(x, y) == false)
-    {
-        gotoxy(x, y);
-        std::cout << ">\b";
+    // print moves
+    int x = 30; int y = 45; const int f_y = y;
+    gotoxy(x, y - 2);
+    std::cout << "---MOVES---" << std::endl;
+    for (int i = 0; i < 4; ++i) {
+        gotoxy(x, y + 3 * i);
+        std::cout << "| TYPE : " << my_selected_pokemon->GetSkill(i).GetType() << " | PP : " <<
+            my_selected_pokemon->GetSkill(i).GetRemainPP() << " / " << my_selected_pokemon->GetSkill(i).GetPP() << " | " << my_selected_pokemon->GetSkill(i).GetName() << std::endl; // todo type
     }
+    printArrow(x, y);
 
-    if (y == 15)
-        fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->move[0]);
-    else if (y == 16)
-        fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->move[1]);
-    else if (y == 17)
-        fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->move[2]);
-    else if (y == 18)
-        fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->move[3]);
+    // select move
+    if (y == f_y)
+        fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->GetSkill(0));
+    else if (y == f_y + 3)
+        fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->GetSkill(1));
+    else if (y == f_y + 6)
+        fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->GetSkill(2));
+    else if (y == f_y + 9)
+        fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->GetSkill(3));
 }
 
-void Battle::fight(Pokemon* myPokemon, Pokemon* otherPokemon, Move& move)
+void Battle::fight(Pokemon* myPokemon, Pokemon* otherPokemon, Skill& move)
 {
-    display();
-
     // my pokemon will bi atack at first.
     if (priority == true)
     {
         attack(myPokemon, otherPokemon, move);
         // other pokemon can not fight
-        if (otherPokemon->liveState == false)
+        if (otherPokemon->Alive() == false)
         {
-            std::cout << "otherPokemon->liveState == false" << std::endl;
+            display();
+            gotoxy(message_x, message_y);
+            std::cout << otherPokemon->GetName() << " is fainted." << std::endl;
+            while (!getEnterSpacebar());
+
             // other player has another pokemon
             if (checkPokemons(other_player) == true)
             {
-                std::cout << "checkPokemons(other_player) == true" << std::endl;
-
-                while(!getEnterSpacebar());
-                
                 changePokemon(other_player);
                 return;
             }
             // end battle
             else {
-                my_win = true; return;
+                my_win = true;
+                return;
             }
         }
 
         // setMove by random.
         int ix = setRandomMoveNumber();
-        attack(otherPokemon, myPokemon, other_selected_pokemon->move[ix]);
-        if (myPokemon->liveState == false)
+        if (ix < 0)
         {
+            display();
+            gotoxy(message_x, message_y);
+            std::cout << otherPokemon ->GetName() << " don`t have PP anymore.";
+            gotoxy(message_x, message_y + 1);
+            std::cout << "So Can not attack.";
+            while (!getEnterSpacebar());
+            return;
+        }
+
+        attack(otherPokemon, myPokemon, other_selected_pokemon->GetSkill(ix));
+        if (myPokemon->Alive() == false)
+        {
+            display();
+            gotoxy(message_x, message_y);
+            std::cout << myPokemon->GetName() << " is fainted." << std::endl;
+            while (!getEnterSpacebar());
+
             if (checkPokemons(my_player) == true)
             {
                 changePokemon(my_player);
                 return;
             }
             else {
-                my_win = false; return;
+                my_win = false;
+                return;
             }
         }
     }
+
     // other pokemon will bi atack at first.
     else if (priority == false)
     {
         int ix = setRandomMoveNumber();
-        attack(otherPokemon, myPokemon, other_selected_pokemon->move[ix]);
-        if (myPokemon->liveState == false)
+        if (ix < 0)
         {
+            display();
+            gotoxy(message_x, message_y);
+            std::cout << otherPokemon->GetName() << " don`t have PP anymore.";
+            gotoxy(message_x, message_y + 1);
+            std::cout << "So Can not attack.";
+            while (!getEnterSpacebar());
+            return;
+        }
+
+        attack(otherPokemon, myPokemon, other_selected_pokemon->GetSkill(ix));
+        if (myPokemon->Alive() == false)
+        {
+            display();
+            gotoxy(message_x, message_y);
+            std::cout << myPokemon->GetName() << " is fainted." << std::endl;
+            while (!getEnterSpacebar());
+
             if (checkPokemons(my_player) == true)
             {
                 changePokemon(my_player);
                 return;
             }
             else {
-                my_win = false; return;
+                my_win = false;
+                return;
             }
         }
 
-
         attack(myPokemon, otherPokemon, move);
-        if (otherPokemon->liveState == false)
+        if (otherPokemon->Alive() == false)
         {
+            display();
+            gotoxy(message_x, message_y);
+            std::cout << otherPokemon->GetName() << " is fainted." << std::endl;
+            while (!getEnterSpacebar());
+
             if (checkPokemons(other_player) == true)
             {
                 changePokemon(other_player);
@@ -244,18 +350,22 @@ void Battle::fight(Pokemon* myPokemon, Pokemon* otherPokemon, Move& move)
     }
 }
 
-void Battle::attack(Pokemon* attakingPokemon, Pokemon* defendingPokemon, Move& move)
+void Battle::attack(Pokemon* attakingPokemon, Pokemon* defendingPokemon, Skill& move)
 {
     display();
     int x = 5, y = 15;
-    gotoxy(x, y);
+    //gotoxy(x, y);
+
+    gotoxy(message_x, message_y);
+
     int damage = calculateDamage(attakingPokemon, defendingPokemon, move) * 0.1f;
-    std::cout << attakingPokemon->name << " Used " << move.name << "." << std::endl;
+    std::cout << attakingPokemon->GetName() << " Used " << move.GetName() << "." << std::endl;
     while (!getEnterSpacebar());
 
     display();
-    gotoxy(x, y);
-    std::cout << attakingPokemon->name << " Damaged " << damage << " " << defendingPokemon->name << std::endl;
+    gotoxy(message_x, message_y);
+    //gotoxy(x, y);
+    std::cout << attakingPokemon->GetName() << " Damaged to " << damage << " " << defendingPokemon->GetName() << std::endl;
     while (!getEnterSpacebar());
 
 
@@ -265,35 +375,31 @@ void Battle::attack(Pokemon* attakingPokemon, Pokemon* defendingPokemon, Move& m
     //    defendingPokemon->HP = defendingPokemon->HP - 1;
     //    Sleep(100);
     //}
-
-    defendingPokemon->HP = defendingPokemon->HP - damage;
-    move.pp -= 1;
+    
+    defendingPokemon->SetRemainHp(defendingPokemon->GetRemainHp() - damage);
+    move.SetRmainPP(move.GetPP() - 1);
     checkAlive(defendingPokemon);
-
 }
 
-int Battle::calculateDamage(const Pokemon* const attakingPokemon, const Pokemon* const defendingPokemon, const Move& move)
+int Battle::calculateDamage(Pokemon*  attakingPokemon, Pokemon*  defendingPokemon, Skill& move)
 {
     float SametypeAttackbonus = checkSametypeAttackbonus(attakingPokemon, move);
- 
     float Decision = 0.0f;
     // normal Attack
-    if (move.move_type == 0)
-        Decision = attakingPokemon->Attack * move.power * SametypeAttackbonus;
+    if (move.GetDamageType() == Physical)
+        Decision = attakingPokemon->GetAttack() * move.GetPower() * SametypeAttackbonus;
     // sepcial Attack
-    else if (move.move_type == 1)
-        Decision = attakingPokemon->SpecialAttack * move.power * SametypeAttackbonus;
+    else if (move.GetDamageType() == Special)
+        Decision = attakingPokemon->GetSpecialAttack() * move.GetPower() * SametypeAttackbonus;
 
     // 0.411 is correction dimension
     float durability = 0.0f;
-    durability = defendingPokemon->HP * defendingPokemon->Defence * 0.411;
+    durability = defendingPokemon->GetHealthPoint() * defendingPokemon->GetDefense() * 0.411;
 
     // Damage calculate
-
     float HitSpot = checkHitSpot();
     float Type1 = calculateType();
     float Type2 = calculateType();
-
     float damage = 0.0f;
     int RandomNumber = getRandomNumber();
     damage = Decision / durability * HitSpot * Type1 * Type2 * RandomNumber;
@@ -301,7 +407,7 @@ int Battle::calculateDamage(const Pokemon* const attakingPokemon, const Pokemon*
     return static_cast<int>(damage);
 }
 
-float Battle::checkSametypeAttackbonus(const Pokemon* const attakingPokemon, const Move& move)
+float Battle::checkSametypeAttackbonus(Pokemon* attakingPokemon, Skill& move)
 {
     // todo
     return 1.0f;
@@ -326,6 +432,7 @@ float Battle::checkHitSpot()
 
 int Battle::getRandomNumber()
 {
+    // 85 ~ 100. Not equial probility per number.
     float RN = 0.0f;
     RN = std::uniform_int_distribution<>(217, 255)(mersenne) * 100.0f / 255.0f;
     return static_cast<int>(RN);
@@ -333,21 +440,21 @@ int Battle::getRandomNumber()
 
 void Battle::checkAlive(Pokemon* pokemon)
 {
-    if (pokemon->HP <= 0)
+    if (pokemon->GetRemainHp() <= 0)
     {
-        pokemon->HP = 0;
-        pokemon->liveState = false;
+        pokemon->SetRemainHp(0);
+        pokemon->SetAlive(false);
     }
 }
 
-bool Battle::checkPokemons(const Player* const player)
+bool Battle::checkPokemons(Player* player)
 {
     endBattle = true;
 
     for (auto pokemon : player->pokemons)
     {
         // at least one of pokemons is alive
-        if (pokemon->liveState == true)
+        if (pokemon->Alive())
         {
             endBattle = false;
             return true;
@@ -357,75 +464,99 @@ bool Battle::checkPokemons(const Player* const player)
     return false;
 }
 
-// todo : more efficient
 int Battle::setRandomMoveNumber()
 {
+
+    bool have_pp = false;
     for (int i = 0; i < 4; ++i)
     {
         // at least one move have a pp
-        if (other_selected_pokemon->move[i].pp > 0)
+        if (other_selected_pokemon->GetSkill(i).GetRemainPP() > 0)
         {
-            while (1)
-            {
-                int ix = std::uniform_int_distribution<>(0, 3)(mersenne);
-                if (other_selected_pokemon->move[ix].pp > 0)
-                    return ix;
-            }
+            have_pp = true;
+            break;
         }
     }
 
-    // Can not use move sice don`t have pp
-    // todo
-    return 5;
+    // Don`t have pp among all the skill
+    if (have_pp == false)
+        return -1;
+    else
+        while (1)
+        {
+            int ix = std::uniform_int_distribution<>(0, 3)(mersenne);
+
+            if (other_selected_pokemon->GetSkill(ix).GetRemainPP() > 0)
+                return ix;
+        }
 }
 
 // change
 int Battle::selectPokemon()
 {
-    // todo : show pokemon`s emoji
     display();
-    for (int i = 0; i < my_player->pokemons.size(); ++i)
-    {
-        gotoxy(5, 17 + 3 * i);
-        std::cout << "  " << my_player->pokemons[i]->name << std::endl;
-        gotoxy(5, 17 + 3 * i + 1);
-        std::cout << "  HP : " << my_player->pokemons[i]->HP << " / " << my_player->pokemons[i]->maxHP << std::endl;
-    }
 
-    // todo : delete Overlapping code
-    gotoxy(5, 17);
-    int x = 5, y = 17;
-    std::cout << ">\b";
-    while (1)
+    int num_pokemons = my_player->pokemons.size();
+
+    // print pokemons
+    int x = 30; int y = 45; const int f_y = y; const int f_x = x - 3;
+
+    for (int i = 0; i < 2; ++i)
     {
-        // todo : set interval
-        gotoxy(x , y);
-        std::cout << ">\b";
-        if (getArrowkey(x, y) == true)
+        for (int j = 0; j < 3; ++j)
         {
-            // todo : HP > 0
-            if (y == 17)
+            if (i * 3 + j < num_pokemons)
             {
-                display();
-                gotoxy(5, 15);
-                std::cout << "Can`t swap" << std::endl;
-                while (!getEnterSpacebar());
-                display();
-
-                for (int i = 0; i < my_player->pokemons.size(); ++i)
-                {
-                    gotoxy(5, 17 + 3 * i);
-                    std::cout << "  " << my_player->pokemons[i]->name << std::endl;
-                    gotoxy(5, 17 + 3 * i + 1);
-                    std::cout << "  HP : " << my_player->pokemons[i]->HP << " / " << my_player->pokemons[i]->maxHP << std::endl;
-                }
-
-                continue;
+                gotoxy(x + i * 40, y + 3 * j);
+                std::cout << "  " << my_player->pokemons[i * 3 + j]->GetName() << std::endl;
+                gotoxy(x + i * 40, y + 3 * j + 1);
+                std::cout << "  HP : " << my_player->pokemons[i * 3 + j]->GetRemainHp() << " / " << my_player->pokemons[i * 3 + j]->GetHealthPoint() << std::endl;
             }
             else
-                // todo
-                return 1;
+            {
+                gotoxy(x + i * 40, y + 3 * j);
+                std::cout << "___";
+            }
+        }
+    }
 
+    while (1)
+    {
+        printArrow_change(x, y);
+
+        if (x == f_x && y == f_y)
+        {
+            return -1;
+        }
+        else if(x == f_x && y == f_y + 3)
+        {
+            if (num_pokemons > 1 || my_player->pokemons[1]->GetRemainHp() == 0)
+                return 1;
+            else return -1;
+        }
+        else if (x == f_x && y == f_y + 6)
+        {
+            if (num_pokemons > 2 || my_player->pokemons[2]->GetRemainHp() == 0)
+                return 2;
+            else return -1;
+        }
+        else if (x == f_x + 40 && y == f_y)
+        {
+            if (num_pokemons > 3 || my_player->pokemons[3]->GetRemainHp() == 0)
+                return 3;
+            else return -1;
+        }
+        else if (x == f_x + 40 && y == f_y + 3)
+        {
+            if (num_pokemons > 4 || my_player->pokemons[4]->GetRemainHp() == 0)
+                return 4;
+            else return -1;
+        }
+        else if (x == f_x + 40 && y == f_y + 6)
+        {
+            if (num_pokemons > 5 || my_player->pokemons[5]->GetRemainHp() == 0)
+                return 5;
+            else return -1;
         }
     }
 }
@@ -433,22 +564,30 @@ int Battle::selectPokemon()
 void Battle::changePokemon(MyPlayer* player)
 {
     int ix = selectPokemon();
+    if (ix < 0)
+    {
+        display();
+        gotoxy(message_x, message_y);
+        std::cout << "Can`t swap" << std::endl;
+        while (!getEnterSpacebar());
+
+        changePokemon(player);
+        return;
+    }
+
+    std::swap(player->pokemons[0], player->pokemons[ix]);
 
     display();
-    gotoxy(5, 15);
-    std::swap(player->pokemons[0], player->pokemons[ix]);
-    std::cout << "IN " << player->pokemons[ix]->name << std::endl;
+    gotoxy(message_x, message_y);
+    std::cout << "IN " << player->pokemons[ix]->GetName() << std::endl;
     while (!getEnterSpacebar());
 
-    gotoxy(5, 15);
-    std::cout << "OUT " << player->pokemons[0]->name << std::endl;
+    gotoxy(message_x, message_y);
+    std::cout << "OUT " << player->pokemons[0]->GetName() << std::endl;
     while (!getEnterSpacebar());
 
     // change current pokemon
     my_selected_pokemon = player->pokemons[0];
-    display();
-    while (!getEnterSpacebar());
-
 }
 void Battle::changePokemon(OtherPlayer* player)
 {
@@ -456,33 +595,32 @@ void Battle::changePokemon(OtherPlayer* player)
     while (1)
     {
         ix = std::uniform_int_distribution<>(1, player->pokemons.size() - 1)(mersenne);
-        if (player->pokemons[ix]->HP > 0)
+        if (player->pokemons[ix]->GetRemainHp() > 0)
             break;
     }
 
-    display();
-    gotoxy(5, 15);
     std::swap(player->pokemons[0], player->pokemons[ix]);
-    std::cout << "IN " << player->pokemons[ix]->name << std::endl;
+
+    display();
+    gotoxy(message_x, message_y);
+    std::cout << "IN " << player->pokemons[ix]->GetName() << std::endl;
     while (!getEnterSpacebar());
 
-    gotoxy(5, 15);
-    std::cout << "OUT " << player->pokemons[0]->name << std::endl;
+    gotoxy(message_x, message_y);
+    std::cout << "OUT " << player->pokemons[0]->GetName() << std::endl;
     while (!getEnterSpacebar());
 
     // change current pokemon
     other_selected_pokemon = player->pokemons[0];
-    display();
-    while (!getEnterSpacebar());
 }
 
 void Battle::checkSpeed()
 {
-    if (my_selected_pokemon->Speed > other_selected_pokemon->Speed)
+    if (my_selected_pokemon->GetSpeed() > other_selected_pokemon->GetSpeed())
         priority = true;
-    else if (my_selected_pokemon->Speed < other_selected_pokemon->Speed)
+    else if (my_selected_pokemon->GetSpeed() < other_selected_pokemon->GetSpeed())
         priority = false;
-    else if (my_selected_pokemon->Speed == other_selected_pokemon->Speed)
+    else if (my_selected_pokemon->GetSpeed() == other_selected_pokemon->GetSpeed())
     {
         // half probilitiy
         int i = std::uniform_int_distribution<>(1, 2)(mersenne);
@@ -526,9 +664,9 @@ void Battle::selectBag()
 
     // todo delete when volume = 0
     // other pokemon will atacky by priority
+    // if 걸어서, bag누를때마다 갯수 확인하고 0보다 작거나 같으면 delete
 
     while (!getEnterSpacebar()) return;
-
 }
 
 inline void Battle::useItme(int ix)
@@ -562,7 +700,7 @@ void Battle::selectRun()
 {
     system("cls");
     display();
-    gotoxy(5, 15);
+    gotoxy(message_x, message_y);
     std::cout << "NO! There`s no running from a Trainer battle!" << std::endl;
     while (!getEnterSpacebar());
 }
@@ -571,7 +709,6 @@ void Battle::selectRun()
 
 // tool
 // 27ESC, 72Up 80Down 75Left 77Right  32Spacebar
-
 void Battle::gotoxy(int column, int line)
 {
     COORD coord;
@@ -588,12 +725,20 @@ bool Battle::getArrowkey(int& x1, int& y1)
         // UP
     case 72:
         std::cout << " ";
-        y1 -= 1;
+        arrowKey = 0;
         break;
         // DOWN
     case 80:
         std::cout << " ";
-        y1 += 1;
+        arrowKey = 1;
+        break;
+        // LEFT
+    case 75:
+        arrowKey = 2;
+        break;
+        // RIGHT
+    case 77:
+        arrowKey = 3;
         break;
         // ENTER
     case 13:
@@ -601,6 +746,7 @@ bool Battle::getArrowkey(int& x1, int& y1)
     case 32:
         return true;
     default:
+        arrowKey = -1;
         break;
     }
     return false;
@@ -619,4 +765,88 @@ bool Battle::getEnterSpacebar()
         break;
     }
     return false;
+}
+
+void Battle::printArrow(int& x, int& y)
+{
+    x = x - 3;
+    gotoxy(x, y);
+    std::cout << ">\b";
+    while (getArrowkey(x, y) == false)
+    {
+        if (arrowKey == 0)
+        {
+            if (y <= 45)
+            {
+                std::cout << "\b>\b";
+                continue;
+            }
+            y = y - 3;
+            gotoxy(x, y);
+        }
+        else if (arrowKey == 1)
+        {
+            if (y >= 45 + 9)
+            {
+                std::cout << "\b>\b";
+                continue;
+            }
+            y = y + 3;
+            gotoxy(x, y);
+        }
+        std::cout << ">\b";
+    }
+}
+
+void Battle::printArrow_change(int& x, int& y)
+{
+    x = x - 3;
+    gotoxy(x, y);
+    std::cout << ">\b";
+    while (getArrowkey(x, y) == false)
+    {
+        if (arrowKey == 0)
+        {
+            if (y <= 45)
+            {
+                std::cout << "\b>\b";
+                continue;
+            }
+            y = y - 3;
+            gotoxy(x, y);
+        }
+        else if (arrowKey == 1)
+        {
+            if (y >= 45 + 6)
+            {
+                std::cout << "\b>\b";
+                continue;
+            }
+            y = y + 3;
+            gotoxy(x, y);
+        }
+        else if (arrowKey == 2)
+        {
+            if (x == 30 - 3)
+            {
+                std::cout << ">\b";
+                continue;
+            }
+            std::cout << " ";
+            x = x - 40;
+            gotoxy(x, y);
+        }
+        else if (arrowKey == 3)
+        {
+            if (x == 30 - 3 + 40)
+            {
+                std::cout << ">\b";
+                continue;
+            }
+            std::cout << " ";
+            x = x + 40;
+            gotoxy(x, y);
+        }
+        std::cout << ">\b";
+    }
 }

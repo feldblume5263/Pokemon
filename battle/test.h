@@ -1,121 +1,111 @@
 #pragma once
+
 #include <string>
 #include <vector>
 
+#include "Pokemon.h"
 
-class Test
-{
-public:
-    std::string name;
-    Test()
-    {
-        name = "abc";
-    }
-};
-
-
-
-class Move
-{
-public:
-    std::string name;
-    std::string type;
-    int move_type;
-    int pp;
-    int max_pp;
-    int power;
-    int acc;
-
-    void fire_blast()
-    {
-        move_type = 0;
-        name = "fire_blast";
-        type = "fire";
-        pp = 5;
-        max_pp = 5;
-        power = 110;
-    int max_pp;
-        acc = 85;
-    }
-    void hydro_pump()
-    {
-        move_type = 0;
-        name = "hydro_pump";
-        type = "water";
-        power = 110;
-        pp = 5;
-        max_pp = 5;
-        acc = 80;
-    }
-    
-};
-
-class Pokemon
-{
-public:
-    std::string name;
-	int maxHP;
-	int Attack;
-	int Defence;
-	int SpecialAttack;
-	int SpecialDefence;
-	int Speed;
-	// int IVs;
-    Move move[4];
-
-	std::string type1;
-	std::string type2;
-	std::string Nature;
-    
-    int HP;
-    bool liveState = true;
-
-	void gyarados()
-	{
-        name = "gyarados";
-        maxHP = 95;
-        HP = 95;
-		Attack = 125;
-		Defence = 79;
-		SpecialAttack = 60;
-		SpecialDefence = 100;
-		Speed = 81;
-
-        type1 = "water";
-        type2 = "fly";
-
-        move[0].hydro_pump();
-        move[1].hydro_pump();
-        move[2].hydro_pump();
-        move[3].hydro_pump();
-	}
-
-    void charizard()
-	{
-        name = "charizard";
-        
-        HP = 78;
-        maxHP = 78;
-		Attack = 84;
-		Defence = 78;
-		SpecialAttack = 109;
-		SpecialDefence = 85;
-		Speed = 100;
-
-        type1 = "fire";
-        type2 = "fly";
-
-        move[0].fire_blast();
-        move[1].fire_blast();
-        move[2].fire_blast();
-        move[3].fire_blast();
-	}
-
-    void setNature()
-    {
-
-    }
-};
+//class Move1
+//{
+//public:
+//    std::string name;
+//    std::string type;
+//    int move_type;
+//    int pp;
+//    int max_pp;
+//    int power;
+//    int acc;
+//
+//    void fire_blast()
+//    {
+//        move_type = 0;
+//        name = "fire_blast";
+//        type = "fire";
+//        pp = 5;
+//        max_pp = 5;
+//        power = 110;
+//    int max_pp;
+//        acc = 85;
+//    }
+//    void hydro_pump()
+//    {
+//        move_type = 0;
+//        name = "hydro_pump";
+//        type = "water";
+//        power = 110;
+//        pp = 5;
+//        max_pp = 5;
+//        acc = 80;
+//    }
+//    
+//};
+//
+//class Pokemon1
+//{
+//public:
+//    std::string name;
+//	int maxHP;
+//	int Attack;
+//	int Defence;
+//	int SpecialAttack;
+//	int SpecialDefence;
+//	int Speed;
+//	// int IVs;
+//    Move move[4];
+//
+//	std::string type1;
+//	std::string type2;
+//	std::string Nature;
+//    
+//    int HP;
+//    bool liveState = true;
+//
+//	void gyarados()
+//	{
+//        name = "gyarados";
+//        maxHP = 95;
+//        HP = 95;
+//		Attack = 125;
+//		Defence = 79;
+//		SpecialAttack = 60;
+//		SpecialDefence = 100;
+//		Speed = 81;
+//
+//        type1 = "water";
+//        type2 = "fly";
+//
+//        move[0].hydro_pump();
+//        move[1].hydro_pump();
+//        move[2].hydro_pump();
+//        move[3].hydro_pump();
+//	}
+//
+//    void charizard()
+//	{
+//        name = "charizard";
+//        
+//        HP = 78;
+//        maxHP = 78;
+//		Attack = 84;
+//		Defence = 78;
+//		SpecialAttack = 109;
+//		SpecialDefence = 85;
+//		Speed = 100;
+//
+//        type1 = "fire";
+//        type2 = "fly";
+//
+//        move[0].fire_blast();
+//        move[1].fire_blast();
+//        move[2].fire_blast();
+//        move[3].fire_blast();
+//	}
+//
+//    void setNature()
+//    {
+//
+//    }
+//};
 
 
 class Player
