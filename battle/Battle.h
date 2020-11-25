@@ -1,10 +1,24 @@
 #pragma once
-#include <iostream>
+
+//#include <iostream>
 #include <windows.h>
-#include "test.h"
-#include <conio.h> // for kbhit
-#include <random>
+#include <conio.h> 
+//#include <random>
 #include <ctime>
+
+#include "test.h"
+
+#include "pokemon.h"
+
+//enum KeyboardKey
+//{
+//    UP = 27,
+//    DOWN = 80,
+//    LEFT = 75,
+//    RIGHT = 77,
+//    SPACEBAR = 32,
+//    ENTER = 13
+//};
 
 
 class Battle
@@ -19,14 +33,18 @@ private:
     bool priority = true;
     bool endBattle = false;
     bool my_win = false;
-
-    int my_dialog_location[2] = { 5, 12 };
-    int other_dialog_location[2] = { 40, 2 };
-
-    int temp_x = 5;
-    int temp_y = 15;
-
+    int  arrowKey = 0; // 0123 UDLR
     std::mt19937 mersenne;
+
+    // locatoin for drawing
+    const int my_pokemon_state_x = 59;
+    const int my_pokemon_state_y = 31;
+    const int other_pokemon_state_x = 85;
+    const int other_pokemon_state_y = 16;
+    const int message_x = 70;
+    const int message_y = 50;
+
+
 
 public:
     Battle(MyPlayer* _my_player, OtherPlayer* _other_player);
@@ -37,21 +55,23 @@ private:
     void startHunting();
     void display();
     void printHPbar(Pokemon* pokemon);
+    void drawPokemon_emoji(Pokemon* pokemon, int place_x, int place_y);
+    void drawPoekomon(Pokemon* pokemon, int place_x, int place_y);
     void pullPokemon();
     void selectAction();
 
     // fight
     void    selectMove();
-    void    fight(Pokemon* myPokemon, Pokemon* otherPokemon, Move& move);
-    void    attack(Pokemon* attakingPokemon, Pokemon* defendingPokemon, Move& move);
+    void    fight(Pokemon* myPokemon, Pokemon* otherPokemon, Skill& move);
+    void    attack(Pokemon* attakingPokemon, Pokemon* defendingPokemon, Skill& move);
     int     setRandomMoveNumber();
-    int     calculateDamage(const Pokemon* const attakingPokemon, const Pokemon* const defendingPokemon, const Move& move);
-    float   checkSametypeAttackbonus(const Pokemon* const attakingPokemon, const Move& move);
+    int     calculateDamage(Pokemon* attakingPokemon, Pokemon* defendingPokemon, Skill& move);
+    float   checkSametypeAttackbonus(Pokemon* attakingPokemon, Skill& move);
     float   calculateType();
     float   checkHitSpot();
     int     getRandomNumber();
     void    checkAlive(Pokemon* pokemon);
-    bool    checkPokemons(const Player* const player);
+    bool    checkPokemons(Player* player);
     // change
     void    changePokemon(MyPlayer* player);
     void    changePokemon(OtherPlayer* player);
@@ -68,6 +88,8 @@ private:
     void gotoxy(int column, int line);
     bool getArrowkey(int& x1, int& y1);
     bool getEnterSpacebar();
+    void printArrow(int& x, int& y);
+    void printArrow_change(int& x, int& y);
     // 27ESC, 72Up 80Down 75Left 77Right  32Spacebar
 
 };
