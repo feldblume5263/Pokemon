@@ -28,7 +28,7 @@ def searchPokemon(name):
         power = move_data['power']
         pp = move_data['pp']
         #json 예쁘게 출력
-        print(json.dumps(move_data, indent = 4, sort_keys = True))
+        print(json.dumps(moves, indent = 4, sort_keys = True))
 
 
 searchPokemon("pikachu")
