@@ -89,7 +89,7 @@ double type_damage_rate[19][19] = {
 class Pokemon {
 
 
-private:
+protected:
 	//from database///////////
 	string name;
 	Type type1;
@@ -122,8 +122,7 @@ private:
 	int eff_defense;
 	int eff_speed;
 	Skill moves[4];
-	bool alive;
-	int remain_hp;
+
 
 
 
@@ -134,12 +133,7 @@ public:
 	void SetStat();
 	void SetIndiStat();
 	void SetEffStat();
-	bool Attack(Pokemon& target, Skill attack);
-	void SetAlive(bool life);
-	void SetRemainHp(double rate);
-	void SetRemainHp(int potion);
 	void SetNature();
-	double GetRemainHp();
 	int GetHealthPoint();
 	int GetAttack();
 	int GetBlock();
@@ -149,15 +143,37 @@ public:
 	Type GetType1();
 	Type GetType2();
 	Nature GetNature();
-	bool Alive();
 	void ShowInfo();
 	Skill GetSkill1();
 	Skill GetSkill2();
 	Skill GetSkill3();
 	Skill GetSkill4();
+
+
+
+};
+
+
+class CatchedPokemon :public Pokemon {
+private:
+	bool alive;
+	int remain_hp;
+
+public:
+	CatchedPokemon() {
+		Pokemon();
+		this->remain_hp = health_point;
+	}
+	CatchedPokemon(string name) {
+
+	}
+	void SetRemainHp(double rate);
+	void SetRemainHp(int potion);
+	double GetRemainHp();
+	bool Attack(CatchedPokemon& target, Skill attack);
+	void SetAlive(bool life);
+	bool Alive();
 	void Reset();
-
-
 };
 #endif 
 

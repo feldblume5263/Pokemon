@@ -17,10 +17,8 @@ Pokemon::Pokemon() {
 	/////////////////////////
 	SetIndiStat();
 	SetEffStat();
-
 	SetNature();
 	SetStat();
-	this->remain_hp = this->health_point;
 	for (int i = 0; i < 4; i++) {
 		this->moves[i] = Skill();
 	}
@@ -129,7 +127,106 @@ void Pokemon::SetStat() {
 
 
 }
-bool Pokemon::Attack(Pokemon& target, Skill attack) {
+void CatchedPokemon::SetAlive(bool life) {
+	if (life) {
+		this->alive = true;
+		this->remain_hp = this->health_point;
+	}
+	else {
+		this->alive = false;
+	}
+}
+bool CatchedPokemon::Alive() {
+	return this->alive;
+}
+
+int Pokemon::GetHealthPoint() {
+	return this->health_point;
+}
+int Pokemon::GetAttack() {
+	return this->attack;
+}
+int Pokemon::GetBlock() {
+	return this->block;
+}
+int Pokemon::GetContact() {
+	return this->contact;
+}
+int Pokemon::GetDefense() {
+	return this->defense;
+}
+int Pokemon::GetSpeed() {
+	return this->speed;
+}
+Type Pokemon::GetType1() {
+	return this->type1;
+}
+Type Pokemon::GetType2() {
+	return this->type2;
+}
+void Pokemon::ShowInfo() {
+	cout << this->name << endl;
+	cout << "hp:" << this->health_point << endl;
+
+	cout << "attack:" << this->attack << endl;
+
+	cout << "block:" << this->block << endl;
+
+	cout << "contact:" << this->contact << endl;
+
+	cout << "defense:" << this->defense << endl;
+
+	cout << "speed:" << this->speed << endl;
+
+	for (int i = 0; i < 4; i++) {
+		this->moves[i].ShowInfo();
+	}
+}
+Skill Pokemon::GetSkill1() {
+	return this->moves[0];
+}
+
+Skill Pokemon::GetSkill2() {
+	return this->moves[1];
+}
+
+Skill Pokemon::GetSkill3() {
+	return this->moves[2];
+}
+Skill Pokemon::GetSkill4() {
+	return this->moves[3];
+}
+
+
+void CatchedPokemon::SetRemainHp(double rate) {
+	if (this->remain_hp - (int)ceil(this->remain_hp * rate) > 0) {
+		this->remain_hp = (int)(this->remain_hp - ceil(this->remain_hp * rate));
+	}
+	else {
+		this->remain_hp = 0;
+		this->SetAlive(false);
+	}
+
+}
+void CatchedPokemon::SetRemainHp(int potion) {
+	this->remain_hp = this->remain_hp + potion;
+	if (this->remain_hp > this->GetHealthPoint()) {
+		this->remain_hp = this->GetHealthPoint();
+	}
+
+
+}
+double CatchedPokemon::GetRemainHp() {
+	return this->remain_hp;
+}
+void CatchedPokemon::Reset() {
+	this->SetAlive(true);
+	for (int i = 0; i < 4; i++) {
+		this->moves[i].ResetPP();
+	}
+}
+
+bool CatchedPokemon::Attack(CatchedPokemon& target, Skill attack) {
 	double attack_power;
 	double defense_power;
 	double rate;
@@ -177,113 +274,18 @@ bool Pokemon::Attack(Pokemon& target, Skill attack) {
 
 
 }
-void Pokemon::SetAlive(bool life) {
-	if (life) {
-		this->alive = true;
-		this->remain_hp = this->health_point;
-	}
-	else {
-		this->alive = false;
-	}
-}
-bool Pokemon::Alive() {
-	return this->alive;
-}
-void Pokemon::SetRemainHp(double rate) {
-	if (this->remain_hp - (int)ceil(this->remain_hp * rate) > 0) {
-		this->remain_hp = (int)(this->remain_hp - ceil(this->remain_hp * rate));
-	}
-	else {
-		this->remain_hp = 0;
-		this->SetAlive(false);
-	}
-
-}
-void Pokemon::SetRemainHp(int potion) {
-	this->remain_hp = this->remain_hp + potion;
-	if (this->remain_hp > this->health_point) {
-		this->remain_hp = this->health_point;
-	}
-
-
-}
-double Pokemon::GetRemainHp() {
-	return this->remain_hp;
-}
-int Pokemon::GetHealthPoint() {
-	return this->health_point;
-}
-int Pokemon::GetAttack() {
-	return this->attack;
-}
-int Pokemon::GetBlock() {
-	return this->block;
-}
-int Pokemon::GetContact() {
-	return this->contact;
-}
-int Pokemon::GetDefense() {
-	return this->defense;
-}
-int Pokemon::GetSpeed() {
-	return this->speed;
-}
-Type Pokemon::GetType1() {
-	return this->type1;
-}
-Type Pokemon::GetType2() {
-	return this->type2;
-}
-void Pokemon::ShowInfo() {
-	cout << this->name << endl;
-	cout << "hp:" << this->remain_hp << "/" << this->health_point << endl;
-
-	cout << "attack:" << this->attack << endl;
-
-	cout << "block:" << this->block << endl;
-
-	cout << "contact:" << this->contact << endl;
-
-	cout << "defense:" << this->defense << endl;
-
-	cout << "speed:" << this->speed << endl;
-
-	for (int i = 0; i < 4; i++) {
-		this->moves[i].ShowInfo();
-	}
-}
-Skill Pokemon::GetSkill1() {
-	return this->moves[0];
-}
-
-Skill Pokemon::GetSkill2() {
-	return this->moves[1];
-}
-
-Skill Pokemon::GetSkill3() {
-	return this->moves[2];
-}
-Skill Pokemon::GetSkill4() {
-	return this->moves[3];
-}
-void Pokemon::Reset() {
-	this->SetAlive(true);
-	for (int i = 0; i < 4; i++) {
-		this->moves[i].ResetPP();
-	}
-}
 //test
-int main() {
-
-
-	Pokemon test = Pokemon();
-	Pokemon test1 = Pokemon();
-	test1.ShowInfo();
-	test.Attack(test1, test.GetSkill1());
-	cout << "////////////////////////////////////////////\n";
-	test1.ShowInfo();
-	test.Attack(test1, test.GetSkill1());
-	cout << "////////////////////////////////////////////\n";
-	test1.ShowInfo();
-	return 0;
-}
+//int main() {
+//
+//
+//	CatchedPokemon test = CatchedPokemon();
+//	CatchedPokemon test1 = CatchedPokemon();
+//	test1.ShowInfo();
+//	test.Attack(test1,test.GetSkill1());
+//	cout << "////////////////////////////////////////////\n";
+//	test1.ShowInfo();
+//	test.Attack(test1, test.GetSkill1());
+//	cout << "////////////////////////////////////////////\n";
+//	test1.ShowInfo();
+//	return 0;
+//}
