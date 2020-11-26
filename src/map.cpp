@@ -130,9 +130,10 @@ int				main(int argc, char *argv[])
 	int			y;
 	int			idx;
 
-	x = 1;
-	y = 2;
+	x = 100;
+	y = 5;
 	map.set_map_file(argc, argv[1]);
+	system("printf '\e[8;100;200t'");
 	system("clear");
 	while (1)
 	{
