@@ -8,6 +8,8 @@
 # include <termios.h>
 # include <fstream>
 # include <string>
+# include <string.h>
+# include <cstdlib>
 
 # define M_KEY_UP		119
 # define M_KEY_LEFT		97
@@ -24,17 +26,22 @@ using namespace std;
 class			map
 {
 private:
-	vector<string> pokemon_map;
+	vector<string>	pokemon_map;
+	int				cur_f;
+	int				pre_f;
 
 public:
 	map();
 	~map();
 
-	int check_valid(int argc);
+	int check_valid(int argc, char *file_path);
 	int noah_getch();
 	void handle_key(int key, int *x, int *y);
 	void set_map_line(string string);
-	void set_map_file(int argc, char *file_path);
+	void first_set_map_file(int argc, char *file_path);
+	void change_map(char *path, int open_flag, int *x, int *y);
+	void delete_pre_map();
+	void relocate_p(int *x, int *y);
 	vector<string> get_map_file();
 	void draw_player(int x, int y);
 	void draw_map();
@@ -44,6 +51,8 @@ public:
 
 map::map()
 {
+	cur_f = 1;
+	pre_f = 0;
 }
 
 map::~map()
