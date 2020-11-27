@@ -1,17 +1,62 @@
 #include "map.h"
 
+void		map::relocate_p(int *x, int *y)
+{
+	int		row;
+	int		col;
+
+	row = -1;
+	while (++row < this->pokemon_map.size())
+	{
+		col = -1;
+		while (++col < this->pokemon_map[row].size())
+		{
+			if (this->pokemon_map[row][col] == (this->pre_f + '0'))
+			{
+				if (*x > 100)
+					*x = col + 2;
+				else
+					*x = col - 2;
+				if (*y > 32)
+					*y = row + 2;
+				else
+					*y = row - 2;
+				return ;
+			}
+		}
+	}
+}
+
 void		map::delete_pre_map()
 {
-	int		idx;
-	int		size;
+	this->pokemon_map.erase(this->pokemon_map.begin(), this->pokemon_map.end());
+}
 
-	idx = 0;
-	size = this->pokemon_map.size();
-	while(idx < size)
+void			map::change_map(char *path, int open_flag, int *x, int *y)
+{
+	string		buffer;
+	ifstream	map_file;
+	char		*temp;
+	char		num[2];
+
+	if (open_flag == 0)
+		return ;
+	this->delete_pre_map();
+	this->pre_f = this->cur_f;
+	this->cur_f = open_flag;
+	temp = strdup(path);
+	num[0] = open_flag + '0';
+	num[1] = '\0';
+	temp = strcat(temp, num);
+	cout << temp << endl;
+	map_file.open(temp);
+	while (map_file.peek() != EOF)
 	{
-		this->pokemon_map[idx].erase();
-		idx++;
+		getline(map_file, buffer);
+		this->set_map_line(buffer);
 	}
+	free(temp);
+	relocate_p(x, y);
 }
 
 int			map::find_door(int *x, int *y)
@@ -154,33 +199,6 @@ void			map::first_set_map_file(int argc, char *file_path)
 	free(temp);
 }
 
-void			map::set_map_file(char *path, int open_flag)
-{
-	string		buffer;
-	ifstream	map_file;
-	char		*temp;
-	char		num[2];
-
-	if (open_flag == 0)
-		return ;
-	this->delete_pre_map();
-	this->pre_f = this->cur_f;
-	this->cur_f = open_flag;
-	temp = strdup(path);
-	num[0] = open_flag + '0';
-	num[1] = '\0';
-	temp = strcat(temp, num);
-	cout << temp << endl;
-	map_file.open(temp);
-	while (map_file.peek() != EOF)
-	{
-		getline(map_file, buffer);
-		this->set_map_line(buffer);
-	}
-	free(temp);
-
-}
-
 int				main(int argc, char *argv[])
 {
 	map			map;
@@ -200,7 +218,7 @@ int				main(int argc, char *argv[])
 		map.draw_player(x, y);
 		map.draw_map();
 		map.handle_key(map.noah_getch(), &x, &y);
-		map.set_map_file(argv[1], map.find_door(&x, &y));
+		map.change_map(argv[1], map.find_door(&x, &y), &x, &y);
 		system("clear");
 	}
 	return (0);
