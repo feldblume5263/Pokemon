@@ -1,5 +1,19 @@
 #include "map.h"
 
+void		map::delete_pre_map()
+{
+	int		idx;
+	int		size;
+
+	idx = 0;
+	size = this->pokemon_map.size();
+	while(idx < size)
+	{
+		this->pokemon_map[idx].erase();
+		idx++;
+	}
+}
+
 int			map::find_door(int *x, int *y)
 {
 	if (this->pokemon_map[*y - 1][*x] <= '9' && this->pokemon_map[*y - 1][*x] >= '1')
@@ -86,13 +100,25 @@ int			map::noah_getch()
 	return (ch);
 }
 
-int				map::check_valid(int argc)
+int				map::check_valid(int argc, char *file_path)
 {
+	int			idx;
+	char		*temp;
+
 	if (argc == 2)
+	{
+		idx = 0;
+		while (file_path[idx])
+			idx++;
+		if (file_path[--idx] != '/')
+		{
+			file_path = strcat(file_path, "/");
+		}
 		return (TRUE);
+	}
 	else
 	{
-		cout << "input file errror" << endl;
+		cout << "please compile with pokemon file" << endl;
 		return (ERROR);
 	}
 }
@@ -107,20 +133,52 @@ void			map::set_map_line(std::string string)
 	this->pokemon_map.push_back(string);
 }
 
-void			map::set_map_file(int argc, char *file_path)
+void			map::first_set_map_file(int argc, char *file_path)
 {
 	string		buffer;
 	ifstream	map_file;
+	char		*temp;
 
-
-	if (!(this->check_valid(argc)))
+	this->cur_f = 1;
+	this->pre_f = 0;
+	if (!(this->check_valid(argc, file_path)))
 		exit(0);
-	map_file.open(file_path);
+	temp = strdup(file_path);
+	strcat(temp, "1");
+	map_file.open(temp);
 	while (map_file.peek() != EOF)
 	{
 		getline(map_file, buffer);
 		this->set_map_line(buffer);
 	}
+	free(temp);
+}
+
+void			map::set_map_file(char *path, int open_flag)
+{
+	string		buffer;
+	ifstream	map_file;
+	char		*temp;
+	char		num[2];
+
+	if (open_flag == 0)
+		return ;
+	this->delete_pre_map();
+	this->pre_f = this->cur_f;
+	this->cur_f = open_flag;
+	temp = strdup(path);
+	num[0] = open_flag + '0';
+	num[1] = '\0';
+	temp = strcat(temp, num);
+	cout << temp << endl;
+	map_file.open(temp);
+	while (map_file.peek() != EOF)
+	{
+		getline(map_file, buffer);
+		this->set_map_line(buffer);
+	}
+	free(temp);
+
 }
 
 int				main(int argc, char *argv[])
@@ -130,9 +188,11 @@ int				main(int argc, char *argv[])
 	int			y;
 	int			idx;
 
+	int flag = 0;
+
 	x = 100;
 	y = 5;
-	map.set_map_file(argc, argv[1]);
+	map.first_set_map_file(argc, argv[1]);
 	system("printf '\e[8;100;200t'");
 	system("clear");
 	while (1)
@@ -140,9 +200,7 @@ int				main(int argc, char *argv[])
 		map.draw_player(x, y);
 		map.draw_map();
 		map.handle_key(map.noah_getch(), &x, &y);
-		if (map.find_door(&x, &y))
-			cout << map.find_door(&x, &y) << endl;
-		cin.clear();
+		map.set_map_file(argv[1], map.find_door(&x, &y));
 		system("clear");
 	}
 	return (0);
