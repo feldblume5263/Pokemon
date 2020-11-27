@@ -100,7 +100,14 @@ void		map::handle_key(int key, int *x, int *y)
 	}
 	else if (key == M_KEY_SPACE)
 	{
-		std::cout << "space" << std::endl;
+	if (this->pokemon_map[*y - 1][*x] <= 'Z' && this->pokemon_map[*y - 1][*x] >= 'A')
+		return ;
+	else if (this->pokemon_map[*y + 1][*x] <= 'Z' && this->pokemon_map[*y + 1][*x] >= 'A')
+		return ;
+	else if (this->pokemon_map[*y][*x - 1] <= 'Z' && this->pokemon_map[*y][*x - 1] >= 'A')
+		return ;
+	else if (this->pokemon_map[*y][*x + 1] <= 'Z' && this->pokemon_map[*y][*x + 1] >= 'A')
+		return ;
 	}
 	else if (key == M_KEY_ESC)
 	{
@@ -163,7 +170,7 @@ int				map::check_valid(int argc, char *file_path)
 	}
 	else
 	{
-		cout << "please compile with pokemon file" << endl;
+		cout << "please compile with pokemon version folder" << endl;
 		return (ERROR);
 	}
 }
