@@ -215,8 +215,8 @@ int				main(int argc, char *argv[])
 
 	int flag = 0;
 
-	x = 100;
-	y = 5;
+	x = 99;
+	y = 6;
 	map.first_set_map_file(argc, argv[1]);
 	system("printf '\e[8;100;200t'");
 	system("clear");
