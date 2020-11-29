@@ -4,24 +4,24 @@
 #include<iostream>
 
 Pokemon::Pokemon() {
-	//from database//////////
-	this->name = "Pikachu";
-	this->base_health_point = 35;
-	this->base_attack = 55;
-	this->base_block = 40;
-	this->base_contact = 50;
-	this->base_defense = 50;
-	this->base_speed = 90;
-	this->type1 = Electric;
-	this->type2 = None;
-	/////////////////////////
-	SetIndiStat();
-	SetEffStat();
-	SetNature();
-	SetStat();
-	for (int i = 0; i < 4; i++) {
-		this->moves[i] = Skill();
-	}
+	////from database//////////
+	//this->name = "Pikachu";
+	//this->base_health_point = 35;
+	//this->base_attack = 55;
+	//this->base_block = 40;
+	//this->base_contact = 50;
+	//this->base_defense = 50;
+	//this->base_speed = 90;
+	//this->type1 = Electric;
+	//this->type2 = None;
+	///////////////////////////
+	//SetIndiStat();
+	//SetEffStat();
+	//SetNature();
+	//SetStat();
+	//for (int i = 0; i < 4; i++) {
+	//	this->moves[i] = Skill();
+	//}
 }
 Pokemon::Pokemon(string name) {
 	//데이터 베이스에서 가져옴
@@ -164,6 +164,54 @@ Type Pokemon::GetType1() {
 Type Pokemon::GetType2() {
 	return this->type2;
 }
+void Pokemon::SetName(string name) {
+	this->name = name;
+}
+void Pokemon::SetHealthPoint(int num) {
+	this->base_health_point = num;
+}
+void Pokemon::SetAttack(int num) {
+	this->base_attack = num;
+
+}
+void Pokemon::SetBlock(int num) {
+	this->base_block = num;
+}
+void Pokemon::SetContact(int num) {
+	this->base_contact = num;
+
+}
+void Pokemon::SetDefense(int num) {
+	this->base_defense = num;
+}
+void Pokemon::SetSpeed(int num) {
+	this->base_speed = num;
+}
+void Pokemon::SetType1(wstring name) {
+	string type_name;
+	type_name.assign(name.begin(), name.end());
+	this->type1 = SearchType(type_name);
+}
+void Pokemon::SetType2(wstring name) {
+	string type_name;
+	type_name.assign(name.begin(), name.end());
+	this->type1 = SearchType(type_name);
+}
+void Pokemon::SetSkill1(Skill& skill) {
+	this->moves[0] = skill;
+}
+void Pokemon::SetSkill2(Skill& skill) {
+	this->moves[0] = skill;
+}
+void Pokemon::SetSkill3(Skill& skill) {
+	this->moves[0] = skill;
+}
+void Pokemon::SetSkill4(Skill& skill) {
+	this->moves[0] = skill;
+}
+
+
+
 void Pokemon::ShowInfo() {
 	cout << this->name << endl;
 	cout << "hp:" << this->health_point << endl;
@@ -226,6 +274,7 @@ void CatchedPokemon::Reset() {
 	}
 }
 
+
 bool CatchedPokemon::Attack(CatchedPokemon& target, Skill attack) {
 	double attack_power;
 	double defense_power;
@@ -274,7 +323,7 @@ bool CatchedPokemon::Attack(CatchedPokemon& target, Skill attack) {
 
 
 }
-//test
+
 //int main() {
 //
 //
@@ -289,3 +338,6 @@ bool CatchedPokemon::Attack(CatchedPokemon& target, Skill attack) {
 //	test1.ShowInfo();
 //	return 0;
 //}
+
+
+
