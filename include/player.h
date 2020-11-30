@@ -28,7 +28,12 @@ class Player {
         coord GetPos();
         void SetPos(coord c);
         //포켓몬
-        Pokemon GetPokemons();
+        //Pokemon GetPokemons()  배열 전체를 반환
+        //포켓몬 하나씩 반환
+        Pokemon GetPokemon1();
+        Pokemon GetPokemon2();
+        Pokemon GetPokemon3();
+        Pokemon GetPokemon4();
         void SetPokemons();
         // 플레이어 타입 
         bool GetPlayerType();
