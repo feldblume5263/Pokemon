@@ -11,7 +11,7 @@ void		map::relocate_p(int *x, int *y)
 		col = -1;
 		while (++col < this->pokemon_map[row].size())
 		{
-			if (this->pokemon_map[row][col] == (this->pre_f + '0'))
+			if (this->pokemon_map[row][col] == (this->pre_f + 'A' - 1))
 			{
 				if (*x > 100)
 					*x = col + 2;
@@ -45,7 +45,7 @@ void			map::change_map(char *path, int open_flag, int *x, int *y)
 	this->pre_f = this->cur_f;
 	this->cur_f = open_flag;
 	temp = strdup(path);
-	num[0] = open_flag + '0';
+	num[0] = open_flag + 'A' - 1;
 	num[1] = '\0';
 	temp = strcat(temp, num);
 	cout << temp << endl;
@@ -61,14 +61,14 @@ void			map::change_map(char *path, int open_flag, int *x, int *y)
 
 int			map::find_door(int *x, int *y)
 {
-	if (this->pokemon_map[*y - 1][*x] <= '9' && this->pokemon_map[*y - 1][*x] >= '1')
-		return (this->pokemon_map[*y - 1][*x] - 48);
-	else if (this->pokemon_map[*y + 1][*x] <= '9' && this->pokemon_map[*y + 1][*x] >= '1')
-		return (this->pokemon_map[*y + 1][*x] - 48);
-	else if (this->pokemon_map[*y][*x - 1] <= '9' && this->pokemon_map[*y][*x - 1] >= '1')
-		return (this->pokemon_map[*y][*x - 1] - 48);
-	else if (this->pokemon_map[*y][*x + 1] <= '9' && this->pokemon_map[*y][*x + 1] >= '1')
-		return (this->pokemon_map[*y][*x + 1] - 48);
+	if (this->pokemon_map[*y - 1][*x] <= 'Z' && this->pokemon_map[*y - 1][*x] >= 'A')
+		return (this->pokemon_map[*y - 1][*x] - 'A' + 1);
+	else if (this->pokemon_map[*y + 1][*x] <= 'Z' && this->pokemon_map[*y + 1][*x] >= 'A')
+		return (this->pokemon_map[*y + 1][*x] - 'A' + 1);
+	else if (this->pokemon_map[*y][*x - 1] <= 'Z' && this->pokemon_map[*y][*x - 1] >= 'A')
+		return (this->pokemon_map[*y][*x - 1] - 'A' + 1);
+	else if (this->pokemon_map[*y][*x + 1] <= 'Z' && this->pokemon_map[*y][*x + 1] >= 'A')
+		return (this->pokemon_map[*y][*x + 1] - 'A' + 1);
 	return (0);
 }
 
@@ -100,13 +100,13 @@ void		map::handle_key(int key, int *x, int *y)
 	}
 	else if (key == M_KEY_SPACE)
 	{
-	if (this->pokemon_map[*y - 1][*x] <= 'Z' && this->pokemon_map[*y - 1][*x] >= 'A')
+	if (this->pokemon_map[*y - 1][*x] <= '9' && this->pokemon_map[*y - 1][*x] >= '1')
 		return ;
-	else if (this->pokemon_map[*y + 1][*x] <= 'Z' && this->pokemon_map[*y + 1][*x] >= 'A')
+	else if (this->pokemon_map[*y + 1][*x] <= '9' && this->pokemon_map[*y + 1][*x] >= '1')
 		return ;
-	else if (this->pokemon_map[*y][*x - 1] <= 'Z' && this->pokemon_map[*y][*x - 1] >= 'A')
+	else if (this->pokemon_map[*y][*x - 1] <= '9' && this->pokemon_map[*y][*x - 1] >= '1')
 		return ;
-	else if (this->pokemon_map[*y][*x + 1] <= 'Z' && this->pokemon_map[*y][*x + 1] >= 'A')
+	else if (this->pokemon_map[*y][*x + 1] <= '9' && this->pokemon_map[*y][*x + 1] >= '1')
 		return ;
 	}
 	else if (key == M_KEY_ESC)
@@ -196,7 +196,7 @@ void			map::first_set_map_file(int argc, char *file_path)
 	if (!(this->check_valid(argc, file_path)))
 		exit(0);
 	temp = strdup(file_path);
-	strcat(temp, "1");
+	strcat(temp, "A");
 	map_file.open(temp);
 	while (map_file.peek() != EOF)
 	{
@@ -215,8 +215,8 @@ int				main(int argc, char *argv[])
 
 	int flag = 0;
 
-	x = 100;
-	y = 5;
+	x = 99;
+	y = 6;
 	map.first_set_map_file(argc, argv[1]);
 	system("printf '\e[8;100;200t'");
 	system("clear");
