@@ -6,7 +6,6 @@ Player::Player() {
     this->pos.x = 0;
     this->pos.y = 0;
     SetPlayerType(true);
-    //SetPokemons();
 }
 Player::Player(string name) {
 
@@ -29,38 +28,24 @@ void Player::SetPos(coord c) {
     this->pos.x = c.x;
     this->pos.y = c.y;
 }
-Pokemon Player::GetPokemon1() {
-    return this->pokemons[0];
+Pokemon Player::GetPokemon(int ind) {
+    Pokemon *pokemon = &pokemons[ind];
+    return *pokemon;
 }
-Pokemon Player::GetPokemon2() {
-    return this->pokemons[1];
+void Player::SetPokemon(int ind, string name) {
+    Pokemon *pokemon = new Pokemon(name);
+    requestPokemon(pokemon, name);
+    this->pokemons.insert(this->pokemons.begin()+ind, pokemon);
+    //this->pokemons[ind] = pokemon;
 }
-Pokemon Player::GetPokemon3() {
-    return this->pokemons[2];
-}
-Pokemon Player::GetPokemon4() {
-    return this->pokemons[3];
-}
+/*
 void Player::SetPokemon1(string name) {
     Pokemon pokemon = Pokemon(name);
     requestPokemon(pokemon, name);
     this->pokemons[0] = pokemon;
 }
-void Player::SetPokemon2(string name) {
-    Pokemon pokemon = Pokemon(name);
-    requestPokemon(pokemon, name);
-    this->pokemons[1] = pokemon;
-}
-void Player::SetPokemon3(string name) {
-    Pokemon pokemon = Pokemon(name);
-    requestPokemon(pokemon, name);
-    this->pokemons[2] = pokemon;
-}
-void Player::SetPokemon4(string name) {
-    Pokemon pokemon = Pokemon(name);
-    requestPokemon(pokemon, name);
-    this->pokemons[3] = pokemon;
-}
+*/
+
 
 bool Player::GetPlayerType() {
     return this->playerType;

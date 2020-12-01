@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include"../include/pokemon.h"
+#include <vector>
 
 // 좌표
 struct coord {
@@ -14,7 +15,7 @@ class Player {
     private:
         string name;//플레이어 이름
         coord pos; //좌표
-        Pokemon pokemons[4]; //포켓몬 4개
+        vector<Pokemon> pokemons;
         bool playerType;  //  관장인지 아닌지 구별 (관장은 false)
 
     public:
@@ -28,16 +29,8 @@ class Player {
         coord GetPos();
         void SetPos(coord c);
         //포켓몬
-        //Pokemon GetPokemons()  배열 전체를 반환
-        //포켓몬 하나씩 반환
-        Pokemon GetPokemon1();
-        Pokemon GetPokemon2();
-        Pokemon GetPokemon3();
-        Pokemon GetPokemon4();
-        void SetPokemon1(string name);
-        void SetPokemon2(string name);
-        void SetPokemon3(string name);
-        void SetPokemon4(string name);
+        Pokemon *GetPokemon(int ind);
+        void SetPokemon(int ind, string name);
         // 플레이어 타입 
         bool GetPlayerType();
         void SetPlayerType(bool type);

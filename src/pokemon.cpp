@@ -25,7 +25,11 @@ Pokemon::Pokemon() {
 	num_of_skill = 0;
 }
 Pokemon::Pokemon(string name) {
-
+	this->name = name;
+	moves[0] = nullptr;
+	moves[1] = nullptr;
+	moves[2] = nullptr;
+	moves[3] = nullptr;
 
 }
 Pokemon::~Pokemon() {
@@ -214,21 +218,9 @@ void Pokemon::showInfo() {
 		this->moves[i]->showInfo();
 	}
 }
-Skill* Pokemon::getSkill1() {
-	return this->moves[0];
+Skill* Pokemon::getSkill(int idx) {
+	return this->moves[idx];
 }
-
-Skill* Pokemon::getSkill2() {
-	return this->moves[1];
-}
-
-Skill* Pokemon::getSkill3() {
-	return this->moves[2];
-}
-Skill* Pokemon::getSkill4() {
-	return this->moves[3];
-}
-
 
 
 void Pokemon::setBaseStat(string name, int num) {

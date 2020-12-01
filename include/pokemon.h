@@ -153,10 +153,8 @@ public:
 	Type getType2();
 	Nature getNature();
 	void showInfo();
-	Skill* getSkill1();
-	Skill* getSkill2();
-	Skill* getSkill3();
-	Skill* getSkill4();
+	Skill* getSkill(int idx);
+		
 
 
 
