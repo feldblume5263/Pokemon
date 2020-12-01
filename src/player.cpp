@@ -1,4 +1,5 @@
 #include "../include/player.h"
+#include "../DB/Database.h"
 
 Player::Player() {
     this->name = "Me";
@@ -40,11 +41,26 @@ Pokemon Player::GetPokemon3() {
 Pokemon Player::GetPokemon4() {
     return this->pokemons[3];
 }
-/*
-Pokemon Player::SetPokemons() {
-
+void Player::SetPokemon1(string name) {
+    Pokemon pokemon = Pokemon(name);
+    requestPokemon(pokemon, name);
+    this->pokemons[0] = pokemon;
 }
-*/
+void Player::SetPokemon2(string name) {
+    Pokemon pokemon = Pokemon(name);
+    requestPokemon(pokemon, name);
+    this->pokemons[1] = pokemon;
+}
+void Player::SetPokemon3(string name) {
+    Pokemon pokemon = Pokemon(name);
+    requestPokemon(pokemon, name);
+    this->pokemons[2] = pokemon;
+}
+void Player::SetPokemon4(string name) {
+    Pokemon pokemon = Pokemon(name);
+    requestPokemon(pokemon, name);
+    this->pokemons[3] = pokemon;
+}
 
 bool Player::GetPlayerType() {
     return this->playerType;
