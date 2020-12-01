@@ -1,5 +1,6 @@
 #include "../include/player.h"
 #include "../DB/Database.h"
+using namespace std;
 
 Player::Player() {
     this->name = "Me";
@@ -29,14 +30,13 @@ void Player::SetPos(coord c) {
     this->pos.y = c.y;
 }
 Pokemon Player::GetPokemon(int ind) {
-    Pokemon *pokemon = &pokemons[ind];
+    Pokemon *pokemon = this->pokemons[ind];
     return *pokemon;
 }
-void Player::SetPokemon(int ind, string name) {
+void Player::SetPokemon(string name) {
     Pokemon *pokemon = new Pokemon(name);
     requestPokemon(pokemon, name);
-    this->pokemons.insert(this->pokemons.begin()+ind, pokemon);
-    //this->pokemons[ind] = pokemon;
+    this->pokemons.push_back(pokemon);
 }
 /*
 void Player::SetPokemon1(string name) {
@@ -54,3 +54,4 @@ bool Player::GetPlayerType() {
 void Player::SetPlayerType(bool type) {
     this->playerType = type;
 }
+
