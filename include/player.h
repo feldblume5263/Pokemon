@@ -34,6 +34,7 @@ class Player {
         Pokemon GetPokemon2();
         Pokemon GetPokemon3();
         Pokemon GetPokemon4();
+        //test
         void SetPokemon1(string name);
         void SetPokemon2(string name);
         void SetPokemon3(string name);
