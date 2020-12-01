@@ -29,7 +29,7 @@ class Player {
         coord GetPos();
         void SetPos(coord c);
         //포켓몬
-        Pokemon GetPokemon(int ind);
+        Pokemon *GetPokemon(int ind);
         void SetPokemon(string name);
         // 플레이어 타입 
         bool GetPlayerType();
