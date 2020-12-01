@@ -218,21 +218,9 @@ void Pokemon::showInfo() {
 		this->moves[i]->showInfo();
 	}
 }
-Skill* Pokemon::getSkill1() {
-	return this->moves[0];
+Skill* Pokemon::getSkill(int idx) {
+	return this->moves[idx];
 }
-
-Skill* Pokemon::getSkill2() {
-	return this->moves[1];
-}
-
-Skill* Pokemon::getSkill3() {
-	return this->moves[2];
-}
-Skill* Pokemon::getSkill4() {
-	return this->moves[3];
-}
-
 
 
 void Pokemon::setBaseStat(string name, int num) {
