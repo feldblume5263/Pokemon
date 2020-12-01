@@ -25,7 +25,11 @@ Pokemon::Pokemon() {
 	num_of_skill = 0;
 }
 Pokemon::Pokemon(string name) {
-
+	this->name = name;
+	moves[0] = nullptr;
+	moves[1] = nullptr;
+	moves[2] = nullptr;
+	moves[3] = nullptr;
 
 }
 Pokemon::~Pokemon() {
