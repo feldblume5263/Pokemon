@@ -1,6 +1,5 @@
 #include "../include/player.h"
 #include "../DB/Database.h"
-using namespace std;
 
 Player::Player() {
     this->name = "Me";
@@ -54,3 +53,5 @@ bool Player::GetPlayerType() {
 void Player::SetPlayerType(bool type) {
     this->playerType = type;
 }
+
+
