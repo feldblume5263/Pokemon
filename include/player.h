@@ -30,10 +30,7 @@ class Player {
         //포켓몬
         //Pokemon GetPokemons()  배열 전체를 반환
         //포켓몬 하나씩 반환
-        Pokemon GetPokemon1();
-        Pokemon GetPokemon2();
-        Pokemon GetPokemon3();
-        Pokemon GetPokemon4();
+        Pokemon GetPokemon(int ind);
         //test
         void SetPokemon1(string name);
         void SetPokemon2(string name);

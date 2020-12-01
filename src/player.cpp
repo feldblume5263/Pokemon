@@ -29,17 +29,8 @@ void Player::SetPos(coord c) {
     this->pos.x = c.x;
     this->pos.y = c.y;
 }
-Pokemon Player::GetPokemon1() {
-    return this->pokemons[0];
-}
-Pokemon Player::GetPokemon2() {
-    return this->pokemons[1];
-}
-Pokemon Player::GetPokemon3() {
-    return this->pokemons[2];
-}
-Pokemon Player::GetPokemon4() {
-    return this->pokemons[3];
+Pokemon Player::GetPokemon(int ind) {
+    return this->pokemons[ind];
 }
 void Player::SetPokemon1(string name) {
     Pokemon pokemon = Pokemon(name);
