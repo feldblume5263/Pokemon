@@ -62,6 +62,9 @@ public:
 	void setPP(int pp);
 	void showInfo();
 	void resetPP();
+	void setRemainPP(int remain_pp);
+	int GetRemainPP();
+	int GetPP();
 	void reducePP();
 	bool noPP();
 

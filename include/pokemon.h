@@ -1,7 +1,7 @@
 #ifndef POKEMON_H
 #define POKEMON_H
 
-#include"../include/skill.h"
+#include"skill.h"
 
 enum Nature {
 	Lonely,
@@ -30,9 +30,7 @@ enum Nature {
 	Quirky,
 	Serious
 };
-
-
-double nature_stat_rate[25][5] = {
+const double nature_stat_rate[25][5] = {
 	//				a		b		c		d		s
 					{1.1,	0.9,	1.0,	1.0,	1.0},
 					{1.1,	1.0,	0.9,	1.0,	1.0},
@@ -63,7 +61,7 @@ double nature_stat_rate[25][5] = {
 
 
 };
-double type_damage_rate[19][19] = {
+const double type_damage_rate[19][19] = {
 	//			Normal	Fire	Water	Elect	Grass	Ice		Fight	Poison	Ground	Flying	Psych	Bug		Rock	Ghost	Dragon	Dark	Steel	Fiary	None
 	/*Normal*/	{1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	0.5,	1.0,	0.0,	1.0,	0.5,	1.0,	1.0},
 	/*Fire*/	{1.0,	0.5,	0.5,	1.0,	2.0,	2.0,	1.0,	1.0,	1.0,	1.0,	1.0,	2.0,	0.5,	1.0,	0.5,	1.0,	2.0,	1.0,	1.0},
@@ -86,6 +84,7 @@ double type_damage_rate[19][19] = {
 	/*None*/	{1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0}
 };
 
+
 class Pokemon {
 
 
@@ -96,37 +95,37 @@ protected:
 	Type type2;
 	int base_health_point;
 	int base_attack;
-	int base_block;
-	int base_contact;
 	int base_defense;
+	int base_special_attack;
+	int base_special_defense;
 	int base_speed;
 	//////////////////////////
 	Nature nature;
 	int lv;
 	int health_point;
 	int attack;
-	int block;
-	int contact;
 	int defense;
+	int special_attack;
+	int special_defense;
 	int speed;
 	int indi_health_point;
 	int indi_attack;
-	int indi_block;
-	int indi_contact;
 	int indi_defense;
+	int indi_special_attack;
+	int indi_special_defense;
 	int indi_speed;
 	int eff_health_point;
 	int eff_attack;
-	int eff_block;
-	int eff_contact;
 	int eff_defense;
+	int eff_special_attack;
+	int eff_special_defense;
 	int eff_speed;
 	Skill* moves[4];
 	int num_of_skill;
 	void setAttack(int num);
-	void setBlock(int num);
-	void setContact(int num);
 	void setDefense(int num);
+	void setSpecialAttack(int num);
+	void setSpecialDefense(int num);
 	void setSpeed(int num);
 
 public:
@@ -137,11 +136,12 @@ public:
 	void setIndiStat();
 	void setEffStat();
 	void setNature();
+	string getName();
 	int getHealthPoint();
 	int getAttack();
-	int getBlock();
-	int getContact();
 	int getDefense();
+	int getSpecialAttack();
+	int getSpecialDefense();
 	int getSpeed();
 	void setName(string name);
 	void setHealthPoint(int num);
@@ -154,7 +154,7 @@ public:
 	Nature getNature();
 	void showInfo();
 	Skill* getSkill(int idx);
-		
+
 
 
 
@@ -168,13 +168,14 @@ private:
 
 public:
 	CatchedPokemon();
-	CatchedPokemon(string name);
+	CatchedPokemon(string _name);
+	CatchedPokemon(Pokemon& pokemon);
 	~CatchedPokemon();
 
-	void setRemainHp(double rate);
-	void setRemainHp(int potion);
-	double getRemainHp();
-	bool attack(CatchedPokemon& target, Skill* attack);
+	/*void setRemainHp(double rate);*/
+	void setRemainHp(int remain_hp);
+	int getRemainHp();
+	/*bool attack(CatchedPokemon& target, Skill* attack);*/
 	void setAlive(bool life);
 	bool Alive();
 	void reset();

@@ -30,15 +30,15 @@ DamageType searchDamageType(string damage_type) {
 
 }
 Skill::Skill() {
-	////from database/////////
-	//this->name = "Thunderbolt";
-	//this->power = 90;
-	//this->accuracy=100;
-	//this->type = Electric;
-	//this->damage_type = Special;
-	//this->pp = 20;
-	//////////////////////////
-	//this->remain_pp = this->pp;
+	//from database/////////
+	this->name = "Thunderbolt";
+	this->power = 90;
+	this->accuracy = 100;
+	this->type = Electric;
+	this->damage_type = Special;
+	this->pp = 20;
+	////////////////////////
+	this->remain_pp = this->pp;
 }
 
 Skill::Skill(string name) {
@@ -89,6 +89,16 @@ void Skill::setDamageType(string damage_type_name) {
 }
 void Skill::setPP(int pp) {
 	this->pp = pp;
+}
+int Skill::GetRemainPP() {
+	return this->remain_pp;
+}
+void Skill::setRemainPP(int remain_pp) {
+	this->remain_pp = remain_pp;
+}
+int Skill::GetPP()
+{
+	return this->pp;
 }
 void Skill::showInfo() {
 	cout << this->name << endl;
