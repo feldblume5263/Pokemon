@@ -29,9 +29,9 @@ void Player::SetPos(coord c) {
     this->pos.x = c.x;
     this->pos.y = c.y;
 }
-Pokemon Player::GetPokemon(int ind) {
+Pokemon* Player::GetPokemon(int ind) {
     Pokemon *pokemon = this->pokemons[ind];
-    return *pokemon;
+    return pokemon;
 }
 void Player::SetPokemon(string name) {
     Pokemon *pokemon = new Pokemon(name);
@@ -54,4 +54,3 @@ bool Player::GetPlayerType() {
 void Player::SetPlayerType(bool type) {
     this->playerType = type;
 }
-
