@@ -48,7 +48,12 @@ void Database::requestTypes(Pokemon* pokemon, json::value& val) {
 	if (type_num == 1) {
 		// then only Type1 is set
 		type1 = type_array.at(0);
-		pokemon->setType1(type1.at(L"type").at(L"name").as_string());
+		string_t type1_w = type1.at(L"type").at(L"name").as_string();
+		string type1_str;
+		
+		type1_str.assign(type1_w.begin(), type1_w.end());
+		pokemon->setType1(type1_str);
+		pokemon->setType2("none");
 	}
 	else if (type_num == 2) {
 		type1 = type_array.at(0);
