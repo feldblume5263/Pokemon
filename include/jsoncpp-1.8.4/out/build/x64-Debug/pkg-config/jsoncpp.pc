@@ -1,9 +1,0 @@
-libdir=C:/Users/82109/work/caustudy/4-2/객체지향프로그래밍/Pokemon/include/jsoncpp-1.8.4/out/install/x64-Debug/lib
-includedir=C:/Users/82109/work/caustudy/4-2/객체지향프로그래밍/Pokemon/include/jsoncpp-1.8.4/out/install/x64-Debug/include
-
-Name: jsoncpp
-Description: A C++ library for interacting with JSON
-Version: 1.8.4
-URL: https://github.com/open-source-parsers/jsoncpp
-Libs: -L${libdir} -ljsoncpp
-Cflags: -I${includedir}
