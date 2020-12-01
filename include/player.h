@@ -34,7 +34,10 @@ class Player {
         Pokemon GetPokemon2();
         Pokemon GetPokemon3();
         Pokemon GetPokemon4();
-        void SetPokemons();
+        void SetPokemon1(string name);
+        void SetPokemon2(string name);
+        void SetPokemon3(string name);
+        void SetPokemon4(string name);
         // 플레이어 타입 
         bool GetPlayerType();
         void SetPlayerType(bool type);
