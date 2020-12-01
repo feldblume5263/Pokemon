@@ -1,12 +1,11 @@
 #include "Database.h"
 
 Database::Database() {
-	rd = new random_device();
-	gen = new mt19937(rd);
+	random_device rd;
+	gen = new mt19937(rd());
 }
 
 Database::~Database() {
-	delete rd;
 	delete gen;
 }
 
@@ -35,9 +34,7 @@ void Database::requestPokemon(Pokemon* pokemon, string name) {
 		
 }
 
-// TODO: setType1, setType2 만들어주세요!
 void Database::requestTypes(Pokemon* pokemon, json::value& val) {
-	cout << "requestTypes 호출." << endl;
 
 	json::value type1, type2;
 	auto types = val.at(L"types");
@@ -49,9 +46,8 @@ void Database::requestTypes(Pokemon* pokemon, json::value& val) {
 		// then only Type1 is set
 		type1 = type_array.at(0);
 		string_t type1_w = type1.at(L"type").at(L"name").as_string();
-		string type1_str;
+		string type1_str(type1_w.begin(), type1_w.end());
 		
-		type1_str.assign(type1_w.begin(), type1_w.end());
 		pokemon->setType1(type1_str);
 		pokemon->setType2("none");
 	}
@@ -60,35 +56,33 @@ void Database::requestTypes(Pokemon* pokemon, json::value& val) {
 		type2 = type_array.at(1);
 		string_t type1_w = type1.at(L"type").at(L"name").as_string();
 		string_t type2_w = type2.at(L"type").at(L"name").as_string();
-		string type1_str, type2_str;
+		string type1_str(type1_w.begin(), type1_w.end());
+		string type2_str(type2_w.begin(), type2_w.end());
 
-		type1_str.assign(type1_w.begin(), type1_w.end());
-		type2_str.assign(type2_w.begin(), type2_w.end());
 		pokemon->setType1(type1_str);
 		pokemon->setType2(type2_str);
 	}
 	else if (type_num > 2) {
 		// Use random type index for more than two types
 		uniform_int_distribution<int> dis(0, type_num - 1);
-		int type1_idx = dis(gen);
-		int type2_idx = dis(gen);
+		int type1_idx = dis(*gen);
+		int type2_idx = dis(*gen);
 		
-		while (type1_idx == type2_idx) type2_idx = dis(gen);
+		while (type1_idx == type2_idx) type2_idx = dis(*gen);
 
 		type1 = type_array.at(type1_idx);
 		type2 = type_array.at(type2_idx);
 		string_t type1_w = type1.at(L"type").at(L"name").as_string();
 		string_t type2_w = type2.at(L"type").at(L"name").as_string();
-		string type1_str, type2_str;
+		string type1_str(type1_w.begin(), type1_w.end());
+		string type2_str(type2_w.begin(), type2_w.end());
 
-		type1_str.assign(type1_w.begin(), type1_w.end());
-		type2_str.assign(type2_w.begin(), type2_w.end());
 		pokemon->setType1(type1_str);
 		pokemon->setType2(type2_str);
 	}
 
-	cout << "requestTypes 완료됨." << endl;
 }
+// hp, attack, defense, special-attack, special-defense, speed
 
 void Database::requestBaseStats(Pokemon* pokemon, json::value& val) {
 	auto stats = val.at(L"stats");
@@ -104,8 +98,6 @@ void Database::requestBaseStats(Pokemon* pokemon, json::value& val) {
 	}
 }
 
-// Pokemon에서 스킬 개수를 갖고 있으면 좋음
-// Skill의 배열은 포인터로 갖고 있어야함
 void Database::requestSkills(Pokemon* pokemon, json::value& val) {
 	auto moves = val.at(L"moves");
 
@@ -119,9 +111,10 @@ void Database::requestSkills(Pokemon* pokemon, json::value& val) {
 	is_used_move.assign(num_of_moves, false);
 
 	while (num_of_available_moves != 0) {
-		int move_idx = dis(gen);
+		int move_idx = dis(*gen);
 		if (!is_used_move[move_idx]) {
-			string_t url = moves.at(L"move").at(L"url").as_string();
+			auto move = moves_array.at(size_t(move_idx));
+			string_t url = move.at(L"move").at(L"url").as_string();
 			is_used_move[move_idx] = true;
 			num_of_available_moves -= 1;
 			
@@ -131,7 +124,7 @@ void Database::requestSkills(Pokemon* pokemon, json::value& val) {
 	}
 }
 
-bool requestSkillURL(Pokemon* pokemon, string_t& url, size_t& move_setting_idx) {
+void Database::requestSkillURL(Pokemon* pokemon, string_t& url, size_t& move_setting_idx) {
 	uri_builder builder(url);
 
 	uri resource(builder.to_uri());
@@ -154,10 +147,9 @@ bool requestSkillURL(Pokemon* pokemon, string_t& url, size_t& move_setting_idx) 
 				int accuracy = v.at(L"accuracy").as_integer();
 				int pp = v.at(L"pp").as_integer();
 
-				string name, damage_type, type;
-				name.assign(wname.begin(), wname.end());
-				damage_type.assign(wdamage_type.begin(), wdamage_type.end());
-				type.assign(wtype.begin(), wtype.end());
+				string name(wname.begin(), wname.end());
+				string damage_type(wdamage_type.begin(), wdamage_type.end());
+				string type(wtype.begin(), wtype.end());
 
 				added_skill->setName(name);
 				added_skill->setDamageType(damage_type);
@@ -167,6 +159,7 @@ bool requestSkillURL(Pokemon* pokemon, string_t& url, size_t& move_setting_idx) 
 				added_skill->setPP(pp);
 
 				pokemon->setSkill(move_setting_idx, added_skill);
+				move_setting_idx += 1;
 			}
 
 			}).wait();
