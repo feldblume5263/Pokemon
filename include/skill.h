@@ -36,7 +36,7 @@ class Skill {
 private:
 	string name;
 	int power;
-	double accuracy;
+	int accuracy;
 	Type type;
 	DamageType damage_type;
 	int pp;
@@ -48,25 +48,25 @@ public:
 	Skill();
 	Skill(string name);
 	~Skill();
-	string GetName();
-	int GetPower();
-	double GetAccuracy();
-	Type GetType();
-	DamageType GetDamageType();
-	int GetPP();
-	void SetName(wstring name);
-	void SetPower(int power);
-	void SetAccuracy(double accuracy);
-	void SetType(wstring type_name);
-	void SetDamageType(wstring damage_type_name);
-	void SetPP(int pp);
-	void ShowInfo();
-	void ResetPP();
-	void ReducePP();
-	bool NoPP();
+	string getName();
+	int getPower();
+	double getAccuracy();
+	Type getType();
+	DamageType getDamageType();
+	int getPP();
+	void setName(string name);
+	void setPower(int power);
+	void setAccuracy(int accuracy);
+	void setType(string type_name);
+	void setDamageType(string damage_type_name);
+	void setPP(int pp);
+	void showInfo();
+	void resetPP();
+	void reducePP();
+	bool noPP();
 
 };
-Type SearchType(string type);
-DamageType SearchDamageType(string damage_type);
+Type searchType(string type);
+DamageType searchDamageType(string damage_type);
 #endif 
 

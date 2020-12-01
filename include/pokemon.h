@@ -121,46 +121,42 @@ protected:
 	int eff_contact;
 	int eff_defense;
 	int eff_speed;
-	Skill moves[4];
-
-
-
+	Skill* moves[4];
+	int num_of_skill;
+	void setAttack(int num);
+	void setBlock(int num);
+	void setContact(int num);
+	void setDefense(int num);
+	void setSpeed(int num);
 
 public:
 	Pokemon();
 	Pokemon(string name);
 	~Pokemon();
-	void SetStat();
-	void SetIndiStat();
-	void SetEffStat();
-	void SetNature();
-	int GetHealthPoint();
-	int GetAttack();
-	int GetBlock();
-	int GetContact();
-	int GetDefense();
-	int GetSpeed();
-	void SetName(string name);
-	void SetHealthPoint(int num);
-	void SetAttack(int num);
-	void SetBlock(int num);
-	void SetContact(int num);
-	void SetDefense(int num);
-	void SetSpeed(int num);
-	void SetType1(wstring name);
-	void SetType2(wstring name);
-	void SetSkill1(Skill& skill);
-	void SetSkill2(Skill& skill);
-	void SetSkill3(Skill& skill);
-	void SetSkill4(Skill& skill);
-	Type GetType1();
-	Type GetType2();
-	Nature GetNature();
-	void ShowInfo();
-	Skill GetSkill1();
-	Skill GetSkill2();
-	Skill GetSkill3();
-	Skill GetSkill4();
+	void setStat();
+	void setIndiStat();
+	void setEffStat();
+	void setNature();
+	int getHealthPoint();
+	int getAttack();
+	int getBlock();
+	int getContact();
+	int getDefense();
+	int getSpeed();
+	void setName(string name);
+	void setHealthPoint(int num);
+	void setBaseStat(string name, int num);
+	void setType1(string name);
+	void setType2(string name);
+	void setSkill(int idx, Skill* skill);
+	Type getType1();
+	Type getType2();
+	Nature getNature();
+	void showInfo();
+	Skill* getSkill1();
+	Skill* getSkill2();
+	Skill* getSkill3();
+	Skill* getSkill4();
 
 
 
@@ -173,20 +169,17 @@ private:
 	int remain_hp;
 
 public:
-	CatchedPokemon() {
-		Pokemon();
-		this->remain_hp = health_point;
-	}
-	CatchedPokemon(string name) {
+	CatchedPokemon();
+	CatchedPokemon(string name);
+	~CatchedPokemon();
 
-	}
-	void SetRemainHp(double rate);
-	void SetRemainHp(int potion);
-	double GetRemainHp();
-	bool Attack(CatchedPokemon& target, Skill attack);
-	void SetAlive(bool life);
+	void setRemainHp(double rate);
+	void setRemainHp(int potion);
+	double getRemainHp();
+	bool attack(CatchedPokemon& target, Skill* attack);
+	void setAlive(bool life);
 	bool Alive();
-	void Reset();
+	void reset();
 };
 #endif 
 
