@@ -15,7 +15,7 @@ class Player {
     private:
         string name;//플레이어 이름
         coord pos; //좌표
-        vector<Pokemon> pokemons;
+        vector<Pokemon*> pokemons;
         bool playerType;  //  관장인지 아닌지 구별 (관장은 false)
 
     public:
@@ -29,8 +29,8 @@ class Player {
         coord GetPos();
         void SetPos(coord c);
         //포켓몬
-        Pokemon *GetPokemon(int ind);
-        void SetPokemon(int ind, string name);
+        Pokemon GetPokemon(int ind);
+        void SetPokemon(string name);
         // 플레이어 타입 
         bool GetPlayerType();
         void SetPlayerType(bool type);
