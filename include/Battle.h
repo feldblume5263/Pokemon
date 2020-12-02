@@ -15,7 +15,7 @@ enum KeyboardKey
 };
 
 // deseperate UI and battle algorithms.
-// print skill as nothing when skill is null.
+// when other player are gonna change pokemon, Ask to me wheter change pokemon.
 
 class Battle
 {
@@ -26,10 +26,13 @@ private:
     CatchedPokemon* my_selected_pokemon = nullptr;
     CatchedPokemon* other_selected_pokemon = nullptr;
 
-    bool priority = true;
-    bool endBattle = false;
-    bool my_win = false;
-    int  arrowKey = 0; // 0123 UDLR
+    // state
+    bool  hitSpot = false;
+    float typeCal = 1.0f;
+    bool  priority = true;
+    bool  endBattle = false;
+    bool  my_win = false;
+    int   arrowKey = 0; // 0123 UDLR
     std::mt19937 mersenne;
 
     // locatoin for drawing
@@ -40,6 +43,8 @@ private:
     const int message_x = 70;
     const int message_y = 50;
 
+    // for cout
+    const std::string moveType[19] = { "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy", "None" };
 
 
 public:
@@ -52,7 +57,6 @@ private:
     void display();
     void printHPbar(CatchedPokemon* pokemon);
     void drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y);
-    void drawPoekomon(CatchedPokemon* pokemon, int place_x, int place_y);
     void pullPokemon();
     void selectAction();
 
@@ -63,7 +67,7 @@ private:
     int     setRandomMoveNumber();
     int     calculateDamage(CatchedPokemon* attakingPokemon, CatchedPokemon* defendingPokemon, Skill* move);
     float   checkSametypeAttackbonus(CatchedPokemon* attakingPokemon, Skill* move);
-    float   calculateType();
+    float   calculateType(CatchedPokemon* defendingPokemon, Skill* move);
     float   checkHitSpot();
     int     getRandomNumber();
     void    checkAlive(CatchedPokemon* pokemon);
@@ -75,7 +79,7 @@ private:
     void    checkSpeed();
     // bag
     void    selectBag();
-    void    useItme(int ix);
+    void    useItem(int ix);
     // run
     void    selectRun();
 

@@ -1,7 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include"../include/pokemon.h"
+#include "../include/pokemon.h"
+#include "Item.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -46,6 +47,9 @@ class Player {
 // change add some class
 class MyPlayer : public Player
 {
+private:
+    std::vector<Item*> items;
+
 public:
     MyPlayer()
     {
@@ -53,24 +57,45 @@ public:
         this->pos.x = 0;
         this->pos.y = 0;
         SetPlayerType(true);
+
+        initItems();
     }
-    //std::vector<Item*> items;
 
-    //MonsterBallItem MonsterBallItem;
-    //HPRecoveryItem HPRecoveryItem0;
-    //HPRecoveryItem HPRecoveryItem1;
+    ~MyPlayer()
+    {
+        // todo : delete
+    }
 
-    //void setItems()
-    //{
-    //    MonsterBallItem.HyperBall();
-    //    items.push_back(&MonsterBallItem);
+    std::vector<Item*> getItems()
+    {
+        return items;
+    }
 
-    //    HPRecoveryItem0.HyperPotion();
-    //    items.push_back(&HPRecoveryItem0);
+    Item* getItem(int ix)
+    {
+        return items[ix];
+    }
 
-    //    HPRecoveryItem1.MaxPotion();
-    //    items.push_back(&HPRecoveryItem1);
-    //}
+    void initItems()
+    {
+        Item* monsterball = new Item("HyperBall");
+        this->items.push_back(monsterball);
+
+        Item* hppotion1 = new Item("HyperPotion");
+        this->items.push_back(hppotion1);
+
+        Item* hppotion2 = new Item("MaxPotion");
+        this->items.push_back(hppotion2);
+
+        //MonsterBallItem* monsterball = new MonsterBallItem("HyperBall");
+        //this->items.push_back(monsterball);
+
+        //HPRecoveryItem* hppotion1 = new HPRecoveryItem("HyperPotion");
+        //this->items.push_back(hppotion1);
+
+        //HPRecoveryItem* hppotion2 = new HPRecoveryItem("MaxPotion");
+        //this->items.push_back(hppotion2);
+    }
 };
 
 class OtherPlayer : public Player
