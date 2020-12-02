@@ -30,6 +30,9 @@ DamageType searchDamageType(string damage_type) {
 
 }
 Skill::Skill() {
+	// change 
+	isSkill = true;
+
 	//from database/////////
 	this->name = "Thunderbolt";
 	this->power = 90;
@@ -62,9 +65,10 @@ Type Skill::getType() {
 DamageType Skill::getDamageType() {
 	return this->damage_type;
 }
-int Skill::getPP() {
-	return this->remain_pp;
-}
+// change delete
+//int Skill::getRemainPP() {
+//	return this->remain_pp;
+//}
 void Skill::setName(string name) {
 	string poke_name;
 	poke_name.assign(name.begin(), name.end());
@@ -90,13 +94,13 @@ void Skill::setDamageType(string damage_type_name) {
 void Skill::setPP(int pp) {
 	this->pp = pp;
 }
-int Skill::GetRemainPP() {
+int Skill::getRemainPP() {
 	return this->remain_pp;
 }
 void Skill::setRemainPP(int remain_pp) {
 	this->remain_pp = remain_pp;
 }
-int Skill::GetPP()
+int Skill::getPP()
 {
 	return this->pp;
 }

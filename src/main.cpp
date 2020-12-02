@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <stdlib.h>
 
-#include "Battle.h"
+#include "../include/Battle.h"
 
 
 int main()
@@ -63,13 +63,13 @@ int main()
 
 	MyPlayer my_player;
 	OtherPlayer other_player;
-	my_player.setItems();
+	//my_player.setItems();
+	my_player.SetPokemon();
+	my_player.SetPokemon();
+	other_player.SetPokemon();
+	other_player.SetPokemon();
 
-	my_player.gyarados();
-	my_player.charizard();
-	other_player.charizard();
-	other_player.gyarados();
-
+	
 	Battle(&my_player, &other_player);
 
 

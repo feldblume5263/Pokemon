@@ -1,11 +1,8 @@
 #include "../include/player.h"
-#include "../DB/Database.h"
+//#include "../DB/Database.h"
 
 Player::Player() {
-    this->name = "Me";
-    this->pos.x = 0;
-    this->pos.y = 0;
-    SetPlayerType(true);
+
 }
 Player::Player(string name) {
 
@@ -28,14 +25,23 @@ void Player::SetPos(coord c) {
     this->pos.x = c.x;
     this->pos.y = c.y;
 }
-Pokemon* Player::GetPokemon(int ind) {
-    Pokemon *pokemon = this->pokemons[ind];
+CatchedPokemon* Player::GetPokemon(int ind) {
+    CatchedPokemon *pokemon = this->pokemons[ind];
     return pokemon;
 }
 void Player::SetPokemon(string name) {
-    Pokemon *pokemon = new Pokemon(name);
-    requestPokemon(pokemon, name);
+    CatchedPokemon*pokemon = new CatchedPokemon(name);
+    //requestPokemon(pokemon, name);
     this->pokemons.push_back(pokemon);
+}
+
+void Player::SetPokemon() {
+    CatchedPokemon* pokemon = new CatchedPokemon();
+    this->pokemons.push_back(pokemon);
+}
+void Player::SetPokemon(CatchedPokemon* pokemonPtr, int ind)
+{
+    pokemons[ind] = pokemonPtr;
 }
 /*
 void Player::SetPokemon1(string name) {
@@ -52,6 +58,12 @@ bool Player::GetPlayerType() {
 
 void Player::SetPlayerType(bool type) {
     this->playerType = type;
+}
+
+// change : add function
+vector<CatchedPokemon*> Player::getPokemonsVector()
+{
+    return pokemons;
 }
 
 

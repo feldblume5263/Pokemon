@@ -1,25 +1,21 @@
 #pragma once
 
-//#include <iostream>
-#include <windows.h>
-#include <conio.h> 
-//#include <random>
-#include <ctime>
-
-#include "test.h"
-
+#include <random>
 #include "pokemon.h"
+#include "player.h"
 
-//enum KeyboardKey
-//{
-//    UP = 27,
-//    DOWN = 80,
-//    LEFT = 75,
-//    RIGHT = 77,
-//    SPACEBAR = 32,
-//    ENTER = 13
-//};
+enum KeyboardKey
+{
+    UP = 72,
+    DOWN = 80,
+    LEFT = 75,
+    RIGHT = 77,
+    SPACEBAR = 32,
+    ENTER = 13
+};
 
+// deseperate UI and battle algorithms.
+// print skill as nothing when skill is null.
 
 class Battle
 {
@@ -27,8 +23,8 @@ private:
     MyPlayer* my_player = nullptr;
     OtherPlayer* other_player = nullptr;
 
-    Pokemon* my_selected_pokemon = nullptr;
-    Pokemon* other_selected_pokemon = nullptr;
+    CatchedPokemon* my_selected_pokemon = nullptr;
+    CatchedPokemon* other_selected_pokemon = nullptr;
 
     bool priority = true;
     bool endBattle = false;
@@ -48,29 +44,29 @@ private:
 
 public:
     Battle(MyPlayer* _my_player, OtherPlayer* _other_player);
-    Battle(MyPlayer* _my_player, Pokemon* _other_pokemon);
+    Battle(MyPlayer* _my_player, CatchedPokemon* _other_pokemon);
 
 private:
     void startBattle();
     void startHunting();
     void display();
-    void printHPbar(Pokemon* pokemon);
-    void drawPokemon_emoji(Pokemon* pokemon, int place_x, int place_y);
-    void drawPoekomon(Pokemon* pokemon, int place_x, int place_y);
+    void printHPbar(CatchedPokemon* pokemon);
+    void drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y);
+    void drawPoekomon(CatchedPokemon* pokemon, int place_x, int place_y);
     void pullPokemon();
     void selectAction();
 
     // fight
     void    selectMove();
-    void    fight(Pokemon* myPokemon, Pokemon* otherPokemon, Skill& move);
-    void    attack(Pokemon* attakingPokemon, Pokemon* defendingPokemon, Skill& move);
+    void    fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skill* move);
+    void    attack(CatchedPokemon* attakingPokemon, CatchedPokemon* defendingPokemon, Skill* move);
     int     setRandomMoveNumber();
-    int     calculateDamage(Pokemon* attakingPokemon, Pokemon* defendingPokemon, Skill& move);
-    float   checkSametypeAttackbonus(Pokemon* attakingPokemon, Skill& move);
+    int     calculateDamage(CatchedPokemon* attakingPokemon, CatchedPokemon* defendingPokemon, Skill* move);
+    float   checkSametypeAttackbonus(CatchedPokemon* attakingPokemon, Skill* move);
     float   calculateType();
     float   checkHitSpot();
     int     getRandomNumber();
-    void    checkAlive(Pokemon* pokemon);
+    void    checkAlive(CatchedPokemon* pokemon);
     bool    checkPokemons(Player* player);
     // change
     void    changePokemon(MyPlayer* player);

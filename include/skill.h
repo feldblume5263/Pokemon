@@ -42,6 +42,9 @@ private:
 	int pp;
 	int remain_pp;
 
+	// add isSkill chnage
+	bool isSkill;
+
 
 
 public:
@@ -53,7 +56,8 @@ public:
 	double getAccuracy();
 	Type getType();
 	DamageType getDamageType();
-	int getPP();
+	// change delete
+	//int getRemainPP();
 	void setName(string name);
 	void setPower(int power);
 	void setAccuracy(int accuracy);
@@ -63,8 +67,9 @@ public:
 	void showInfo();
 	void resetPP();
 	void setRemainPP(int remain_pp);
-	int GetRemainPP();
-	int GetPP();
+	int getRemainPP();
+	int getPP();
+	// change Get -> get  above two functions
 	void reducePP();
 	bool noPP();
 
