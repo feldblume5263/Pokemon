@@ -1,16 +1,18 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "../include/pokemon.h"
+#include "pokemon.h"
+#include "Database.h"
+
+#include <thread>
 #include "Item.h"
 #include <vector>
 #include <string>
 using namespace std;
-
-struct				coord
-{
-	int				x;
-	int				y;
+// 좌표
+struct coord {
+    int x;
+    int y;
 };
 
 class Player {
@@ -53,51 +55,13 @@ private:
     std::vector<Item*> items;
 
 public:
-    MyPlayer()
-    {
-        this->name = "Me";
-        this->pos.x = 0;
-        this->pos.y = 0;
-        SetPlayerType(true);
+    MyPlayer();
+    ~MyPlayer();
 
-        initItems();
-    }
+    std::vector<Item*> getItems();
+    Item* getItem(int ix);
 
-    ~MyPlayer()
-    {
-        // todo : delete
-    }
-
-    std::vector<Item*> getItems()
-    {
-        return items;
-    }
-
-    Item* getItem(int ix)
-    {
-        return items[ix];
-    }
-
-    void initItems()
-    {
-        Item* monsterball = new Item("HyperBall");
-        this->items.push_back(monsterball);
-
-        Item* hppotion1 = new Item("HyperPotion");
-        this->items.push_back(hppotion1);
-
-        Item* hppotion2 = new Item("MaxPotion");
-        this->items.push_back(hppotion2);
-
-        //MonsterBallItem* monsterball = new MonsterBallItem("HyperBall");
-        //this->items.push_back(monsterball);
-
-        //HPRecoveryItem* hppotion1 = new HPRecoveryItem("HyperPotion");
-        //this->items.push_back(hppotion1);
-
-        //HPRecoveryItem* hppotion2 = new HPRecoveryItem("MaxPotion");
-        //this->items.push_back(hppotion2);
-    }
+    void initItems();
 };
 
 class OtherPlayer : public Player
@@ -106,16 +70,8 @@ private:
       bool liveState;
 
 public:
-    OtherPlayer()
-    {
-        this->name = "ROSA";
-        //this->pos.x = 0;
-        //this->pos.y = 0;
-        SetPlayerType(false);
-        setLiveState(true);
-    }
+    OtherPlayer();
     void setLiveState(bool _liveState);
     bool getLiveState();
 };
-
 #endif

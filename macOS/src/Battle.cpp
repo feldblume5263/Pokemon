@@ -1,8 +1,7 @@
 ﻿// #include <windows.h>
 // #include <conio.h>
-#include <ctime>
-#include <iostream>
-#include <termios.h>
+# include <ctime>
+# include <iostream>
 # include <termios.h>
 # include <fstream>
 # include <string>
@@ -11,6 +10,32 @@
 # include "Battle.h"
 
 // todo : make other pokemon attack, my pokemon attack function
+
+
+const double type_damage_rate[19][19] = {
+	//			Normal	Fire	Water	Elect	Grass	Ice		Fight	Poison	Ground	Flying	Psych	Bug		Rock	Ghost	Dragon	Dark	Steel	Fiary	None
+	/*Normal*/	{1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	0.5,	1.0,	0.0,	1.0,	0.5,	1.0,	1.0},
+	/*Fire*/	{1.0,	0.5,	0.5,	1.0,	2.0,	2.0,	1.0,	1.0,	1.0,	1.0,	1.0,	2.0,	0.5,	1.0,	0.5,	1.0,	2.0,	1.0,	1.0},
+	/*Water*/	{1.0,	2.0,	0.5,	1.0,	0.5,	1.0,	1.0,	1.0,	2.0,	1.0,	1.0,	1.0,	2.0,	1.0,	0.5,	1.0,	1.0,	1.0,	1.0},
+	/*Elect*/	{1.0,	1.0,	2.0,	0.5,	0.5,	1.0,	1.0,	1.0,	0.0,	2.0,	1.0,	1.0,	1.0,	1.0,	0.5,	1.0,	1.0,	1.0,	1.0},
+	/*Grass*/	{1.0,	0.5,	2.0,	1.0,	0.5,	1.0,	1.0,	0.5,	2.0,	0.5,	1.0,	0.5,	2.0,	1.0,	0.5,	1.0,	0.5,	1.0,	1.0},
+	/*Ice*/		{1.0,	0.5,	0.5,	1.0,	2.0,	0.5,	1.0,	1.0,	2.0,	2.0,	1.0,	1.0,	1.0,	1.0,	2.0,	1.0,	0.5,	1.0,	1.0},
+	/*Fight*/	{2.0,	1.0,	1.0,	1.0,	1.0,	2.0,	1.0,	0.5,	1.0,	0.5,	0.5,	0.5,	2.0,	0.0,	1.0,	2.0,	2.0,	0.5,	1.0},
+	/*Poison*/	{1.0,	1.0,	1.0,	1.0,	2.0,	1.0,	1.0,	0.5,	0.5,	1.0,	1.0,	1.0,	0.5,	0.5,	1.0,	1.0,	0.0,	2.0,	1.0},
+	/*Ground*/	{1.0,	2.0,	1.0,	2.0,	0.5,	1.0,	1.0,	2.0,	1.0,	0.0,	1.0,	0.5,	2.0,	1.0,	1.0,	1.0,	2.0,	1.0,	1.0},
+	/*Flying*/	{1.0,	1.0,	1.0,	0.5,	2.0,	1.0,	2.0,	1.0,	1.0,	1.0,	1.0,	2.0,	0.5,	1.0,	1.0,	1.0,	0.5,	1.0,	1.0},
+	/*Psychic*/	{1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	2.0,	2.0,	1.0,	1.0,	0.5,	1.0,	1.0,	1.0,	1.0,	0.0,	0.5,	1.0,	1.0},
+	/*Bug*/		{1.0,	0.5,	1.0,	1.0,	2.0,	1.0,	0.5,	0.5,	1.0,	0.5,	2.0,	1.0,	1.0,	0.5,	1.0,	2.0,	0.5,	0.5,	1.0},
+	/*Rock*/	{1.0,	2.0,	1.0,	1.0,	1.0,	2.0,	0.5,	1.0,	0.5,	2.0,	1.0,	2.0,	1.0,	1.0,	1.0,	1.0,	0.5,	1.0,	1.0},
+	/*Ghost*/	{0.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	2.0,	1.0,	1.0,	2.0,	1.0,	0.5,	1.0,	1.0,	1.0},
+	/*Dragon*/	{1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	2.0,	1.0,	1.0,	0.0,	1.0},
+	/*Dark*/	{1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	0.5,	1.0,	1.0,	1.0,	2.0,	1.0,	1.0,	2.0,	1.0,	0.5,	1.0,	0.5,	1.0},
+	/*Steel*/	{1.0,	0.5,	0.5,	0.5,	1.0,	2.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	2.0,	1.0,	1.0,	1.0,	0.5,	2.0,	1.0},
+	/*Fairy*/	{1.0,	0.5,	1.0,	1.0,	1.0,	1.0,	2.0,	0.5,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	2.0,	2.0,	0.5,	1.0,	1.0},
+	/*None*/	{1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0,	1.0}
+};
+
+
 
 Battle::Battle() {}
 
@@ -55,12 +80,12 @@ Battle::Battle(MyPlayer* _my_player, OtherPlayer* _other_player)
 
     my_player = _my_player;
     other_player = _other_player;
-    if (other_player->getLiveState() == false)
-    {
-        std::cout << "\a" << std::endl;
-        while (!getEnterSpacebar());
-        return;
-    }
+    //if (other_player->getLiveState() == false)
+    //{
+    //    std::cout << "\a" << std::endl;
+    //    while (!getEnterSpacebar());
+    //    return;
+    //}
     startBattle();
 }
 
@@ -90,13 +115,14 @@ void Battle::startBattle()
     else
         std::cout << "My Loose" << std::endl;
 
-    other_player->setLiveState(false);
+    //other_player->setLiveState(false);
+
     my_selected_pokemon = nullptr;
     other_selected_pokemon = nullptr;
     while (!getEnterSpacebar());
 }
 
-inline void Battle::startHunting()
+void Battle::startHunting()
 {
     // todo delete
 }
@@ -203,7 +229,7 @@ void Battle::printHPbar(CatchedPokemon* pokemon)
 
 }
 
-inline void Battle::drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y)
+void Battle::drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y)
 {
     for (int i = 0; i < 20; ++i)
     {
@@ -934,17 +960,16 @@ void Battle::selectRun()
 
 
 // tool
-// void Battle::gotoxy(int column, int line)
-// {
-//     COORD coord;
-//     coord.X = column;
-//     coord.Y = line;
-//     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-// }
-
+//  void Battle::gotoxy(int column, int line)
+//  {
+//      COORD coord;
+//      coord.X = column;
+//      coord.Y = line;
+//      SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+//  }
 void Battle::gotoxy(int x,int y)
 {
-    printf("%c[%d;%df",0x1B,y,x);
+   printf("%c[%d;%df",0x1B,y,x);
 }
 
 bool Battle::getArrowkey(int& x1, int& y1)
