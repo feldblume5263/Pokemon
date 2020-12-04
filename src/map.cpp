@@ -1,10 +1,5 @@
 #include <conio.h>
 #include "../include/map.h"
-
-
-//#include "../include/cpprestsdk_x64-windows/include/cpprest/http_client.h"
-//#include "../include/cpprestsdk_x64-windows/include/cpprest/filestream.h"
-
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
 
@@ -66,6 +61,11 @@ void			Map::change_map(MyPlayer *p, char *path, int open_flag, int x, int y)
 	strcat(temp, num);
 	cout << temp << endl;
 	map_file.open(temp);
+	if (!(map_file.is_open()))
+	{
+		cout << "file error\n" << endl;
+		exit(0);
+	}
 	while (map_file.peek() != EOF)
 	{
 		getline(map_file, buffer);
