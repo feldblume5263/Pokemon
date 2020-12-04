@@ -71,7 +71,11 @@ void			Map::change_map(char *path, int open_flag, int *x, int *y)
 		getline(map_file, buffer);
 		this->set_map_line(buffer);
 	}
-	free(temp);
+	if (temp != NULL)
+	{
+		free(temp);
+		temp = NULL;
+	}
 	relocate_p(x, y);
 }
 
@@ -258,7 +262,11 @@ void			Map::first_set_map_file(int argc, char *file_path)
 		getline(map_file, buffer);
 		this->set_map_line(buffer);
 	}
-	free(temp);
+	if (temp != NULL)
+	{
+		free(temp);
+		temp = NULL;
+	}
 }
 
 int				main(int argc, char *argv[])
