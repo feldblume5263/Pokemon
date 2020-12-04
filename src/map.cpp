@@ -52,7 +52,7 @@ void			Map::change_map(char *path, int open_flag, int *x, int *y)
 {
 	string		buffer;
 	ifstream	map_file;
-	char		*temp;
+	char		temp[1000];
 	char		num[2];
 
 	if (open_flag == 0)
@@ -60,21 +60,16 @@ void			Map::change_map(char *path, int open_flag, int *x, int *y)
 	this->delete_pre_map();
 	this->pre_f = this->cur_f;
 	this->cur_f = open_flag;
-	temp = strdup(path);
+	strcpy(temp, path);
 	num[0] = open_flag + 'A' - 1;
 	num[1] = '\0';
-	temp = strcat(temp, num);
+	strcat(temp, num);
 	cout << temp << endl;
 	map_file.open(temp);
 	while (map_file.peek() != EOF)
 	{
 		getline(map_file, buffer);
 		this->set_map_line(buffer);
-	}
-	if (temp != NULL)
-	{
-		free(temp);
-		temp = NULL;
 	}
 	relocate_p(x, y);
 }
@@ -243,13 +238,13 @@ void			Map::first_set_map_file(int argc, char *file_path)
 {
 	string		buffer;
 	ifstream	map_file;
-	char		*temp;
+	char		temp[1000];
 
 	this->cur_f = 1;
 	this->pre_f = 0;
-	// if (!(this->check_valid(argc, file_path)))
-	// 	exit(0);
-	temp = strdup(file_path);
+	if (!(this->check_valid(argc, file_path)))
+		exit(0);
+	strcpy(temp, file_path);
 	strcat(temp, "A");
 	map_file.open(temp);
 	if (!(map_file.is_open()))
@@ -261,11 +256,6 @@ void			Map::first_set_map_file(int argc, char *file_path)
 	{
 		getline(map_file, buffer);
 		this->set_map_line(buffer);
-	}
-	if (temp != NULL)
-	{
-		free(temp);
-		temp = NULL;
 	}
 }
 
@@ -290,7 +280,6 @@ int				main(int argc, char *argv[])
 	int			x;
 	int			y;
 	int			idx;
-	char		path[] = "gold_version";
 
 	int flag = 0;
 
@@ -305,7 +294,7 @@ int				main(int argc, char *argv[])
 
 	x = 99;
 	y = 6;
-	map.first_set_map_file(argc, path);
+	map.first_set_map_file(argc, argv[1]);
 
 	system("cls");
 	while (1)
@@ -313,7 +302,7 @@ int				main(int argc, char *argv[])
 		map.draw_player(x, y);
 		map.draw_map();
 		map.handle_key(getch(), &x, &y, my_player, other_player);
-		map.change_map(path, map.find_door(&x, &y, my_player), &x, &y);
+		map.change_map(argv[1], map.find_door(&x, &y, my_player), &x, &y);
 		system("cls");
 	}
 
