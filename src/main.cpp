@@ -160,7 +160,7 @@ int				main(int argc, char* argv[])
 		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
 		map.draw_map();
 		map.handle_key(getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
-		map.change_map(&my_player, argv[1], map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
+		map.change_map(&my_player, path, map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
 		system("cls");
 	}
 	return (0);
