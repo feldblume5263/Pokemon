@@ -40,6 +40,12 @@ coord Player::GetPos() {
     return this->pos;
 }
 
+void Player::SetPos(int x, int y)
+{
+    this->pos.x = x;
+    this->pos.y = y;
+}
+
 void Player::SetPos(coord c) {
     this->pos.x = c.x;
     this->pos.y = c.y;
@@ -53,12 +59,12 @@ void Player::SetPokemon(string name) {
     CatchedPokemon*pokemon = new CatchedPokemon(name);
     //Database database();
 
-    // todo 
+    // todo
     Database database = Database();
     database.requestPokemon(pokemon, name);
     //std::thread thr1(database.requestPokemon, pokemon, name);
     //thr1.join();
-    
+
     //Database::requestPokemon(Pokemon * pokemon, string name);
 
     this->pokemons.push_back(pokemon);

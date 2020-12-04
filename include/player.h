@@ -34,6 +34,7 @@ class Player {
         //좌표
         coord GetPos();
         void SetPos(coord c);
+        void SetPos(int x, int y);
         //포켓몬
         CatchedPokemon*GetPokemon(int ind);
         void SetPokemon(string name);

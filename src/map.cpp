@@ -16,7 +16,7 @@ using namespace web::http::client;
 using namespace concurrency::streams;
 
 
-void		Map::relocate_p(int *x, int *y)
+void		map::relocate_p(MyPlayer *p, int x, int y)
 {
 	int		row;
 	int		col;
@@ -29,14 +29,14 @@ void		Map::relocate_p(int *x, int *y)
 		{
 			if (this->pokemon_map[row][col] == (this->pre_f + 'A' - 1))
 			{
-				if (*x > 100)
-					*x = col + 2;
+				if (x > 100)
+					p->SetPos(col + 2, y);
 				else
-					*x = col - 2;
-				if (*y > 32)
-					*y = row + 2;
+					p->SetPos(col - 2, y);
+				if (y > 32)
+					p->SetPos(x, row + 2);
 				else
-					*y = row - 2;
+					p->SetPos(x, row - 2);
 				return ;
 			}
 		}
@@ -48,7 +48,7 @@ void		Map::delete_pre_map()
 	this->pokemon_map.erase(this->pokemon_map.begin(), this->pokemon_map.end());
 }
 
-void			Map::change_map(char *path, int open_flag, int *x, int *y)
+void			map::change_map(MyPlayer *p, char *path, int open_flag, int x, int y)
 {
 	string		buffer;
 	ifstream	map_file;
@@ -71,82 +71,82 @@ void			Map::change_map(char *path, int open_flag, int *x, int *y)
 		getline(map_file, buffer);
 		this->set_map_line(buffer);
 	}
-	relocate_p(x, y);
+	relocate_p(p, x, y);
 }
 
-int			Map::find_door(int *x, int *y, MyPlayer p)
+int			map::find_door(int x, int y, MyPlayer *p)
 {
-	if (this->pokemon_map[*y - 1][*x] <= 'Y' && this->pokemon_map[*y - 1][*x] >= 'A')
-		return (this->pokemon_map[*y - 1][*x] - 'A' + 1);
-	else if (this->pokemon_map[*y + 1][*x] <= 'Y' && this->pokemon_map[*y + 1][*x] >= 'A')
-		return (this->pokemon_map[*y + 1][*x] - 'A' + 1);
-	else if (this->pokemon_map[*y][*x - 1] <= 'Y' && this->pokemon_map[*y][*x - 1] >= 'A')
-		return (this->pokemon_map[*y][*x - 1] - 'A' + 1);
-	else if (this->pokemon_map[*y][*x + 1] <= 'Y' && this->pokemon_map[*y][*x + 1] >= 'A')
-		return (this->pokemon_map[*y][*x + 1] - 'A' + 1);
-	if (this->pokemon_map[*y - 1][*x] == 'Z')
+	if (this->pokemon_map[y - 1][x] <= 'Y' && this->pokemon_map[y - 1][x] >= 'A')
+		return (this->pokemon_map[y - 1][x] - 'A' + 1);
+	else if (this->pokemon_map[y + 1][x] <= 'Y' && this->pokemon_map[y + 1][x] >= 'A')
+		return (this->pokemon_map[y + 1][x] - 'A' + 1);
+	else if (this->pokemon_map[y][x - 1] <= 'Y' && this->pokemon_map[y][x - 1] >= 'A')
+		return (this->pokemon_map[y][x - 1] - 'A' + 1);
+	else if (this->pokemon_map[y][x + 1] <= 'Y' && this->pokemon_map[y][x + 1] >= 'A')
+		return (this->pokemon_map[y][x + 1] - 'A' + 1);
+	if (this->pokemon_map[y - 1][x] == 'Z')
 	{
 		cout << "\a" << endl;
-		Battle battle(&p);
+		Battle battle(p);
 		cout << "\a" << endl;
 	}
-	else if (this->pokemon_map[*y + 1][*x] == 'Z')
+	else if (this->pokemon_map[y + 1][x] == 'Z')
 	{
 		cout << "\a" << endl;
-		Battle battle(&p);
+		Battle battle(p);
 		cout << "\a" << endl;
 	}
-	else if (this->pokemon_map[*y][*x - 1] == 'Z')
+	else if (this->pokemon_map[y][x - 1] == 'Z')
 	{
 		cout << "\a" << endl;
-		Battle battle(&p);
+		Battle battle(p);
 		cout << "\a" << endl;
 	}
-	else if (this->pokemon_map[*y][*x + 1] == 'Z')
+	else if (this->pokemon_map[y][x + 1] == 'Z')
 	{
 		cout << "\a" << endl;
-		Battle battle(&p);
+		Battle battle(p);
 		cout << "\a" << endl;
 	}
 	return (0);
 }
 
-void		Map::handle_key(int key, int *x, int *y, MyPlayer p, OtherPlayer o)
+void		map::handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o)
 {
 	if (key == M_KEY_UP)
 	{
-		this->pokemon_map[*y][*x] = ' ';
-		if (this->pokemon_map[*y - 1][*x] == ' ' && this->pokemon_map[*y - 1][*x])
-			*y = *y - 1;
+		this->pokemon_map[y][x] = ' ';
+		if (this->pokemon_map[y - 1][x] == ' ' && this->pokemon_map[y - 1][x])
+			p->SetPos(x, y - 1);
 	}
 	else if (key == M_KEY_DOWN)
 	{
-		this->pokemon_map[*y][*x] = ' ';
-		if (this->pokemon_map[*y + 1][*x] == ' ' && this->pokemon_map[*y + 1][*x])
-			*y = *y + 1;
+		this->pokemon_map[y][x] = ' ';
+		if (this->pokemon_map[y + 1][x] == ' ' && this->pokemon_map[y + 1][x])
+			p->SetPos(x, y + 1);
 	}
 	else if (key == M_KEY_RIGHT)
 	{
-		this->pokemon_map[*y][*x] = ' ';
-		if (this->pokemon_map[*y][*x + 1] == ' ' && this->pokemon_map[*y][*x + 1])
-			*x = *x + 1;
+		this->pokemon_map[y][x] = ' ';
+		if (this->pokemon_map[y][x + 1] == ' ' && this->pokemon_map[y][x + 1])
+			p->SetPos(x + 1, y);
 	}
 	else if (key == M_KEY_LEFT)
 	{
-		this->pokemon_map[*y][*x] = ' ';
-		if (this->pokemon_map[*y][*x - 1] == ' ' && this->pokemon_map[*y][*x - 1] == ' ')
-			*x = *x - 1;
+		this->pokemon_map[y][x] = ' ';
+		if (this->pokemon_map[y][x - 1] == ' ' && this->pokemon_map[y][x - 1] == ' ')
+			p->SetPos(x - 1, y);
 	}
 	else if (key == M_KEY_SPACE)
 	{
-	if (this->pokemon_map[*y - 1][*x] <= '9' && this->pokemon_map[*y - 1][*x] >= '1')
-		Battle(&p, &o);
-	else if (this->pokemon_map[*y + 1][*x] <= '9' && this->pokemon_map[*y + 1][*x] >= '1')
-		Battle(&p, &o);
-	else if (this->pokemon_map[*y][*x - 1] <= '9' && this->pokemon_map[*y][*x - 1] >= '1')
-		Battle(&p, &o);
-	else if (this->pokemon_map[*y][*x + 1] <= '9' && this->pokemon_map[*y][*x + 1] >= '1')
-		Battle(&p, &o);
+		if (this->pokemon_map[y - 1][x] <= '9' && this->pokemon_map[y - 1][x] >= '1')
+			Battle(p, o);
+		else if (this->pokemon_map[y + 1][x] <= '9' && this->pokemon_map[y + 1][x] >= '1')
+			Battle(p, o);
+		else if (this->pokemon_map[y][x - 1] <= '9' && this->pokemon_map[y][x - 1] >= '1')
+			Battle(p, o);
+		else if (this->pokemon_map[y][x + 1] <= '9' && this->pokemon_map[y][x + 1] >= '1')
+			Battle(p, o);
 	}
 	else if (key == M_KEY_ESC)
 	{

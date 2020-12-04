@@ -139,11 +139,7 @@ int				main(int argc, char* argv[])
 
 
 	Map			map;
-	int			x;
-	int			y;
 	int			idx;
-
-	int flag = 0;
 
 	//OtherPlayer other_player;
 	//MyPlayer my_player;
@@ -153,20 +149,17 @@ int				main(int argc, char* argv[])
 	//other_player.SetPokemon();
 
 	char path[] = "..\\gold_version\\";
-
-	x = 99;
-	y = 6;
 	map.first_set_map_file(argc, path);
-
+	my_player.SetPos(99, 6);
 	system("cls");
 	while (1)
 	{
-		map.draw_player(x, y);
+		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
 		map.draw_map();
-		map.handle_key(getch(), &x, &y, my_player, other_player);
-		map.change_map(path, map.find_door(&x, &y, my_player), &x, &y);
+		map.handle_key(map.noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
+		map.change_map(&my_player, argv[1], map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
 		system("cls");
 	}
-
+	return (0);
 
 }

@@ -2,13 +2,13 @@
 #define MAP_H
 
 # include <iostream>
+# include <unistd.h>
 # include <stdio.h>
 # include <vector>
+# include <termios.h>
 # include <fstream>
-
 # include <string>
 # include <string.h>
-
 # include <cstdlib>
 # include "Battle.h"
 
@@ -25,7 +25,7 @@
 
 using namespace std;
 
-class			Map
+class				map
 {
 private:
 	vector<string>	pokemon_map;
@@ -33,22 +33,33 @@ private:
 	int				pre_f;
 
 public:
-	Map();
-	~Map();
+	map();
+	~map();
 
 	int check_valid(int argc, char *file_path);
-	//int noah_getch();
-	void handle_key(int key, int *x, int *y, MyPlayer p, OtherPlayer o);
+	int noah_getch();
+	void handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o);
 	void set_map_line(string string);
 	void first_set_map_file(int argc, char *file_path);
-	void change_map(char *path, int open_flag, int *x, int *y);
+	void change_map(MyPlayer *p, char *path, int open_flag, int x, int y);
 	void delete_pre_map();
-	void relocate_p(int *x, int *y);
+	void relocate_p(MyPlayer *p, int x, int y);
 	vector<string> get_map_file();
 	void draw_player(int x, int y);
 	void draw_map();
-	int find_door(int *x, int *y, MyPlayer p);
-
+	int find_door(int x, int y, MyPlayer *p);
+	void get_pos();
+	void set_pos(int x, int y);
 };
+
+map::map()
+{
+	cur_f = 1;
+	pre_f = 0;
+}
+
+map::~map()
+{
+}
 
 #endif
