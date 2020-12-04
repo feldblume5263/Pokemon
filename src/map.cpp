@@ -277,6 +277,7 @@ int				main(int argc, char *argv[])
 	int			x;
 	int			y;
 	int			idx;
+	char		path[] = "gold_version";
 
 	int flag = 0;
 
@@ -291,7 +292,7 @@ int				main(int argc, char *argv[])
 
 	x = 99;
 	y = 6;
-	map.first_set_map_file(argc, "gold_version");
+	map.first_set_map_file(argc, path);
 
 	system("cls");
 	while (1)
@@ -299,7 +300,7 @@ int				main(int argc, char *argv[])
 		map.draw_player(x, y);
 		map.draw_map();
 		map.handle_key(getch(), &x, &y, my_player, other_player);
-		map.change_map("gold_version", map.find_door(&x, &y, my_player), &x, &y);
+		map.change_map(path, map.find_door(&x, &y, my_player), &x, &y);
 		system("cls");
 	}
 
