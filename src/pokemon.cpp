@@ -3,7 +3,34 @@
 #include<cmath>
 #include<iostream>
 
-
+const double nature_stat_rate[25][5] = {
+	//				a		b		c		d		s
+					{1.1,	0.9,	1.0,	1.0,	1.0},
+					{1.1,	1.0,	0.9,	1.0,	1.0},
+					{1.1,	1.0,	1.0,	0.9,	1.0},
+					{1.1,	1.0,	1.0,	1.0,	0.9},
+					{0.9,	1.1,	1.0,	1.0,	1.0},
+					{1.0,	1.1,	0.9,	1.0,	1.0},
+					{1.0,	1.1,	1.0,	0.9,	1.0},
+					{1.0,	1.1,	1.0,	1.0,	0.9},
+					{0.9,	1.0,	1.1,	1.0,	1.0},
+					{1.0,	0.9,	1.1,	1.0,	1.0},
+					{1.0,	1.0,	1.1,	0.9,	1.0},
+					{1.0,	1.0,	1.1,	1.0,	0.9},
+					{0.9,	1.0,	1.0,	1.1,	1.0},
+					{1.0,	0.9,	1.0,	1.1,	1.0},
+					{1.0,	1.0,	0.9,	1.1,	1.0},
+					{1.0,	1.0,	1.0,	1.1,	0.9},
+					{0.9,	1.0,	1.0,	1.0,	1.1},
+					{1.0,	0.9,	1.0,	1.0,	1.1},
+					{1.0,	1.0,	0.9,	1.0,	1.1},
+					{1.0,	1.0,	1.0,	0.9,	1.1},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0}
+};
 
 
 
@@ -36,6 +63,10 @@ Pokemon::Pokemon(string name) {
 	moves[2] = nullptr;
 	moves[3] = nullptr;
 
+
+	setIndiStat();
+	setEffStat();
+	setNature();
 }
 Pokemon::~Pokemon() {
 	delete moves[0];
@@ -140,7 +171,7 @@ void Pokemon::setStat() {
 	special_defense = (int)ceil((((double)base_special_defense * 2 + (double)indi_special_defense + (double)eff_special_defense / 4) / 2 + 5) * nature_stat_rate[getNature()][3]);
 	speed = (int)ceil((((double)base_speed * 2 + (double)indi_speed + (double)eff_speed / 4) / 2 + 5) * nature_stat_rate[getNature()][4]);
 
-
+	
 }
 
 
