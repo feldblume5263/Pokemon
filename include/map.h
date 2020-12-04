@@ -2,10 +2,10 @@
 #define MAP_H
 
 # include <iostream>
-# include <unistd.h>
+//# include <unistd.h>
 # include <stdio.h>
 # include <vector>
-# include <termios.h>
+//# include <termios.h>
 # include <fstream>
 # include <string>
 # include <string.h>
@@ -25,7 +25,7 @@
 
 using namespace std;
 
-class				map
+class				Map
 {
 private:
 	vector<string>	pokemon_map;
@@ -33,11 +33,17 @@ private:
 	int				pre_f;
 
 public:
-	map();
-	~map();
+	//map()
+	//{
+	//	cur_f = 1;
+	//	pre_f = 0;
+	//}
+	//~map()
+	//{
+	//}
 
 	int check_valid(int argc, char *file_path);
-	int noah_getch();
+	//int noah_getch();
 	void handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o);
 	void set_map_line(string string);
 	void first_set_map_file(int argc, char *file_path);
@@ -51,15 +57,5 @@ public:
 	void get_pos();
 	void set_pos(int x, int y);
 };
-
-map::map()
-{
-	cur_f = 1;
-	pre_f = 0;
-}
-
-map::~map()
-{
-}
 
 #endif

@@ -16,7 +16,7 @@ using namespace web::http::client;
 using namespace concurrency::streams;
 
 
-void		map::relocate_p(MyPlayer *p, int x, int y)
+void		Map::relocate_p(MyPlayer *p, int x, int y)
 {
 	int		row;
 	int		col;
@@ -48,7 +48,7 @@ void		Map::delete_pre_map()
 	this->pokemon_map.erase(this->pokemon_map.begin(), this->pokemon_map.end());
 }
 
-void			map::change_map(MyPlayer *p, char *path, int open_flag, int x, int y)
+void			Map::change_map(MyPlayer *p, char *path, int open_flag, int x, int y)
 {
 	string		buffer;
 	ifstream	map_file;
@@ -74,7 +74,7 @@ void			map::change_map(MyPlayer *p, char *path, int open_flag, int x, int y)
 	relocate_p(p, x, y);
 }
 
-int			map::find_door(int x, int y, MyPlayer *p)
+int			Map::find_door(int x, int y, MyPlayer *p)
 {
 	if (this->pokemon_map[y - 1][x] <= 'Y' && this->pokemon_map[y - 1][x] >= 'A')
 		return (this->pokemon_map[y - 1][x] - 'A' + 1);
@@ -111,7 +111,7 @@ int			map::find_door(int x, int y, MyPlayer *p)
 	return (0);
 }
 
-void		map::handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o)
+void		Map::handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o)
 {
 	if (key == M_KEY_UP)
 	{
@@ -191,15 +191,15 @@ void		Map::draw_player(int x, int y)
 //	return (ch);
 //}
 
-Map::Map()
-{
-	cur_f = 1;
-	pre_f = 0;
-}
-
-Map::~Map()
-{
-}
+//Map::Map()
+//{
+//	cur_f = 1;
+//	pre_f = 0;
+//}
+//
+//Map::~Map()
+//{
+//}
 
 int				Map::check_valid(int argc, char *file_path)
 {

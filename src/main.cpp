@@ -115,40 +115,43 @@ int				main(int argc, char* argv[])
 	//system("printf '\e[8;100;200t'");
 	system(" mode  con lines=65   cols=200 ");
 
-	vector<string> myPokemons = selectPokemon();
-	//vector<string> otherPokemons = getRandomPokemon();
-	vector<string> otherPokemons = selectPokemon();
+	//vector<string> myPokemons = selectPokemon();
+	////vector<string> otherPokemons = getRandomPokemon();
+	//vector<string> otherPokemons = selectPokemon();
 
-	MyPlayer my_player;
-	OtherPlayer other_player;
+	//MyPlayer my_player;
+	//OtherPlayer other_player;
 
-	for (int i = 0; i < 3; ++i)
-	{
-		other_player.SetPokemon(otherPokemons[i]);
-		my_player.SetPokemon(myPokemons[i]);
+	//for (int i = 0; i < 3; ++i)
+	//{
+	//	other_player.SetPokemon(otherPokemons[i]);
+	//	my_player.SetPokemon(myPokemons[i]);
 
-		my_player.GetPokemon(i)->setStat();
-		other_player.GetPokemon(i)->setStat();
+	//	my_player.GetPokemon(i)->setStat();
+	//	other_player.GetPokemon(i)->setStat();
 
-		my_player.GetPokemon(i)->setRemainHp(my_player.GetPokemon(i)->getHealthPoint());
-		other_player.GetPokemon(i)->setRemainHp(other_player.GetPokemon(i)->getHealthPoint());
-	}
+	//	my_player.GetPokemon(i)->setRemainHp(my_player.GetPokemon(i)->getHealthPoint());
+	//	other_player.GetPokemon(i)->setRemainHp(other_player.GetPokemon(i)->getHealthPoint());
+	//}
 
-	system("pause");
+	//system("pause");
 
 
 
 	Map			map;
 	int			idx;
 
-	//OtherPlayer other_player;
-	//MyPlayer my_player;
-	//my_player.SetPokemon();
-	//my_player.SetPokemon();
-	//other_player.SetPokemon();
-	//other_player.SetPokemon();
+	OtherPlayer other_player;
+	MyPlayer my_player;
+	my_player.SetPokemon();
+	my_player.SetPokemon();
+	other_player.SetPokemon();
+	other_player.SetPokemon();
 
-	char path[] = "..\\gold_version\\";
+	//char path[] = "..\\gold_version\\";
+	char path[] = "C:\\Users\\youju\\source\\repos\\push\\gold_version\\";
+
+
 	map.first_set_map_file(argc, path);
 	my_player.SetPos(99, 6);
 	system("cls");
@@ -156,7 +159,7 @@ int				main(int argc, char* argv[])
 	{
 		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
 		map.draw_map();
-		map.handle_key(map.noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
+		map.handle_key(getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
 		map.change_map(&my_player, argv[1], map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
 		system("cls");
 	}
