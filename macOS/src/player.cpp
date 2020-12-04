@@ -31,6 +31,12 @@ coord Player::GetPos() {
     return this->pos;
 }
 
+void Player::SetPos(int x, int y)
+{
+    this->pos.x = x;
+    this->pos.y = y;
+}
+
 void Player::SetPos(coord c) {
     this->pos.x = c.x;
     this->pos.y = c.y;

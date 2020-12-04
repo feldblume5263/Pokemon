@@ -6,10 +6,11 @@
 #include <vector>
 #include <string>
 using namespace std;
-// 좌표
-struct coord {
-    int x;
-    int y;
+
+struct				coord
+{
+	int				x;
+	int				y;
 };
 
 class Player {
@@ -31,6 +32,7 @@ class Player {
         //좌표
         coord GetPos();
         void SetPos(coord c);
+        void SetPos(int x, int y);
         //포켓몬
         CatchedPokemon*GetPokemon(int ind);
         void SetPokemon(string name);
