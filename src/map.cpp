@@ -248,6 +248,11 @@ void			Map::first_set_map_file(int argc, char *file_path)
 	temp = strdup(file_path);
 	strcat(temp, "A");
 	map_file.open(temp);
+	if (!(map_file.is_open()))
+	{
+		cout << "file_error\n" << endl;
+		exit(0);
+	}
 	while (map_file.peek() != EOF)
 	{
 		getline(map_file, buffer);
