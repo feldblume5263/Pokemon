@@ -1,0 +1,4 @@
+C:\Users\youju\source\repos\battle\Debug\battle.vcxproj.CopyComplete
+C:\Users\youju\source\repos\battle\Debug\battle.exe
+C:\Users\youju\source\repos\battle\Debug\battle.pdb
+C:\Users\youju\source\repos\battle\Debug\cpprest_2_10d.dll

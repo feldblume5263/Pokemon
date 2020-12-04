@@ -1,0 +1,77 @@
+﻿  Database.cpp
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstring(2390,23): warning C4244: 'argument': conversion from 'wchar_t' to 'const _Elem', possible loss of data
+          with
+          [
+              _Elem=char
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstring(2401): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstring(2401): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(_Iter,const _Iter,std::input_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstring(2381): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.27.29110\include\xstring(2381): message : see reference to function template instantiation 'void std::basic_string<char,std::char_traits<char>,std::allocator<char>>::_Construct<wchar_t*>(const _Iter,const _Iter,std::forward_iterator_tag)' being compiled
+          with
+          [
+              _Iter=wchar_t *
+          ]
+C:\Users\youju\source\repos\battle\db\Database.cpp(49): message : see reference to function template instantiation 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)' being compiled
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+C:\Users\youju\source\repos\battle\db\Database.cpp(49): message : see reference to function template instantiation 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>::basic_string<std::_String_iterator<std::_String_val<std::_Simple_types<_Elem>>>,0>(_Iter,_Iter,const _Alloc &)' being compiled
+          with
+          [
+              _Elem=wchar_t,
+              _Iter=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,
+              _Alloc=std::allocator<char>
+          ]
+  Battle.cpp
+C:\Users\youju\source\repos\battle\include\Item.h(19,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\include\Item.h(69,16): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\include\Item.h(101,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\include\Item.h(158,16): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\src\Battle.cpp(535,79): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\youju\source\repos\battle\src\Battle.cpp(953,18): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
+C:\Users\youju\source\repos\battle\src\Battle.cpp(983,18): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
+  map.cpp
+C:\Users\youju\source\repos\battle\include\Item.h(19,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\include\Item.h(69,16): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\include\Item.h(101,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\include\Item.h(158,16): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\src\map.cpp(24,15): warning C4018: '<': signed/unsigned mismatch
+C:\Users\youju\source\repos\battle\src\map.cpp(27,16): warning C4018: '<': signed/unsigned mismatch
+C:\Users\youju\source\repos\battle\src\map.cpp(62,9): warning C4996: 'strdup': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details.
+C:\Users\youju\source\repos\battle\src\map.cpp(65,9): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\youju\source\repos\battle\src\map.cpp(167,13): warning C4018: '<': signed/unsigned mismatch
+C:\Users\youju\source\repos\battle\src\map.cpp(216,16): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\youju\source\repos\battle\src\map.cpp(207,9): warning C4101: 'temp': unreferenced local variable
+C:\Users\youju\source\repos\battle\src\map.cpp(247,9): warning C4996: 'strdup': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _strdup. See online help for details.
+C:\Users\youju\source\repos\battle\src\map.cpp(248,2): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\youju\source\repos\battle\src\map.cpp(295,9): warning C4129: 'e': unrecognized character escape sequence
+C:\Users\youju\source\repos\battle\src\map.cpp(282,8): warning C4101: 'idx': unreferenced local variable
+  player.cpp
+C:\Users\youju\source\repos\battle\include\Item.h(19,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\include\Item.h(69,16): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\include\Item.h(101,27): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\youju\source\repos\battle\include\Item.h(158,16): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+  pokemon.cpp
+C:\Users\youju\source\repos\battle\src\pokemon.cpp(136,21): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+  skill.cpp
+  Generating Code...
+C:\Users\youju\source\repos\battle\src\skill.cpp(32): warning C4715: 'searchDamageType': not all control paths return a value
+C:\Users\youju\source\repos\battle\src\skill.cpp(27): warning C4715: 'searchType': not all control paths return a value
+C:\Users\youju\source\repos\battle\src\skill.cpp(125): warning C4715: 'Skill::noPP': not all control paths return a value
+  battle.vcxproj -> C:\Users\youju\source\repos\battle\Debug\battle.exe
