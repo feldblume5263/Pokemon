@@ -25,7 +25,7 @@
 
 using namespace std;
 
-class				map
+class				Map
 {
 private:
 	vector<string>	pokemon_map;
@@ -33,8 +33,6 @@ private:
 	int				pre_f;
 
 public:
-	map();
-	~map();
 
 	int check_valid(int argc, char *file_path);
 	int noah_getch();
@@ -51,15 +49,5 @@ public:
 	void get_pos();
 	void set_pos(int x, int y);
 };
-
-map::map()
-{
-	cur_f = 1;
-	pre_f = 0;
-}
-
-map::~map()
-{
-}
 
 #endif

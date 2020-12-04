@@ -29,9 +29,9 @@ void		Map::relocate_p(MyPlayer *p, int x, int y)
 				else
 					p->SetPos(col - 2, y);
 				if (y > 32)
-					p->SetPos(x, row + 2);
+					p->SetPos(p->GetPos().x, row + 2);
 				else
-					p->SetPos(x, row - 2);
+					p->SetPos(p->GetPos().x, row - 2);
 				return ;
 			}
 		}

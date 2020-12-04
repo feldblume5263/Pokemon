@@ -1,6 +1,6 @@
 #include "map.h"
 
-void		map::relocate_p(MyPlayer *p, int x, int y)
+void		Map::relocate_p(MyPlayer *p, int x, int y)
 {
 	int		row;
 	int		col;
@@ -18,21 +18,21 @@ void		map::relocate_p(MyPlayer *p, int x, int y)
 				else
 					p->SetPos(col - 2, y);
 				if (y > 32)
-					p->SetPos(x, row + 2);
+					p->SetPos(p->GetPos().x, row + 2);
 				else
-					p->SetPos(x, row - 2);
+					p->SetPos(p->GetPos().x, row - 2);
 				return ;
 			}
 		}
 	}
 }
 
-void		map::delete_pre_map()
+void		Map::delete_pre_map()
 {
 	this->pokemon_map.erase(this->pokemon_map.begin(), this->pokemon_map.end());
 }
 
-void			map::change_map(MyPlayer *p, char *path, int open_flag, int x, int y)
+void			Map::change_map(MyPlayer *p, char *path, int open_flag, int x, int y)
 {
 	string		buffer;
 	ifstream	map_file;
@@ -58,7 +58,7 @@ void			map::change_map(MyPlayer *p, char *path, int open_flag, int x, int y)
 	relocate_p(p, x, y);
 }
 
-int			map::find_door(int x, int y, MyPlayer *p)
+int			Map::find_door(int x, int y, MyPlayer *p)
 {
 	if (this->pokemon_map[y - 1][x] <= 'Y' && this->pokemon_map[y - 1][x] >= 'A')
 		return (this->pokemon_map[y - 1][x] - 'A' + 1);
@@ -95,7 +95,7 @@ int			map::find_door(int x, int y, MyPlayer *p)
 	return (0);
 }
 
-void		map::handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o)
+void		Map::handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o)
 {
 	if (key == M_KEY_UP)
 	{
@@ -140,7 +140,7 @@ void		map::handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o)
 		return ;
 }
 
-void		map::draw_map()
+void		Map::draw_map()
 {
 	vector<string>	p_map;
 	int				idx;
@@ -155,12 +155,12 @@ void		map::draw_map()
 	}
 }
 
-void		map::draw_player(int x, int y)
+void		Map::draw_player(int x, int y)
 {
 	this->pokemon_map[y][x] = 'O';
 }
 
-int			map::noah_getch()
+int			Map::noah_getch()
 {
 	struct	termios oldt;
 	struct	termios newt;
@@ -175,7 +175,7 @@ int			map::noah_getch()
 	return (ch);
 }
 
-int				map::check_valid(int argc, char *file_path)
+int				Map::check_valid(int argc, char *file_path)
 {
 	int			idx;
 	char		*temp;
@@ -198,17 +198,17 @@ int				map::check_valid(int argc, char *file_path)
 	}
 }
 
-vector<string> map::get_map_file()
+vector<string> Map::get_map_file()
 {
 	return (this->pokemon_map);
 }
 
-void			map::set_map_line(std::string string)
+void			Map::set_map_line(std::string string)
 {
 	this->pokemon_map.push_back(string);
 }
 
-void			map::first_set_map_file(int argc, char *file_path)
+void			Map::first_set_map_file(int argc, char *file_path)
 {
 	string		buffer;
 	ifstream	map_file;
@@ -233,31 +233,31 @@ void			map::first_set_map_file(int argc, char *file_path)
 	}
 }
 
-int				main(int argc, char *argv[])
-{
-	map			map;
-	int			idx;
-	// char		path[] = "../gold_version";
+// int				main(int argc, char *argv[])
+// {
+// 	Map			map;
+// 	int			idx;
+// 	// char		path[] = "../gold_version";
 
-	int flag = 0;
+// 	int flag = 0;
 
-	MyPlayer my_player;
-	OtherPlayer other_player;
-	my_player.SetPokemon();
-	my_player.SetPokemon();
-	other_player.SetPokemon();
-	other_player.SetPokemon();
-	my_player.SetPos(99, 6);
-	map.first_set_map_file(argc, argv[1]);
-	system("printf '\e[8;100;200t'");
-	system("clear");
-	while (1)
-	{
-		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
-		map.draw_map();
-		map.handle_key(map.noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
-		map.change_map(&my_player, argv[1], map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
-		system("clear");
-	}
-	return (0);
-}
+// 	MyPlayer my_player;
+// 	OtherPlayer other_player;
+// 	my_player.SetPokemon();
+// 	my_player.SetPokemon();
+// 	other_player.SetPokemon();
+// 	other_player.SetPokemon();
+// 	my_player.SetPos(99, 6);
+// 	map.first_set_map_file(argc, argv[1]);
+// 	system("printf '\e[8;100;200t'");
+// 	system("clear");
+// 	while (1)
+// 	{
+// 		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
+// 		map.draw_map();
+// 		map.handle_key(map.noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
+// 		map.change_map(&my_player, argv[1], map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
+// 		system("clear");
+// 	}
+// 	return (0);
+// }
