@@ -3,7 +3,34 @@
 #include<cmath>
 #include<iostream>
 
-
+const double nature_stat_rate[25][5] = {
+	//				a		b		c		d		s
+					{1.1,	0.9,	1.0,	1.0,	1.0},
+					{1.1,	1.0,	0.9,	1.0,	1.0},
+					{1.1,	1.0,	1.0,	0.9,	1.0},
+					{1.1,	1.0,	1.0,	1.0,	0.9},
+					{0.9,	1.1,	1.0,	1.0,	1.0},
+					{1.0,	1.1,	0.9,	1.0,	1.0},
+					{1.0,	1.1,	1.0,	0.9,	1.0},
+					{1.0,	1.1,	1.0,	1.0,	0.9},
+					{0.9,	1.0,	1.1,	1.0,	1.0},
+					{1.0,	0.9,	1.1,	1.0,	1.0},
+					{1.0,	1.0,	1.1,	0.9,	1.0},
+					{1.0,	1.0,	1.1,	1.0,	0.9},
+					{0.9,	1.0,	1.0,	1.1,	1.0},
+					{1.0,	0.9,	1.0,	1.1,	1.0},
+					{1.0,	1.0,	0.9,	1.1,	1.0},
+					{1.0,	1.0,	1.0,	1.1,	0.9},
+					{0.9,	1.0,	1.0,	1.0,	1.1},
+					{1.0,	0.9,	1.0,	1.0,	1.1},
+					{1.0,	1.0,	0.9,	1.0,	1.1},
+					{1.0,	1.0,	1.0,	0.9,	1.1},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0},
+					{1.0,	1.0,	1.0,	1.0,	1.0}
+};
 
 
 
@@ -36,6 +63,10 @@ Pokemon::Pokemon(string name) {
 	moves[2] = nullptr;
 	moves[3] = nullptr;
 
+
+	setIndiStat();
+	setEffStat();
+	setNature();
 }
 Pokemon::~Pokemon() {
 	delete moves[0];
@@ -202,7 +233,7 @@ void Pokemon::setType1(string name) {
 }
 void Pokemon::setType2(string name) {
 
-	this->type1 = searchType(name);
+	this->type2 = searchType(name);
 }
 void Pokemon::setSkill(int idx, Skill* skill) {
 	this->moves[idx] = skill;
