@@ -1,4 +1,4 @@
-#include"../include/pokemon.h"
+#include"pokemon.h"
 #include<random>
 #include<cmath>
 #include<iostream>
@@ -376,7 +376,7 @@ void CatchedPokemon::reset() {
 //
 //int main() {
 //
-//	
+//
 //	CatchedPokemon test = CatchedPokemon();
 //	CatchedPokemon test1 = CatchedPokemon();
 //	CatchedPokemon test2 = CatchedPokemon();

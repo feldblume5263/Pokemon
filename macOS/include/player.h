@@ -25,8 +25,8 @@ class Player {
         Player();
         Player(string name);
         ~Player();
-        //플레이어 이름 
-        string GetName(); 
+        //플레이어 이름
+        string GetName();
         void SetName(string newName);
         //좌표
         coord GetPos();
@@ -34,7 +34,7 @@ class Player {
         //포켓몬
         CatchedPokemon*GetPokemon(int ind);
         void SetPokemon(string name);
-        // 플레이어 타입 
+        // 플레이어 타입
         bool GetPlayerType();
         void SetPlayerType(bool type);
         // change : add function
@@ -100,6 +100,9 @@ public:
 
 class OtherPlayer : public Player
 {
+private:
+      bool liveState;
+
 public:
     OtherPlayer()
     {
@@ -107,7 +110,10 @@ public:
         //this->pos.x = 0;
         //this->pos.y = 0;
         SetPlayerType(false);
+        setLiveState(true);
     }
+    void setLiveState(bool _liveState);
+    bool getLiveState();
 };
 
 #endif

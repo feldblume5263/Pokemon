@@ -51,6 +51,8 @@ private:
 public:
     Battle(MyPlayer* _my_player, OtherPlayer* _other_player);
     Battle(MyPlayer* _my_player, CatchedPokemon* _other_pokemon);
+    Battle(MyPlayer* _my_player);
+    Battle();
 
 private:
     void startBattle();

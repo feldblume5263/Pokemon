@@ -72,25 +72,25 @@ int			map::find_door(int *x, int *y, MyPlayer p)
 	if (this->pokemon_map[*y - 1][*x] == 'Z')
 	{
 		cout << "\a" << endl;
-		Battle(&p);
+		Battle battle(&p);
 		cout << "\a" << endl;
 	}
 	else if (this->pokemon_map[*y + 1][*x] == 'Z')
 	{
 		cout << "\a" << endl;
-		Battle(&p);
+		Battle battle(&p);
 		cout << "\a" << endl;
 	}
 	else if (this->pokemon_map[*y][*x - 1] == 'Z')
 	{
 		cout << "\a" << endl;
-		Battle(&p);
+		Battle battle(&p);
 		cout << "\a" << endl;
 	}
 	else if (this->pokemon_map[*y][*x + 1] == 'Z')
 	{
 		cout << "\a" << endl;
-		Battle(&p);
+		Battle battle(&p);
 		cout << "\a" << endl;
 	}
 	return (0);

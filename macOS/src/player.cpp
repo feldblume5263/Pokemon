@@ -1,6 +1,15 @@
-#include "../include/player.h"
+#include "player.h"
 // #include "../DB/Database.h"
 #include <thread>
+
+void OtherPlayer::setLiveState(bool _liveState)
+{
+    liveState = _liveState;
+}
+bool OtherPlayer::getLiveState()
+{
+    return (liveState);
+}
 
 Player::Player() {
 

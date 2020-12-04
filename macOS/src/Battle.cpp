@@ -8,14 +8,11 @@
 # include <string>
 # include <unistd.h>
 # include <cstdlib>
-#include "../include/Battle.h"
+# include "Battle.h"
 
 // todo : make other pokemon attack, my pokemon attack function
 
-Battle::Battle()
-{
-
-}
+Battle::Battle() {}
 
 Battle::Battle(MyPlayer* _my_player)
 {
@@ -58,7 +55,12 @@ Battle::Battle(MyPlayer* _my_player, OtherPlayer* _other_player)
 
     my_player = _my_player;
     other_player = _other_player;
-
+    if (other_player->getLiveState() == false)
+    {
+        std::cout << "\a" << std::endl;
+        while (!getEnterSpacebar());
+        return;
+    }
     startBattle();
 }
 
@@ -73,7 +75,6 @@ Battle::Battle(MyPlayer* _my_player, CatchedPokemon* _other_pokemon)
 
 void Battle::startBattle()
 {
-
     pullPokemon();
 
     while (endBattle == false)
@@ -83,11 +84,16 @@ void Battle::startBattle()
 
     // end battle
     display();
-    gotoxy(message_x, message_x);
+    gotoxy(message_x, message_y);
     if (my_win == true)
         std::cout << "My Win" << std::endl;
     else
         std::cout << "My Loose" << std::endl;
+
+    other_player->setLiveState(false);
+    my_selected_pokemon = nullptr;
+    other_selected_pokemon = nullptr;
+    while (!getEnterSpacebar());
 }
 
 inline void Battle::startHunting()

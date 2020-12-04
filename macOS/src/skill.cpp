@@ -1,4 +1,4 @@
-#include"../include/skill.h"
+#include"skill.h"
 #include<iostream>
 
 Type searchType(string type) {
@@ -25,12 +25,12 @@ Type searchType(string type) {
 
 }
 DamageType searchDamageType(string damage_type) {
-	if (damage_type == "") return Physical;
-	if (damage_type == "") return Special;
+	if (damage_type == "physical") return Physical;
+	if (damage_type == "special") return Special;
 
 }
 Skill::Skill() {
-	// change 
+	// change
 	isSkill = true;
 
 	//from database/////////
