@@ -171,7 +171,7 @@ void Pokemon::setStat() {
 	special_defense = (int)ceil((((double)base_special_defense * 2 + (double)indi_special_defense + (double)eff_special_defense / 4) / 2 + 5) * nature_stat_rate[getNature()][3]);
 	speed = (int)ceil((((double)base_speed * 2 + (double)indi_speed + (double)eff_speed / 4) / 2 + 5) * nature_stat_rate[getNature()][4]);
 
-	
+
 }
 
 
@@ -233,7 +233,7 @@ void Pokemon::setType1(string name) {
 }
 void Pokemon::setType2(string name) {
 
-	this->type1 = searchType(name);
+	this->type2 = searchType(name);
 }
 void Pokemon::setSkill(int idx, Skill* skill) {
 	this->moves[idx] = skill;
