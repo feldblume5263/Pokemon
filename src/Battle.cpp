@@ -231,18 +231,20 @@ void Battle::printHPbar(CatchedPokemon* pokemon)
 
 void Battle::drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y)
 {
-    for (int i = 0; i < 20; ++i)
+    for (int i = 0; i < pokemon->num_lines_emoji; ++i)
     {
         for (int j = 0; j < 40; ++j)
         {
             gotoxy(place_x + j, place_y + i);
             char c = pokemon->emoji[j + i * 40];
             if (c == 'M')
+            {
                 std::cout << ' ';
-            else if (c == ' ')
-                std::cout << ' /b';
+            }
             else
+            {
                 std::cout << c;
+            }
         }
         std::cout << std::endl;
     }
@@ -520,9 +522,11 @@ void Battle::attack(CatchedPokemon* attakingPokemon, CatchedPokemon* defendingPo
 
 int Battle::calculateDamage(CatchedPokemon*  attakingPokemon, CatchedPokemon*  defendingPokemon, Skill* move)
 {
+
     float SametypeAttackbonus = checkSametypeAttackbonus(attakingPokemon, move);
     float Decision = 0.0f;
     float durability = 0.0f;
+
 
     // normal Attack
     if (move->getDamageType() == Physical)
@@ -544,7 +548,6 @@ int Battle::calculateDamage(CatchedPokemon*  attakingPokemon, CatchedPokemon*  d
     float damage = 0.0f;
     int RandomNumber = getRandomNumber();
     damage = Decision / durability * HitSpot * Type * RandomNumber;
-
     return static_cast<int>(damage);
 }
 
@@ -559,6 +562,9 @@ float Battle::checkSametypeAttackbonus(CatchedPokemon* attakingPokemon, Skill* m
 float Battle::calculateType(CatchedPokemon* defendingPokemon, Skill* move)
 {
     typeCal = type_damage_rate[move->getType()][defendingPokemon->getType1()] * type_damage_rate[move->getType()][defendingPokemon->getType2()];
+
+
+
     return typeCal;
 }
 
@@ -673,12 +679,13 @@ int Battle::selectPokemon()
     {
         printArrow_change(x, y);
 
-        if (x == f_x && y == f_y)
+        if (num_pokemons == 1 || (x == f_x && y == f_y))
         {
             return -1;
         }
         else if(x == f_x && y == f_y + 3)
         {
+
             if (num_pokemons > 1 || my_player->GetPokemon(1)->getRemainHp() == 0)
                 return 1;
             else return -1;
@@ -720,7 +727,7 @@ void Battle::changePokemon(MyPlayer* player)
         std::cout << "Can`t swap" << std::endl;
         while (!getEnterSpacebar());
 
-        changePokemon(player);
+        //changePokemon(player);
         return;
     }
 
