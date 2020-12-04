@@ -25,8 +25,8 @@ class Player {
         Player();
         Player(string name);
         ~Player();
-        //플레이어 이름 
-        string GetName(); 
+        //플레이어 이름
+        string GetName();
         void SetName(string newName);
         //좌표
         coord GetPos();
@@ -34,7 +34,7 @@ class Player {
         //포켓몬
         CatchedPokemon*GetPokemon(int ind);
         void SetPokemon(string name);
-        // 플레이어 타입 
+        // 플레이어 타입
         bool GetPlayerType();
         void SetPlayerType(bool type);
         // change : add function
@@ -51,63 +51,23 @@ private:
     std::vector<Item*> items;
 
 public:
-    MyPlayer()
-    {
-        this->name = "Me";
-        this->pos.x = 0;
-        this->pos.y = 0;
-        SetPlayerType(true);
+    MyPlayer();
+    ~MyPlayer();
 
-        initItems();
-    }
+    std::vector<Item*> getItems();
+    Item* getItem(int ix);
 
-    ~MyPlayer()
-    {
-        // todo : delete
-    }
-
-    std::vector<Item*> getItems()
-    {
-        return items;
-    }
-
-    Item* getItem(int ix)
-    {
-        return items[ix];
-    }
-
-    void initItems()
-    {
-        Item* monsterball = new Item("HyperBall");
-        this->items.push_back(monsterball);
-
-        Item* hppotion1 = new Item("HyperPotion");
-        this->items.push_back(hppotion1);
-
-        Item* hppotion2 = new Item("MaxPotion");
-        this->items.push_back(hppotion2);
-
-        //MonsterBallItem* monsterball = new MonsterBallItem("HyperBall");
-        //this->items.push_back(monsterball);
-
-        //HPRecoveryItem* hppotion1 = new HPRecoveryItem("HyperPotion");
-        //this->items.push_back(hppotion1);
-
-        //HPRecoveryItem* hppotion2 = new HPRecoveryItem("MaxPotion");
-        //this->items.push_back(hppotion2);
-    }
+    void initItems();
 };
 
 class OtherPlayer : public Player
 {
-public:
-    OtherPlayer()
-    {
-        this->name = "ROSA";
-        //this->pos.x = 0;
-        //this->pos.y = 0;
-        SetPlayerType(false);
-    }
-};
+private:
+      bool liveState;
 
+public:
+    OtherPlayer();
+    void setLiveState(bool _liveState);
+    bool getLiveState();
+};
 #endif

@@ -4,14 +4,18 @@
 #include "pokemon.h"
 #include "player.h"
 
+#include <conio.h>
+#include <windows.h>
+
 enum KeyboardKey
 {
-    UP = 72,
-    DOWN = 80,
-    LEFT = 75,
-    RIGHT = 77,
+    UP = 119,
+    DOWN = 115,
+    LEFT = 97,
+    RIGHT = 100,
     SPACEBAR = 32,
-    ENTER = 13
+    ENTER = 13,
+    ESC = 27
 };
 
 // deseperate UI and battle algorithms.
@@ -50,6 +54,8 @@ private:
 public:
     Battle(MyPlayer* _my_player, OtherPlayer* _other_player);
     Battle(MyPlayer* _my_player, CatchedPokemon* _other_pokemon);
+    Battle(MyPlayer* _my_player);
+    Battle();
 
 private:
     void startBattle();

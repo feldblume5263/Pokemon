@@ -376,7 +376,7 @@ void CatchedPokemon::reset() {
 //
 //int main() {
 //
-//	
+//
 //	CatchedPokemon test = CatchedPokemon();
 //	CatchedPokemon test1 = CatchedPokemon();
 //	CatchedPokemon test2 = CatchedPokemon();

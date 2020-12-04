@@ -4,10 +4,9 @@
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
 
+
 //#include "../include/cpprestsdk_x64-windows/include/cpprest/http_client.h"
-//#include "../include/cpprestsdk_x64-windows/include/cpprest/streams.h"
-
-
+//#include "../include/cpprestsdk_x64-windows/include/cpprest/filestream.h"
 
 #include "../include/skill.h"
 #include "../include/pokemon.h"

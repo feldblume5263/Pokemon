@@ -1,10 +1,52 @@
-﻿#include <windows.h>
-#include <conio.h> 
+﻿// #include <windows.h>
+// #include <conio.h>
 #include <ctime>
 #include <iostream>
-#include "../include/Battle.h"
+//# include <termios.h>
+# include <fstream>
+# include <string>
+//# include <unistd.h>
+# include <cstdlib>
+# include "../include/Battle.h"
 
-// todo : make other pokemon attack, my pokemon attack function 
+// todo : make other pokemon attack, my pokemon attack function
+
+Battle::Battle() {}
+
+Battle::Battle(MyPlayer* _my_player)
+{
+    my_player = _my_player;
+    my_selected_pokemon = my_player->GetPokemon(0);
+
+
+    for (auto pokemon : my_player->getPokemonsVector())
+    {
+        pokemon->setAlive(true);
+        pokemon->setRemainHp(pokemon->getHealthPoint());
+        for (int i = 0; i < 4; ++i)
+        {
+            if (pokemon->getSkill(i) != nullptr)
+                pokemon->getSkill(i)->resetPP();
+        }
+    }
+
+    std::cout << "\a" << std::endl;
+}
+
+//int			noah_()
+//{
+//	struct	termios oldt;
+//	struct	termios newt;
+//	int		ch;
+//
+//	tcgetattr( STDIN_FILENO, &oldt);
+//	newt = oldt;
+//	newt.c_lflag &= ~( ICANON | ECHO);
+//	tcsetattr( STDIN_FILENO, TCSANOW, &newt);
+//	ch = getchar();
+//	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
+//	return (ch);
+//}
 
 Battle::Battle(MyPlayer* _my_player, OtherPlayer* _other_player)
     :mersenne(static_cast<unsigned int>(std::time(nullptr)))
@@ -12,7 +54,12 @@ Battle::Battle(MyPlayer* _my_player, OtherPlayer* _other_player)
 
     my_player = _my_player;
     other_player = _other_player;
-
+    //if (other_player->getLiveState() == false)
+    //{
+    //    std::cout << "\a" << std::endl;
+    //    while (!getEnterSpacebar());
+    //    return;
+    //}
     startBattle();
 }
 
@@ -27,7 +74,6 @@ Battle::Battle(MyPlayer* _my_player, CatchedPokemon* _other_pokemon)
 
 void Battle::startBattle()
 {
-
     pullPokemon();
 
     while (endBattle == false)
@@ -37,14 +83,20 @@ void Battle::startBattle()
 
     // end battle
     display();
-    gotoxy(message_x, message_x);
+    gotoxy(message_x, message_y);
     if (my_win == true)
         std::cout << "My Win" << std::endl;
     else
         std::cout << "My Loose" << std::endl;
+
+    //other_player->setLiveState(false);
+
+    my_selected_pokemon = nullptr;
+    other_selected_pokemon = nullptr;
+    while (!getEnterSpacebar());
 }
 
-inline void Battle::startHunting()
+void Battle::startHunting()
 {
     // todo delete
 }
@@ -68,7 +120,7 @@ void Battle::display()
         gotoxy(164, 41 + i);
         std::cout << "|";
     }
-    
+
     // draw emoji of pokemons
     if (my_selected_pokemon != nullptr)
         drawPokemon_emoji(my_selected_pokemon, 8, 18);
@@ -141,7 +193,7 @@ void Battle::printHPbar(CatchedPokemon* pokemon)
         else
             break;
     }
-    
+
 
     for (int i = 0; i < num; ++i)
     {
@@ -151,7 +203,7 @@ void Battle::printHPbar(CatchedPokemon* pokemon)
 
 }
 
-inline void Battle::drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y)
+void Battle::drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y)
 {
     for (int i = 0; i < 20; ++i)
     {
@@ -380,7 +432,7 @@ void Battle::attack(CatchedPokemon* attakingPokemon, CatchedPokemon* defendingPo
         std::cout << "A critical Hit!" << std::endl;
         while (!getEnterSpacebar());
     }
- 
+
     // type attack message
     if (typeCal == 1.0f)
     {
@@ -421,7 +473,7 @@ void Battle::attack(CatchedPokemon* attakingPokemon, CatchedPokemon* defendingPo
     gotoxy(message_x, message_y);
     std::cout << attakingPokemon->getName() << " Damaged to " << damage << " " << defendingPokemon-> getName() << std::endl;
     while (!getEnterSpacebar());
-    
+
     int tempHP = defendingPokemon->getRemainHp();
     hitSpot = false;
     typeCal = 1.0f;
@@ -847,7 +899,7 @@ void Battle::useItem(int ix)
 
         // recover
         my_selected_pokemon->setRemainHp(my_selected_pokemon->getRemainHp() + my_player->getItem(ix)->getRecoveryVolume());
-        if (my_selected_pokemon->getRemainHp() >= my_selected_pokemon->getHealthPoint()) 
+        if (my_selected_pokemon->getRemainHp() >= my_selected_pokemon->getHealthPoint())
             my_selected_pokemon->setRemainHp(my_selected_pokemon->getHealthPoint());
         // reduce volume
         my_player->getItem(ix)->setVolume(my_player->getItem(ix)->getItemVolume() - 1);
@@ -882,13 +934,18 @@ void Battle::selectRun()
 
 
 // tool
-void Battle::gotoxy(int column, int line)
-{
-    COORD coord;
-    coord.X = column;
-    coord.Y = line;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
+ void Battle::gotoxy(int column, int line)
+ {
+     COORD coord;
+     coord.X = column;
+     coord.Y = line;
+     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+ }
+
+//void Battle::gotoxy(int x,int y)
+//{
+//    printf("%c[%d;%df",0x1B,y,x);
+//}
 
 bool Battle::getArrowkey(int& x1, int& y1)
 {
