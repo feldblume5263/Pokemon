@@ -2,6 +2,9 @@
 #define PLAYER_H
 
 #include "../include/pokemon.h"
+#include "../DB/Database.h"
+
+#include <thread>
 #include "Item.h"
 #include <vector>
 #include <string>

@@ -1,6 +1,5 @@
 #include "../include/player.h"
- #include "../DB/Database.h"
-#include <thread>
+
 
 OtherPlayer::OtherPlayer()
 {
@@ -52,9 +51,16 @@ CatchedPokemon* Player::GetPokemon(int ind) {
 // 메인 쓰레드가  requestPokemon()이 끝날때까지 기다려줌
 void Player::SetPokemon(string name) {
     CatchedPokemon*pokemon = new CatchedPokemon(name);
-    // std::thread thr1(requestPokemon, pokemon, name);
-    // thr1.join();
-    //requestPokemon(pokemon, name);
+    //Database database();
+
+    // todo 
+    Database database = Database();
+    database.requestPokemon(pokemon, name);
+    //std::thread thr1(database.requestPokemon, pokemon, name);
+    //thr1.join();
+    
+    //Database::requestPokemon(Pokemon * pokemon, string name);
+
     this->pokemons.push_back(pokemon);
 }
 

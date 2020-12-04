@@ -39,8 +39,8 @@ Skill::Skill() {
 	this->power = 90;
 	this->accuracy = 100;
 	this->type = Electric;
-	this->damage_type = Special;
-	this->pp = 20;
+	this->damage_type = Physical;
+	this->pp = 10;
 	////////////////////////
 	this->remain_pp = this->pp;
 }
@@ -88,12 +88,13 @@ void Skill::setType(string type_name) {
 	this->type = searchType(type_name);
 }
 void Skill::setDamageType(string damage_type_name) {
-	string name;
-	name.assign(damage_type_name.begin(), damage_type_name.end());
-	this->type = searchType(name);
+	//string name;
+	//name.assign(damage_type_name.begin(), damage_type_name.end());
+	this->damage_type = searchDamageType(damage_type_name);
 }
 void Skill::setPP(int pp) {
 	this->pp = pp;
+	this->remain_pp = pp;
 }
 int Skill::getRemainPP() {
 	return this->remain_pp;

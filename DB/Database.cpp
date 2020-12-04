@@ -91,9 +91,15 @@ void Database::requestBaseStats(Pokemon* pokemon, json::value& val) {
 	for (auto it = stats_array.cbegin(); it != stats_array.cend(); it++) {
 		int base_stat = it->at(L"base_stat").as_integer();
 		string_t wstat_name = it->at(L"stat").at(L"name").as_string();
-		string stat_name;
+
+		string stat_name(wstat_name.begin(), wstat_name.end());
+		//string stat_name;
 
 		stat_name.assign(wstat_name.begin(), wstat_name.end());
+
+		//std::cout << stat_name << " " << base_stat << std::endl;
+		//std::cout << std::endl;
+
 		pokemon->setBaseStat(stat_name, base_stat);
 	}
 }
@@ -150,6 +156,11 @@ void Database::requestSkillURL(Pokemon* pokemon, string_t& url, size_t& move_set
 				string name(wname.begin(), wname.end());
 				string damage_type(wdamage_type.begin(), wdamage_type.end());
 				string type(wtype.begin(), wtype.end());
+
+				//std::cout << "@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
+				//std::cout << damage_type << "13" << std::endl;
+				//std::cout << "@@@@@@@@@@@@@@@@@@@@@@"<< std::endl;
+
 
 				added_skill->setName(name);
 				added_skill->setDamageType(damage_type);
