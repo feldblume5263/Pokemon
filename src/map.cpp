@@ -243,8 +243,8 @@ void			Map::first_set_map_file(int argc, char *file_path)
 
 	this->cur_f = 1;
 	this->pre_f = 0;
-	if (!(this->check_valid(argc, file_path)))
-		exit(0);
+	// if (!(this->check_valid(argc, file_path)))
+	// 	exit(0);
 	temp = strdup(file_path);
 	strcat(temp, "A");
 	map_file.open(temp);
@@ -258,71 +258,50 @@ void			Map::first_set_map_file(int argc, char *file_path)
 
 int				main(int argc, char *argv[])
 {
-	//system("printf '\e[8;100;200t'");
 	system(" mode  con lines=65   cols=200 ");
+	const string URI = "https://pokeapi.co/api/v2/";
+	string queryParams = "pokemon/ditto";
 
+	uri_builder builder(U("https://pokeapi.co/api/v2/pokemon/ditto"));
+	//wcout << builder.to_string() << "\n";
+	uri u(builder.to_uri());
+	http_client client(u);
 
+	pplx::task<http_response> responseTask = client.request(methods::GET);
+	http_response response = responseTask.get();
+	utility::string_t str = response.extract_string().get();
 
-	//const string URI = "https://pokeapi.co/api/v2/";
-	//string queryParams = "pokemon/ditto";
+	//wcout << str.c_str() << endl;
 
-	//uri_builder builder(U("https://pokeapi.co/api/v2/pokemon/ditto"));
-	////wcout << builder.to_string() << "\n";
-	//uri u(builder.to_uri());
-	//http_client client(u);
+	Map			map;
+	int			x;
+	int			y;
+	int			idx;
 
-	//pplx::task<http_response> responseTask = client.request(methods::GET);
-	//http_response response = responseTask.get();
-	//utility::string_t str = response.extract_string().get();
+	int flag = 0;
 
-	////wcout << str.c_str() << endl;
+	OtherPlayer other_player;
+	MyPlayer my_player;
+	my_player.SetPokemon();
+	my_player.SetPokemon();
+	other_player.SetPokemon();
+	other_player.SetPokemon();
 
+	//Battle battle(&my_player, &other_player);
 
+	x = 99;
+	y = 6;
+	map.first_set_map_file(argc, "gold_version");
 
-	if (argc == 2)
+	system("cls");
+	while (1)
 	{
-		std::cout << "SCUESS" << std::endl;
-
+		map.draw_player(x, y);
+		map.draw_map();
+		map.handle_key(getch(), &x, &y, my_player, other_player);
+		map.change_map("gold_version", map.find_door(&x, &y, my_player), &x, &y);
+		system("cls");
 	}
-	else
-	{
-		std::cout << "FAILED" << std::endl;
-	}
-
-
-
-	std::cout << "TEST" << std::endl;
-
-
-	//Map			map;
-	//int			x;
-	//int			y;
-	//int			idx;
-
-	//int flag = 0;
-
-	//OtherPlayer other_player;
-	//MyPlayer my_player;
-	//my_player.SetPokemon();
-	//my_player.SetPokemon();
-	//other_player.SetPokemon();
-	//other_player.SetPokemon();
-
-	////Battle battle(&my_player, &other_player);
-
-	//x = 99;
-	//y = 6;
-	//map.first_set_map_file(argc, argv[1]);
-
-	//system("cls");
-	//while (1)
-	//{
-	//	map.draw_player(x, y);
-	//	map.draw_map();
-	//	//map.handle_key(getch(), &x, &y, my_player, other_player);
-	//	map.change_map(argv[1], map.find_door(&x, &y, my_player), &x, &y);
-	//	system("cls");
-	//}
 
 
 	return (0);
