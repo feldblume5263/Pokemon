@@ -522,6 +522,12 @@ void Battle::attack(CatchedPokemon* attakingPokemon, CatchedPokemon* defendingPo
 
 int Battle::calculateDamage(CatchedPokemon*  attakingPokemon, CatchedPokemon*  defendingPokemon, Skill* move)
 {
+    if (checkHit(move) == false)
+    {
+        gotoxy(message_x, message_y);
+        std::cout << "Miss the attck" << std::endl;
+        return;
+    }
 
     float SametypeAttackbonus = checkSametypeAttackbonus(attakingPokemon, move);
     float Decision = 0.0f;
@@ -583,6 +589,17 @@ float Battle::checkHitSpot()
         return 1.0f;
         hitSpot = false;
     }
+}
+
+bool Battle::checkHit(Skill* move)
+{
+    int accuracy = move->getAccuracy();
+
+    int RN = std::uniform_int_distribution<>(1, 100)(mersenne);
+    if (accuracy > RN)
+        return true;
+    else
+        return false;
 }
 
 int Battle::getRandomNumber()

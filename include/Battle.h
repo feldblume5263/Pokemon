@@ -75,6 +75,7 @@ private:
     float   checkSametypeAttackbonus(CatchedPokemon* attakingPokemon, Skill* move);
     float   calculateType(CatchedPokemon* defendingPokemon, Skill* move);
     float   checkHitSpot();
+    bool    checkHit(Skill* move);
     int     getRandomNumber();
     void    checkAlive(CatchedPokemon* pokemon);
     bool    checkPokemons(Player* player);

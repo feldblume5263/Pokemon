@@ -22,8 +22,8 @@ void Database::requestPokemon(Pokemon* pokemon, string name) {
 
 	http_request req(methods::GET);
 	client.request(req).then([=](http_response r) {
-		wcout << U("STATUS : ") << r.status_code() << endl;
-		wcout << "Content-Type : " << r.headers().content_type() << endl;
+		//wcout << U("STATUS : ") << r.status_code() << endl;
+		//wcout << "Content-Type : " << r.headers().content_type() << endl;
 		r.extract_json(true).then([&](web::json::value v) {
 			requestTypes(pokemon, v);
 			requestBaseStats(pokemon, v);
@@ -156,10 +156,6 @@ void Database::requestSkillURL(Pokemon* pokemon, string_t& url, size_t& move_set
 				string name(wname.begin(), wname.end());
 				string damage_type(wdamage_type.begin(), wdamage_type.end());
 				string type(wtype.begin(), wtype.end());
-
-				//std::cout << "@@@@@@@@@@@@@@@@@@@@@@" << std::endl;
-				//std::cout << damage_type << "13" << std::endl;
-				//std::cout << "@@@@@@@@@@@@@@@@@@@@@@"<< std::endl;
 
 
 				added_skill->setName(name);
