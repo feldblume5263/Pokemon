@@ -84,7 +84,7 @@ bool validPokemon(string poke_name) {
 
 }
 
-vector<string> getRandomPokemon() {
+vector<string> getRandomPokemon(int numPokemon) {
 	string list[14] = { "venusaur","charizard","blastoise","butterfree","pidgeot","pikachu",
 		"alakazam","scyther","gyarados","lapras","vaporeon","jolteon","flareon","snorlax" };
 	vector<string> ret;
@@ -93,7 +93,7 @@ vector<string> getRandomPokemon() {
 	uniform_int_distribution<int> dis(0, 13);
 	bool check[14] = { false, };
 	int idx;
-	for (int i = 0; i < 1;) {
+	for (int i = 0; i < numPokemon;) {
 		idx = dis(gen);
 		if (!check[idx]) {
 			ret.push_back(list[idx]);
@@ -104,14 +104,14 @@ vector<string> getRandomPokemon() {
 	return ret;
 }
 
-void selectPokemon(int x, int y, vector<string>& pokemons) {
+void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 	const int t_y = y;
 
 	printPokemon();
 	cout << "You can choose 3 pokemons" << endl;
 	cout << "After select pokemon, press the enter or space" << endl;
 
-	for (int i = 0; i < 1; ++i) {
+	for (int i = 0; i < numPokemon; ++i) {
 
 		gotoxy(x, y);
 		std::cout << "O\b";
@@ -194,7 +194,7 @@ void drawPokemonstBox()
 void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 {
 	drawPokemonstBox();
-	int numPokemon = 1;
+	int numPokemon = 3;
 
 	std::cout << "\n press Enter or Space bar to start the game" << std::endl;
 	std::cout << "GAME START" << std::endl;
@@ -206,8 +206,8 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 
 
 	vector<string> myPokemons;
-	selectPokemon(x, y, myPokemons);
-	vector<string> otherPokemons = getRandomPokemon();
+	selectPokemon(x, y, myPokemons, numPokemon);
+	vector<string> otherPokemons = getRandomPokemon(numPokemon);
 
 	std::cout << "press Enter or Space bar to collet pokemon information for pokeAPI" << std::endl;
 	while (!getEnterSpacebar());
