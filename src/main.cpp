@@ -196,7 +196,7 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 	drawPokemonstBox();
 	int numPokemon = 1;
 
-	std::cout << "\n press Enter or Space bart to start" << std::endl;
+	std::cout << "\n press Enter or Space bar to start the game" << std::endl;
 	std::cout << "GAME START" << std::endl;
 
 	system("cls");
@@ -209,6 +209,7 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 	selectPokemon(x, y, myPokemons);
 	vector<string> otherPokemons = getRandomPokemon();
 
+	std::cout << "press Enter or Space bar to collet pokemon information for pokeAPI" << std::endl;
 	while (!getEnterSpacebar());
 
 	system("cls");
