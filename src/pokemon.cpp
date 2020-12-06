@@ -46,6 +46,10 @@ Pokemon::Pokemon() {
 	this->base_speed = 90;
 	this->type1 = Electric;
 	this->type2 = None;
+
+	emoji = "MMMMMMMMN0kdlc:;;,,,,,,,;;:loxOXWMMMMMMMMMMMMN0dc;;::ccccccccccccccc:;;:lkXWMMMMMMMNOo:::cccccccccccccccccccccc:;,:xXMMMMWKd::ccccccccccccccccccccccccccc:;:d0WMW0lccc::::::::ccccccccccccccccccc:d0OxON0lcc:cdk0KK0kdc::cccccccc:llc:::;c0NX0dOdcccxXWMMMMMMWXkc:ccc::::oOKOdlclkNNOkkdc:cOWMMMMMMMMMMMXkdxkkddx0KKKK00O0NOocdd;:xWMMMMMMNOooxXMWKxdkKKKKKKKKKK0KKl,.cd,:OMMMMMMMOdkl.cKMMX0xkKK0OOOkxxxKK; .cd,:OMMMMMMWx;:'..lNMMMNkkkkOKKKkdlkXl.'odc,dWMMMMMMO,.  .:0MMMMNxoOXXXXKOod0kldxkO;;kWMMMMMNd'...:KMMMMM0ox00KK0kolOKKOkKW0c;xNMMMMMNOl:lOWMMMMMNOooooollok00kkKMMMXxclkXMMMMMWNWMMMMMMMMMNK0OkkO00kk0NMMMMMMNOoodk0XNWMMMMMMMMMMMMWNX0kdlcxXMMMMMMMMMWKxc;;cloddxkkkkkkxxdolc:,''':kWMMMMW0kkxdlcll::::;;;;,,,,,,'.',,,,,,':0MMMxd:,:cldOXKd:;:ccccccc:;,,cc;'',,,',xNMMc:,,:d0XNXXKkl:;;;;;,;;;cx0KOdc:;;;loOWMKo,;kXNNXX0xOKOxlcloooox0KKKKKOkOxclddKMMKokNNNXX0ddKKK0kKWMMMNOOKKKK0kOKkccxdOWWOkXNXXX0do0KKKOONMMMMW0kKKKKKkxkd:cxoxNXxOXXKKOolkKKKK0O0XNNXKO0KKKKKOddl;:dlxW0xOKK0kllkKKKKKKK000000KKKKK0kxxdcoxodKM0xOKkolcokO00KKKKKKKKKK0OkxxxoldXWNNMMNxoookXKl:cloxkkkkkkkkkkxxxdolcclONMMMMMMX00NMW0dool:cddddooooodolc:cldkdodKMMMMMMMMMM0ddk0xcl0NNXXKKKXXXK00OOOOOkOXMMMMMMMMMMXxlodlcxNMMMMMMMMMMMMMMMMMMMMMMMMM";
+
+
 	/////////////////////////
 	setIndiStat();
 	setEffStat();
@@ -55,16 +59,6 @@ Pokemon::Pokemon() {
 		this->moves[i] = new Skill();
 	}
 	num_of_skill = 0;
-
-	//for (int i = 0; i < emoji.length(); ++i)
-	//{
-	//	if (emoji[i] == ' ')
-	//	{
-	//		emoji.erase(i, 1);
-	//	}
-	//}
-
-
 }
 Pokemon::Pokemon(string name) {
 	this->name = name;
@@ -73,7 +67,6 @@ Pokemon::Pokemon(string name) {
 	moves[2] = nullptr;
 	moves[3] = nullptr;
 
-
 	setIndiStat();
 	setEffStat();
 	setNature();
@@ -81,16 +74,6 @@ Pokemon::Pokemon(string name) {
 	emoji = getEmoji(name);
 
 	num_lines_emoji = emoji.length() / 40;
-
-
-	//for (int i = 0; i < emoji.length(); ++i)
-	//{
-	//	if (emoji[i] == ' ')
-	//	{
-	//		emoji.erase(i, 1);
-	//	}
-	//}
-
 }
 Pokemon::~Pokemon() {
 	delete moves[0];
@@ -194,8 +177,6 @@ void Pokemon::setStat() {
 	special_attack = (int)ceil((((double)base_special_attack * 2 + (double)indi_special_attack + (double)eff_special_attack / 4) / 2 + 5) * nature_stat_rate[getNature()][2]);
 	special_defense = (int)ceil((((double)base_special_defense * 2 + (double)indi_special_defense + (double)eff_special_defense / 4) / 2 + 5) * nature_stat_rate[getNature()][3]);
 	speed = (int)ceil((((double)base_speed * 2 + (double)indi_speed + (double)eff_speed / 4) / 2 + 5) * nature_stat_rate[getNature()][4]);
-
-
 }
 
 

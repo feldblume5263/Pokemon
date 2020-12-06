@@ -59,13 +59,10 @@ void Player::SetPokemon(string name) {
     CatchedPokemon*pokemon = new CatchedPokemon(name);
     //Database database();
 
-    // todo
     Database database = Database();
     database.requestPokemon(pokemon, name);
     //std::thread thr1(database.requestPokemon, pokemon, name);
     //thr1.join();
-
-    //Database::requestPokemon(Pokemon * pokemon, string name);
 
     this->pokemons.push_back(pokemon);
 }
@@ -113,7 +110,6 @@ MyPlayer::MyPlayer()
 
 MyPlayer::~MyPlayer()
 {
-    // todo : delete
 }
 
 std::vector<Item*> MyPlayer::getItems()

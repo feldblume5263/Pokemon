@@ -140,13 +140,13 @@ void		Map::handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o)
 	else if (key == M_KEY_SPACE)
 	{
 		if (this->pokemon_map[y - 1][x] <= '9' && this->pokemon_map[y - 1][x] >= '1')
-			Battle(p, o);
+			Battle battle(p, o);
 		else if (this->pokemon_map[y + 1][x] <= '9' && this->pokemon_map[y + 1][x] >= '1')
-			Battle(p, o);
+			Battle battle(p, o);
 		else if (this->pokemon_map[y][x - 1] <= '9' && this->pokemon_map[y][x - 1] >= '1')
-			Battle(p, o);
+			Battle battle(p, o);
 		else if (this->pokemon_map[y][x + 1] <= '9' && this->pokemon_map[y][x + 1] >= '1')
-			Battle(p, o);
+			Battle battle(p, o);
 	}
 	else if (key == M_KEY_ESC)
 	{

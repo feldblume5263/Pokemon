@@ -1,4 +1,7 @@
 ﻿#include "../include/map.h"
+#include <iostream>
+#include <filesystem>
+using namespace std;
 
 
 void gotoxy(int column, int line)
@@ -64,44 +67,39 @@ void printPokemon() {
 	cout << "  13.chikorita		(치코리타)" << endl;
 	cout << "  --------------------------------" << endl;
 }
-bool validPokemon(string poke_name) {
 
-	if (poke_name == "piplup") return true;
-	if (poke_name == "bulbasaur") return true;
-	if (poke_name == "marill") return true;
-	if (poke_name == "totodile") return true;
-	if (poke_name == "squirtle") return true;
-	if (poke_name == "charmander") return true;
-	if (poke_name == "haunter") return true;
-	if (poke_name == "charizard") return true;
-	if (poke_name == "meowth") return true;
-	if (poke_name == "psyduck") return true;
-	if (poke_name == "dragonite") return true;
-	if (poke_name == "pikachu") return true;
-	if (poke_name == "chikorita") return true;
-	cout << "Invalide Pokemon Name" << endl;
-	return false;
+//bool validPokemon(string poke_name) {
+//
+//	if (poke_name == "piplup") return true;
+//	if (poke_name == "bulbasaur") return true;
+//	if (poke_name == "marill") return true;
+//	if (poke_name == "totodile") return true;
+//	if (poke_name == "squirtle") return true;
+//	if (poke_name == "charmander") return true;
+//	if (poke_name == "haunter") return true;
+//	if (poke_name == "charizard") return true;
+//	if (poke_name == "meowth") return true;
+//	if (poke_name == "psyduck") return true;
+//	if (poke_name == "dragonite") return true;
+//	if (poke_name == "pikachu") return true;
+//	if (poke_name == "chikorita") return true;
+//	cout << "Invalide Pokemon Name" << endl;
+//	return false;
+//}
 
-}
-
-vector<string> getRandomPokemon(int numPokemon) {
-	string list[14] = { "venusaur","charizard","blastoise","butterfree","pidgeot","pikachu",
-		"alakazam","scyther","gyarados","lapras","vaporeon","jolteon","flareon","snorlax" };
-	vector<string> ret;
+void getRandomPokemon(vector<string>& pokemons, int numPokemon)
+{
+	const int numAllPokemon = 13;
+	string list[numAllPokemon] = { "piplup","bulbasaur","marill","totodile","squirtle","charmander",
+		"haunter","charizard","meowth","psyduck","dragonite","pikachu","chikorita"};
 	random_device rd;
 	mt19937 gen(rd());
-	uniform_int_distribution<int> dis(0, 13);
-	bool check[14] = { false, };
+	uniform_int_distribution<int> dis(0, numAllPokemon-1);
 	int idx;
-	for (int i = 0; i < numPokemon;) {
+	for (int i = 0; i < numPokemon; ++i) {
 		idx = dis(gen);
-		if (!check[idx]) {
-			ret.push_back(list[idx]);
-			check[idx] = true;
-			i++;
-		}
+		pokemons.push_back(list[idx]);
 	}
-	return ret;
 }
 
 void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
@@ -140,13 +138,13 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 			pokemons.push_back("bulbasaur");
 			break;
 		case 2:
-			pokemons.push_back("marill ");
+			pokemons.push_back("marill");
 			break;
 		case 3:
 			pokemons.push_back("totodile");
 			break;
 		case 4:
-			pokemons.push_back("squirtle ");
+			pokemons.push_back("squirtle");
 			break;
 		case 5:
 			pokemons.push_back("charmander");
@@ -161,7 +159,7 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 			pokemons.push_back("meowth");
 			break;
 		case 9:
-			pokemons.push_back("meowth");
+			pokemons.push_back("psyduck");
 			break;
 		case 10:
 			pokemons.push_back("dragonite");
@@ -174,8 +172,8 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 			break;
 		}
 
-		gotoxy(x, y + 16 + i * 2);
-		std::cout << "Add the " << pokemons[i] << std::endl;
+		gotoxy(x, y + 15 + i);
+		std::cout << "Add the " << pokemons[i] << " in my pokemons" << std::endl;
 	}
 
 }
@@ -194,22 +192,23 @@ void drawPokemonstBox()
 void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 {
 	drawPokemonstBox();
-	int numPokemon = 3;
 
 	std::cout << "\n press Enter or Space bar to start the game" << std::endl;
-	std::cout << "GAME START" << std::endl;
+	std::cout << " GAME START" << std::endl;
+	while (!getEnterSpacebar());
 
 	system("cls");
 	drawPokemonstBox();
 	std::cout << "\n\n" << std::endl;
+
 	int x = 0; int y = 13;
-
-
+	int numPokemon = 3;
 	vector<string> myPokemons;
+	vector<string> otherPokemons;
 	selectPokemon(x, y, myPokemons, numPokemon);
-	vector<string> otherPokemons = getRandomPokemon(numPokemon);
+	getRandomPokemon(otherPokemons, numPokemon);
 
-	std::cout << "press Enter or Space bar to collet pokemon information for pokeAPI" << std::endl;
+	std::cout << "\npress Enter or Space bar to collet pokemon information for pokeAPI" << std::endl;
 	while (!getEnterSpacebar());
 
 	system("cls");
@@ -218,26 +217,30 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 	gotoxy(x, y - 5);
 	std::cout << "We are going to collet pokemon information." << std::endl;
 	gotoxy(x, y - 4);
-	std::cout << "Take some seconds." << std::endl;
+	std::cout << "Take some seconds.\n" << std::endl;
+
 
 	for (int i = 0; i < numPokemon; ++i)
 	{
+		std::cout << ". . ." << std::endl;
 		my_player.SetPokemon(myPokemons[i]);
 		my_player.GetPokemon(i)->setStat();
 		my_player.GetPokemon(i)->setRemainHp(my_player.GetPokemon(i)->getHealthPoint());
-		gotoxy(x, y + i);
-		std::cout << "My" <<  i << " pokemons is stored." << std::endl;
+		//gotoxy(x, y + i * 2);
+		std::cout << "My" << " pokemon " << i + 1 << " is stored.\n" << std::endl;
 	}
 
 	for (int i = 0; i < numPokemon; ++i)
 	{
+		std::cout << ". . ." << std::endl;
 		other_player.SetPokemon(otherPokemons[i]);
 		other_player.GetPokemon(i)->setStat();
 		other_player.GetPokemon(i)->setRemainHp(other_player.GetPokemon(i)->getHealthPoint());
-		gotoxy(x, y + 3+ i);
-		std::cout << "Other" << i << " pokemons is stored." << std::endl;
+		std::cout << "Other" << " pokemon " << i + 1 << " is stored.\n" << std::endl;
 	}
 
+	std::cout << "\nPress Enter or SpaceBar to Play" << std::endl;
+	while (!getEnterSpacebar());
 }
 
 
@@ -246,28 +249,46 @@ int				main(int argc, char* argv[])
 	//system("printf '\e[8;100;200t'");
 	system(" mode  con lines=65   cols=200 ");
 
-	//otherplayer other_player;
-	//myplayer my_player;
-	//my_player.setpokemon();
-	//my_player.setpokemon();
-	//other_player.setpokemon();
-	//other_player.setpokemon();
-	//battle battle(&my_player, &other_player);
-
+	//char path[] = "C:\Users\youju\\source\repos\push\gold_version\";
+	std::string temp_path = "..\\gold_version\\";
+	std::cout << "Enter your map folder absolute path or relative path" << std::endl;
+	std::cout << " ex)\\repos\\push\\gold_version\\" << std::endl;
+	std::cout << " ex)..\\gold_version\\" << std::endl;
+	std::cout << "TYPE : " << std::flush;
+	std::getline(std::cin, temp_path);
+	
+	char path[100] = "0";
+	int numSlash = 0;
+	for (int ix = 0; ix < temp_path.size(); ++ix)
+	{
+		if (temp_path[ix] == '\\')
+		{
+			path[ix + numSlash] = '\\';
+			path[ix + numSlash +1] = '\\';
+			numSlash += 1;
+		}
+		path[ix + numSlash] = temp_path[ix];
+	}
+	
 
 	MyPlayer my_player;
 	OtherPlayer other_player;
-	selectPokemons(my_player, other_player);
+	my_player.SetPokemon();
+	other_player.SetPokemon();
+
+
+	// push the pokemon in player
+	//MyPlayer my_player;
+	//OtherPlayer other_player;
+	//selectPokemons(my_player, other_player);
 
 	Map			map;
 	int			idx;
-
-	//char path[] = "..\\gold_version\\";
-	char path[] = "C:\\Users\\youju\\source\\repos\\push\\gold_version\\";
-
 	map.first_set_map_file(argc, path);
 	my_player.SetPos(99, 6);
 	system("cls");
+
+	// map display
 	while (1)
 	{
 		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
@@ -278,5 +299,4 @@ int				main(int argc, char* argv[])
 	}
 
 	return (0);
-
 }

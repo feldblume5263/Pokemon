@@ -22,8 +22,7 @@ void Database::requestPokemon(Pokemon* pokemon, string name) {
 
 	http_request req(methods::GET);
 	client.request(req).then([=](http_response r) {
-		//wcout << U("STATUS : ") << r.status_code() << endl;
-		//wcout << "Content-Type : " << r.headers().content_type() << endl;
+
 		r.extract_json(true).then([&](web::json::value v) {
 			requestTypes(pokemon, v);
 			requestBaseStats(pokemon, v);
@@ -141,7 +140,9 @@ void Database::requestSkillURL(Pokemon* pokemon, string_t& url, size_t& move_set
 	client.request(req).then([pokemon, &move_setting_idx](http_response r) {
 		
 		r.extract_json(true).then([pokemon, &move_setting_idx](web::json::value v) {
-			if (v.at(L"power").is_null()) {
+			if (v.at(L"power").is_null() || v.at(L"accuracy").is_null() || 
+				v.at(L"damage_class").is_null() && v.at(L"type").is_null() ||
+				v.at(L"name").is_null() && v.at(L"pp").is_null()) {
 				return;
 			}
 			else {

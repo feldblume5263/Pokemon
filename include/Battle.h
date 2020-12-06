@@ -1,10 +1,11 @@
 #pragma once
 
-#include <random>
 #include "pokemon.h"
 #include "player.h"
 
+#include <random>
 #include <conio.h>
+#include <vector>
 #include <windows.h>
 
 enum KeyboardKey
@@ -75,7 +76,6 @@ private:
     float   checkSametypeAttackbonus(CatchedPokemon* attakingPokemon, Skill* move);
     float   calculateType(CatchedPokemon* defendingPokemon, Skill* move);
     float   checkHitSpot();
-    bool    checkHit(Skill* move);
     int     getRandomNumber();
     void    checkAlive(CatchedPokemon* pokemon);
     bool    checkPokemons(Player* player);
