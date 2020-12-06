@@ -271,16 +271,16 @@ int				main(int argc, char* argv[])
 	}
 	
 
-	MyPlayer my_player;
-	OtherPlayer other_player;
-	my_player.SetPokemon();
-	other_player.SetPokemon();
-
-
-	// push the pokemon in player
 	//MyPlayer my_player;
 	//OtherPlayer other_player;
-	//selectPokemons(my_player, other_player);
+	//my_player.SetPokemon();
+	//other_player.SetPokemon();
+
+
+	 push the pokemon in player
+	MyPlayer my_player;
+	OtherPlayer other_player;
+	selectPokemons(my_player, other_player);
 
 	Map			map;
 	int			idx;
