@@ -111,7 +111,7 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 
 	for (int i = 0; i < numPokemon; ++i) {
 
-		gotoxy(x, y);
+		gotoxy(x, y + 1);
 		std::cout << "O\b";
 		while (getArrowkey(x, y) == false)
 		{
@@ -125,7 +125,7 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 			{
 				y -= 1;
 			}
-			gotoxy(x, y);
+			gotoxy(x, y + 1);
 			std::cout << "O\b";
 		}
 
@@ -256,7 +256,7 @@ int				main(int argc, char* argv[])
 	std::cout << " ex)..\\gold_version\\" << std::endl;
 	std::cout << "TYPE : " << std::flush;
 	std::getline(std::cin, temp_path);
-	
+
 	char path[100] = "0";
 	int numSlash = 0;
 	for (int ix = 0; ix < temp_path.size(); ++ix)
@@ -269,7 +269,7 @@ int				main(int argc, char* argv[])
 		}
 		path[ix + numSlash] = temp_path[ix];
 	}
-	
+
 
 	//MyPlayer my_player;
 	//OtherPlayer other_player;

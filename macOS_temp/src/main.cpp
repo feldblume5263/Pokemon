@@ -108,7 +108,7 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 
 	for (int i = 0; i < numPokemon; ++i) {
 
-		gotoxy(x, y);
+		gotoxy(x, y + 1);
 		std::cout << "O\b";
 		while (getArrowkey(x, y) == false)
 		{
@@ -122,7 +122,7 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 			{
 				y -= 1;
 			}
-			gotoxy(x, y);
+			gotoxy(x, y + 1);
 			std::cout << "O\b";
 		}
 
@@ -285,15 +285,15 @@ int				main(int argc, char* argv[])
 	my_player.SetPos(99, 6);
 	system("clear");
 
-	// map display
-	while (1)
-	{
-		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
-		map.draw_map();
-		map.handle_key(noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
-		map.change_map(&my_player, path, map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
-		system("clear");
-	}
+	// // map display
+	// while (1)
+	// {
+	// 	map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
+	// 	map.draw_map();
+	// 	map.handle_key(noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
+	// 	map.change_map(&my_player, path, map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
+	// 	system("clear");
+	// }
 
 	return (0);
 }

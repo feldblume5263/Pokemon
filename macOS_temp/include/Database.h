@@ -4,7 +4,6 @@
 #include <cpprest/http_client.h>
 #include <cpprest/filestream.h>
 
-
 //#include "../include/cpprestsdk_x64-windows/include/cpprest/http_client.h"
 //#include "../include/cpprestsdk_x64-windows/include/cpprest/filestream.h"
 
@@ -34,7 +33,7 @@ private:
 	void requestSkills(Pokemon*, json::value&);
 	void requestSkillURL(Pokemon*, string_t&, size_t&);
 
-	const string URI = "https://pokeapi.co/api/v2/";
+	const string URI = "http://pokeapi.co/api/v2/";
 	mt19937 *gen;
 };
 
