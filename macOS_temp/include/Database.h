@@ -37,4 +37,8 @@ private:
 	mt19937 *gen;
 };
 
+// std::string WidestringToString(const std::wstring& wstr, const std::string& locale);
+// std::wstring StringToWideString(const std::string& str, const std::string& locale);
+
+
 #endif

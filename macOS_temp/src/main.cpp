@@ -104,7 +104,7 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 
 	printPokemon();
 	cout << "You can choose 3 pokemons" << endl;
-	cout << "After select pokemon, press the enter or space" << endl;
+	cout << "After select pokemon, press the Spacebar" << endl;
 
 	for (int i = 0; i < numPokemon; ++i) {
 
@@ -190,7 +190,7 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 {
 	drawPokemonstBox();
 
-	std::cout << "\n press Enter or Space bar to start the game" << std::endl;
+	std::cout << "\n press Space bar to start the game" << std::endl;
 	std::cout << " GAME START" << std::endl;
 	while (!getEnterSpacebar());
 
@@ -205,14 +205,14 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 	selectPokemon(x, y, myPokemons, numPokemon);
 	getRandomPokemon(otherPokemons, numPokemon);
 
-	std::cout << "\npress Enter or Space bar to collet pokemon information for pokeAPI" << std::endl;
+	std::cout << "\npress Space bar to collet pokemon information for pokeAPI" << std::endl;
 	while (!getEnterSpacebar());
 
 	system("clear");
 	drawPokemonstBox();
 
 	gotoxy(x, y - 5);
-	std::cout << "We are going to collet pokemon information." << std::endl;
+	std::cout << "We are going to collet pokemon information from pokeAPI." << std::endl;
 	gotoxy(x, y - 4);
 	std::cout << "Take some seconds.\n" << std::endl;
 
@@ -236,7 +236,7 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 		std::cout << "Other" << " pokemon " << i + 1 << " is stored.\n" << std::endl;
 	}
 
-	std::cout << "\nPress Enter or SpaceBar to Play" << std::endl;
+	std::cout << "\nPress SpaceBar to Play" << std::endl;
 	while (!getEnterSpacebar());
 }
 
@@ -249,8 +249,8 @@ int				main(int argc, char* argv[])
 	//char path[] = "C:\Users\youju\\source\repos\push\gold_version\";
 	std::string temp_path = "..\\gold_version\\";
 	std::cout << "Enter your map folder absolute path or relative path" << std::endl;
-	std::cout << " ex)\\repos\\push\\gold_version\\" << std::endl;
-	std::cout << " ex)..\\gold_version\\" << std::endl;
+	std::cout << " ex)/your address of/gold_version\\" << std::endl;
+	std::cout << " ex)../gold_version/" << std::endl;
 	std::cout << "TYPE : " << std::flush;
 	std::getline(std::cin, temp_path);
 
@@ -285,15 +285,15 @@ int				main(int argc, char* argv[])
 	my_player.SetPos(99, 6);
 	system("clear");
 
-	// // map display
-	// while (1)
-	// {
-	// 	map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
-	// 	map.draw_map();
-	// 	map.handle_key(noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
-	// 	map.change_map(&my_player, path, map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
-	// 	system("clear");
-	// }
+	// map display
+	while (1)
+	{
+		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
+		map.draw_map();
+		map.handle_key(noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
+		map.change_map(&my_player, path, map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
+		system("clear");
+	}
 
 	return (0);
 }

@@ -215,7 +215,7 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 	drawPokemonstBox();
 
 	gotoxy(x, y - 5);
-	std::cout << "We are going to collet pokemon information." << std::endl;
+	std::cout << "We are going to collet pokemon information from pokeAPI." << std::endl;
 	gotoxy(x, y - 4);
 	std::cout << "Take some seconds.\n" << std::endl;
 
@@ -254,7 +254,7 @@ int				main(int argc, char* argv[])
 	std::cout << "Enter your map folder absolute path or relative path" << std::endl;
 	std::cout << " ex)\\repos\\push\\gold_version\\" << std::endl;
 	std::cout << " ex)..\\gold_version\\" << std::endl;
-	std::cout << "TYPE : " << std::flush;
+	std::cout << "GAME VERSION : " << std::flush;
 	std::getline(std::cin, temp_path);
 
 	char path[100] = "0";
@@ -270,14 +270,7 @@ int				main(int argc, char* argv[])
 		path[ix + numSlash] = temp_path[ix];
 	}
 
-
-	//MyPlayer my_player;
-	//OtherPlayer other_player;
-	//my_player.SetPokemon();
-	//other_player.SetPokemon();
-
-
-	 push the pokemon in player
+	// push the pokemon in player
 	MyPlayer my_player;
 	OtherPlayer other_player;
 	selectPokemons(my_player, other_player);

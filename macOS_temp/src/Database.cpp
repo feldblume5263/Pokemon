@@ -36,7 +36,7 @@ void Database::requestPokemon(Pokemon* pokemon, string name) {
 void Database::requestTypes(Pokemon* pokemon, web::json::value& val) {
 
 	web::json::value type1, type2;
-	auto types = val.at(U("types"));
+	auto types = val.at(string_t("types"));
 	web::json::array type_array = types.as_array();
 	size_t type_num = type_array.size();
 
@@ -44,7 +44,7 @@ void Database::requestTypes(Pokemon* pokemon, web::json::value& val) {
 	if (type_num == 1) {
 		// then only Type1 is set
 		type1 = type_array.at(0);
-		string_t type1_w = type1.at(U("type")).at(U("name")).as_string();
+		string_t type1_w = type1.at(string_t("type")).at(string_t("name")).as_string();
 		string type1_str(type1_w.begin(), type1_w.end());
 
 		pokemon->setType1(type1_str);
@@ -53,8 +53,8 @@ void Database::requestTypes(Pokemon* pokemon, web::json::value& val) {
 	else if (type_num == 2) {
 		type1 = type_array.at(0);
 		type2 = type_array.at(1);
-		string_t type1_w = type1.at(U("type")).at(U("name")).as_string();
-		string_t type2_w = type2.at(U("type")).at(U("name")).as_string();
+		string_t type1_w = type1.at(string_t("type")).at(string_t("name")).as_string();
+		string_t type2_w = type2.at(string_t("type")).at(string_t("name")).as_string();
 		string type1_str(type1_w.begin(), type1_w.end());
 		string type2_str(type2_w.begin(), type2_w.end());
 
@@ -71,25 +71,24 @@ void Database::requestTypes(Pokemon* pokemon, web::json::value& val) {
 
 		type1 = type_array.at(type1_idx);
 		type2 = type_array.at(type2_idx);
-		string_t type1_w = type1.at(U("type")).at(U("name")).as_string();
-		string_t type2_w = type2.at(U("type")).at(U("name")).as_string();
+		string_t type1_w = type1.at(string_t("type")).at(string_t("name")).as_string();
+		string_t type2_w = type2.at(string_t("type")).at(string_t("name")).as_string();
 		string type1_str(type1_w.begin(), type1_w.end());
 		string type2_str(type2_w.begin(), type2_w.end());
 
 		pokemon->setType1(type1_str);
 		pokemon->setType2(type2_str);
 	}
-
 }
 // hp, attack, defense, special-attack, special-defense, speed
 
 void Database::requestBaseStats(Pokemon* pokemon, json::value& val) {
-	auto stats = val.at(U("stats"));
+	auto stats = val.at(string_t("stats"));
 
 	json::array stats_array = stats.as_array();
 	for (auto it = stats_array.cbegin(); it != stats_array.cend(); it++) {
-		int base_stat = it->at(U("base_stat")).as_integer();
-		string_t wstat_name = it->at(U("stat")).at(U("name")).as_string();
+		int base_stat = it->at(string_t("base_stat")).as_integer();
+		string_t wstat_name = it->at(string_t("stat")).at(string_t("name")).as_string();
 
 		string stat_name(wstat_name.begin(), wstat_name.end());
 		//string stat_name;
@@ -104,22 +103,20 @@ void Database::requestBaseStats(Pokemon* pokemon, json::value& val) {
 }
 
 void Database::requestSkills(Pokemon* pokemon, json::value& val) {
-	auto moves = val.at(U("moves"));
+	auto moves = val.at(string_t("moves"));
 
 	json::array moves_array = moves.as_array();
 	size_t num_of_moves = moves_array.size();
 	vector<bool> is_used_move;
-
 	uniform_int_distribution<int> dis(0, num_of_moves - 1);
 	size_t num_of_available_moves = num_of_moves;
 	size_t move_setting_idx = 0;
 	is_used_move.assign(num_of_moves, false);
-
 	while (num_of_available_moves != 0) {
 		int move_idx = dis(*gen);
 		if (!is_used_move[move_idx]) {
 			auto move = moves_array.at(size_t(move_idx));
-			string_t url = move.at(U("move")).at(U("urU(")).as_string();
+			string_t url = move.at(string_t("move")).at(string_t("url")).as_string();
 			is_used_move[move_idx] = true;
 			num_of_available_moves -= 1;
 
@@ -140,19 +137,19 @@ void Database::requestSkillURL(Pokemon* pokemon, string_t& url, size_t& move_set
 	client.request(req).then([pokemon, &move_setting_idx](http_response r) {
 
 		r.extract_json(true).then([pokemon, &move_setting_idx](web::json::value v) {
-			if (v.at(U("power")).is_null() || v.at(U("accuracy")).is_null() ||
-				v.at(U("damage_class")).is_null() && v.at(U("type")).is_null() ||
-				v.at(U("name")).is_null() && v.at(U("pp")).is_null()) {
+			if (v.at(string_t("power")).is_null() || v.at(string_t("accuracy")).is_null() ||
+				v.at(string_t("damage_class")).is_null() && v.at(string_t("type")).is_null() ||
+				v.at(string_t("name")).is_null() && v.at(string_t("pp")).is_null()) {
 				return;
 			}
 			else {
 				Skill* added_skill = new Skill();
-				string_t wname = v.at(U("name")).as_string();
-				string_t wdamage_type = v.at(U("damage_class")).at(U("name")).as_string();
-				string_t wtype = v.at(U("type")).at(U("name")).as_string();
-				int power = v.at(U("power")).as_integer();
-				int accuracy = v.at(U("accuracy")).as_integer();
-				int pp = v.at(U("pp")).as_integer();
+				string_t wname = v.at(string_t("name")).as_string();
+				string_t wdamage_type = v.at(string_t("damage_class")).at(string_t("name")).as_string();
+				string_t wtype = v.at(string_t("type")).at(string_t("name")).as_string();
+				int power = v.at(string_t("power")).as_integer();
+				int accuracy = v.at(string_t("accuracy")).as_integer();
+				int pp = v.at(string_t("pp")).as_integer();
 
 				string name(wname.begin(), wname.end());
 				string damage_type(wdamage_type.begin(), wdamage_type.end());
