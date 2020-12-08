@@ -302,13 +302,45 @@ void Battle::selectMove()
 
     // select move
     if (y == f_y)
+    {
+        if (my_selected_pokemon->getSkill(0)->getRemainPP() <= 0)
+        {
+            gotoxy(message_x, message_y);
+            std::cout << "Remain pp is 0. Can`t use this move." << std::endl;
+            selectMove();
+        }
         fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->getSkill(0));
+    }
     else if (y == f_y + 3)
+    {
+        if (my_selected_pokemon->getSkill(1)->getRemainPP() <= 0)
+        {
+            gotoxy(message_x, message_y);
+            std::cout << "Remain pp is 0. Can`t use this move." << std::endl;
+            selectMove();
+        }
         fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->getSkill(1));
+    }
     else if (y == f_y + 6)
+    {
+        if (my_selected_pokemon->getSkill(2)->getRemainPP() <= 0)
+        {
+            gotoxy(message_x, message_y);
+            std::cout << "Remain pp is 0. Can`t use this move." << std::endl;
+            selectMove();
+        }
         fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->getSkill(2));
+    }
     else if (y == f_y + 9)
+    {
+        if (my_selected_pokemon->getSkill(3)->getRemainPP() <= 0)
+        {
+            gotoxy(message_x, message_y);
+            std::cout << "Remain pp is 0. Can`t use this move." << std::endl;
+            selectMove();
+        }
         fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->getSkill(3));
+    }
 }
 
 void Battle::fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skill* move)
@@ -366,7 +398,10 @@ void Battle::fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skil
                     changePokemon(my_player);
 
                     if (my_selected_pokemon->Alive() == true)
+                    {
+                        while (!getEnterSpacebar());
                         break;
+                    }
                 }
 
                 return;
@@ -406,8 +441,12 @@ void Battle::fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skil
                 {
                     changePokemon(my_player);
 
-                    if (myPokemon->Alive() == true)
-                        break;                  
+                    if (my_selected_pokemon->Alive() == true)
+                    {
+                        break;
+                    }
+
+
                 }
                 return;
             }
@@ -755,6 +794,8 @@ void Battle::changePokemon(MyPlayer* player)
     if (my_selected_pokemon->Alive() == false)
     {
         display();
+
+        
         gotoxy(message_x, message_y);
         std::cout << my_selected_pokemon->getName() << " is fainted." << std::endl;
         while (!getEnterSpacebar());
