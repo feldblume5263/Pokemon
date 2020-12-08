@@ -2,10 +2,10 @@
 #define MAP_H
 
 # include <iostream>
-# include <unistd.h>
+//# include <unistd.h>
 # include <stdio.h>
 # include <vector>
-# include <termios.h>
+//# include <termios.h>
 # include <fstream>
 # include <string>
 # include <string.h>
@@ -33,9 +33,7 @@ private:
 	int				pre_f;
 
 public:
-
 	int check_valid(int argc, char *file_path);
-	int noah_getch();
 	void handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o);
 	void set_map_line(string string);
 	void first_set_map_file(int argc, char *file_path);

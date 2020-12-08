@@ -1,15 +1,14 @@
 ﻿// #include <windows.h>
 // #include <conio.h>
-# include <ctime>
-# include <iostream>
-# include <termios.h>
+#include <ctime>
+#include <iostream>
+//# include <termios.h>
 # include <fstream>
 # include <string>
-# include <unistd.h>
+//# include <unistd.h>
 # include <cstdlib>
 # include "Battle.h"
-
-// todo : make other pokemon attack, my pokemon attack function
+# include "mac_utils.h"
 
 
 const double type_damage_rate[19][19] = {
@@ -59,21 +58,6 @@ Battle::Battle(MyPlayer* _my_player)
     std::cout << "\a" << std::endl;
 }
 
-int			noah_getch()
-{
-	struct	termios oldt;
-	struct	termios newt;
-	int		ch;
-
-	tcgetattr( STDIN_FILENO, &oldt);
-	newt = oldt;
-	newt.c_lflag &= ~( ICANON | ECHO);
-	tcsetattr( STDIN_FILENO, TCSANOW, &newt);
-	ch = getchar();
-	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
-	return (ch);
-}
-
 Battle::Battle(MyPlayer* _my_player, OtherPlayer* _other_player)
     :mersenne(static_cast<unsigned int>(std::time(nullptr)))
 {
@@ -87,15 +71,6 @@ Battle::Battle(MyPlayer* _my_player, OtherPlayer* _other_player)
     //    return;
     //}
     startBattle();
-}
-
-Battle::Battle(MyPlayer* _my_player, CatchedPokemon* _other_pokemon)
-{
-    my_player = _my_player;
-    other_selected_pokemon = _other_pokemon;
-    my_selected_pokemon = my_player->GetPokemon(0);
-
-    startHunting();
 }
 
 void Battle::startBattle()
@@ -117,14 +92,21 @@ void Battle::startBattle()
 
     //other_player->setLiveState(false);
 
+    // origin state
+    for (auto pokemon : other_player->getPokemonsVector())
+    {
+        pokemon->setAlive(true);
+        pokemon->setRemainHp(pokemon->getHealthPoint());
+        for (int i = 0; i < 4; i++)
+        {
+            if (pokemon->getSkill(i) != nullptr)
+                pokemon->getSkill(i)->setRemainPP(pokemon->getSkill(i)->getPP());
+        }
+    }
+
     my_selected_pokemon = nullptr;
     other_selected_pokemon = nullptr;
     while (!getEnterSpacebar());
-}
-
-void Battle::startHunting()
-{
-    // todo delete
 }
 
 void Battle::display()
@@ -231,18 +213,23 @@ void Battle::printHPbar(CatchedPokemon* pokemon)
 
 void Battle::drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y)
 {
-    for (int i = 0; i < 20; ++i)
+    std::string emoji = pokemon->getEmoji();
+    int numLines = (pokemon->getNumLine() >= 20) ? 20 : pokemon->getNumLine();
+
+    for (int i = 0; i < numLines; ++i)
     {
         for (int j = 0; j < 40; ++j)
         {
             gotoxy(place_x + j, place_y + i);
-            char c = pokemon->emoji[j + i * 40];
+            char c = emoji[j + i * 40];
             if (c == 'M')
+            {
                 std::cout << ' ';
-            else if (c == ' ')
-                std::cout << ' /b';
+            }
             else
+            {
                 std::cout << c;
+            }
         }
         std::cout << std::endl;
     }
@@ -316,13 +303,45 @@ void Battle::selectMove()
 
     // select move
     if (y == f_y)
+    {
+        if (my_selected_pokemon->getSkill(0)->getRemainPP() <= 0)
+        {
+            gotoxy(message_x, message_y);
+            std::cout << "Remain pp is 0. Can`t use this move." << std::endl;
+            selectMove();
+        }
         fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->getSkill(0));
+    }
     else if (y == f_y + 3)
+    {
+        if (my_selected_pokemon->getSkill(1)->getRemainPP() <= 0)
+        {
+            gotoxy(message_x, message_y);
+            std::cout << "Remain pp is 0. Can`t use this move." << std::endl;
+            selectMove();
+        }
         fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->getSkill(1));
+    }
     else if (y == f_y + 6)
+    {
+        if (my_selected_pokemon->getSkill(2)->getRemainPP() <= 0)
+        {
+            gotoxy(message_x, message_y);
+            std::cout << "Remain pp is 0. Can`t use this move." << std::endl;
+            selectMove();
+        }
         fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->getSkill(2));
+    }
     else if (y == f_y + 9)
+    {
+        if (my_selected_pokemon->getSkill(3)->getRemainPP() <= 0)
+        {
+            gotoxy(message_x, message_y);
+            std::cout << "Remain pp is 0. Can`t use this move." << std::endl;
+            selectMove();
+        }
         fight(my_selected_pokemon, other_selected_pokemon, my_selected_pokemon->getSkill(3));
+    }
 }
 
 void Battle::fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skill* move)
@@ -343,6 +362,7 @@ void Battle::fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skil
             if (checkPokemons(other_player) == true)
             {
                 changePokemon(other_player);
+
                 return;
             }
             // end battle
@@ -362,7 +382,6 @@ void Battle::fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skil
             gotoxy(message_x, message_y + 1);
             std::cout << "So Can not attack.";
             while (!getEnterSpacebar());
-            return;
         }
 
         attack(otherPokemon, myPokemon, other_selected_pokemon->getSkill(ix));
@@ -375,7 +394,14 @@ void Battle::fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skil
 
             if (checkPokemons(my_player) == true)
             {
-                changePokemon(my_player);
+                while (1)
+                {
+                    changePokemon(my_player);
+
+                    if (my_selected_pokemon->Alive() == true)
+                        break;
+                }
+
                 return;
             }
             else {
@@ -397,7 +423,6 @@ void Battle::fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skil
             gotoxy(message_x, message_y + 1);
             std::cout << "So Can not attack.";
             while (!getEnterSpacebar());
-            return;
         }
 
         attack(otherPokemon, myPokemon, other_selected_pokemon->getSkill(ix));
@@ -410,7 +435,13 @@ void Battle::fight(CatchedPokemon* myPokemon, CatchedPokemon* otherPokemon, Skil
 
             if (checkPokemons(my_player) == true)
             {
-                changePokemon(my_player);
+                while (1)
+                {
+                    changePokemon(my_player);
+
+                    if (my_selected_pokemon->Alive() == true)
+                        break;
+                }
                 return;
             }
             else {
@@ -507,22 +538,15 @@ void Battle::attack(CatchedPokemon* attakingPokemon, CatchedPokemon* defendingPo
     defendingPokemon->setRemainHp(defendingPokemon->getRemainHp() - damage);
     move->reducePP();
     checkAlive(defendingPokemon);
-
-    // hp bar will be diminished slowly (need to check on mac)
-    //for (int i = 0; i < damage; ++i)
-    //{
-    //    defendingPokemon->setRemainHp(--tempHP);
-    //    Sleep(3);
-    //    display();
-    //    if (tempHP == 0) break;
-    //}
 }
 
 int Battle::calculateDamage(CatchedPokemon*  attakingPokemon, CatchedPokemon*  defendingPokemon, Skill* move)
 {
+
     float SametypeAttackbonus = checkSametypeAttackbonus(attakingPokemon, move);
     float Decision = 0.0f;
     float durability = 0.0f;
+
 
     // normal Attack
     if (move->getDamageType() == Physical)
@@ -544,7 +568,6 @@ int Battle::calculateDamage(CatchedPokemon*  attakingPokemon, CatchedPokemon*  d
     float damage = 0.0f;
     int RandomNumber = getRandomNumber();
     damage = Decision / durability * HitSpot * Type * RandomNumber;
-
     return static_cast<int>(damage);
 }
 
@@ -559,6 +582,7 @@ float Battle::checkSametypeAttackbonus(CatchedPokemon* attakingPokemon, Skill* m
 float Battle::calculateType(CatchedPokemon* defendingPokemon, Skill* move)
 {
     typeCal = type_damage_rate[move->getType()][defendingPokemon->getType1()] * type_damage_rate[move->getType()][defendingPokemon->getType2()];
+
     return typeCal;
 }
 
@@ -673,39 +697,44 @@ int Battle::selectPokemon()
     {
         printArrow_change(x, y);
 
-        if (x == f_x && y == f_y)
+        if (num_pokemons == 1 || (x == f_x && y == f_y))
         {
             return -1;
         }
         else if(x == f_x && y == f_y + 3)
         {
-            if (num_pokemons > 1 || my_player->GetPokemon(1)->getRemainHp() == 0)
+            if (num_pokemons <= 1 || my_player->GetPokemon(1)->Alive() == false)
+                return -1;
+            else
                 return 1;
-            else return -1;
         }
         else if (x == f_x && y == f_y + 6)
         {
-            if (num_pokemons > 2 || my_player->GetPokemon(2)->getRemainHp() == 0)
+            if (num_pokemons <= 2 || my_player->GetPokemon(2)->Alive() == false)
+                return -1;
+            else
                 return 2;
-            else return -1;
         }
         else if (x == f_x + 40 && y == f_y)
         {
-            if (num_pokemons > 3 || my_player->GetPokemon(3)->getRemainHp() == 0)
+            if (num_pokemons <= 3 || my_player->GetPokemon(3)->Alive() == false)
+                return -1;
+            else
                 return 3;
-            else return -1;
         }
         else if (x == f_x + 40 && y == f_y + 3)
         {
-            if (num_pokemons > 4 || my_player->GetPokemon(4)->getRemainHp() == 0)
+            if (num_pokemons <= 4 || my_player->GetPokemon(4)->Alive() == false)
+                return -1;
+            else
                 return 4;
-            else return -1;
         }
         else if (x == f_x + 40 && y == f_y + 6)
         {
-            if (num_pokemons > 5 || my_player->GetPokemon(5)->getRemainHp() == 0)
+            if (num_pokemons <= 5 || my_player->GetPokemon(5)->Alive() == false)
+                return -1;
+            else
                 return 5;
-            else return -1;
         }
     }
 }
@@ -720,7 +749,7 @@ void Battle::changePokemon(MyPlayer* player)
         std::cout << "Can`t swap" << std::endl;
         while (!getEnterSpacebar());
 
-        changePokemon(player);
+        //changePokemon(player);
         return;
     }
 
@@ -739,8 +768,8 @@ void Battle::changePokemon(MyPlayer* player)
 
     // change current pokemon
     my_selected_pokemon = player->GetPokemon(0);
+    my_selected_pokemon->setAlive(true);
 
-    display();
 
     // other pokemon attack
     int idx = setRandomMoveNumber();
@@ -755,6 +784,7 @@ void Battle::changePokemon(MyPlayer* player)
         return;
     }
     attack(other_selected_pokemon, my_selected_pokemon, other_selected_pokemon->getSkill(idx));
+
     if (my_selected_pokemon->Alive() == false)
     {
         display();
@@ -764,7 +794,13 @@ void Battle::changePokemon(MyPlayer* player)
 
         if (checkPokemons(my_player) == true)
         {
-            changePokemon(my_player);
+            while (1)
+            {
+                changePokemon(my_player);
+
+                if (my_selected_pokemon->Alive() == true)
+                    break;
+            }
             return;
         }
         else {
@@ -869,9 +905,21 @@ void Battle::selectBag()
     // using monster ball, when battle with other player.
     if (my_player->getItem(ix)->getItemType() == MonsterBall_Item && other_player != nullptr)
     {
+        display();
         gotoxy(message_x, message_y);
         std::cout << "Can`t use MonsterBall In Pokemon Battle!" << std::endl;
-        while (!getEnterSpacebar()) return;
+        while (!getEnterSpacebar());
+
+        return;
+    }
+
+    if (my_player->getItem(ix)->getItemVolume() == 0)
+    {
+        display();
+        gotoxy(message_x, message_y);
+        std::cout << "Can`t use Item." << std::endl;
+        while (!getEnterSpacebar());
+        return;
     }
 
     useItem(ix);
@@ -930,13 +978,6 @@ void Battle::useItem(int ix)
         // reduce volume
         my_player->getItem(ix)->setVolume(my_player->getItem(ix)->getItemVolume() - 1);
 
-        //// todo
-        //if (my_player->getItem(ix)->getItemVolume() == 0)
-        //{
-        //    std::cout << my_player->getItems().size() << std::endl;
-        //    my_player->getItems().erase(my_player->getItems().begin() + ix);
-        //    std::cout << my_player->getItems().size() << std::endl;
-        //}
 
         display();
         gotoxy(message_x, message_y);
@@ -960,17 +1001,11 @@ void Battle::selectRun()
 
 
 // tool
-//  void Battle::gotoxy(int column, int line)
-//  {
-//      COORD coord;
-//      coord.X = column;
-//      coord.Y = line;
-//      SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-//  }
 void Battle::gotoxy(int x,int y)
 {
    printf("%c[%d;%df",0x1B,y,x);
 }
+
 
 bool Battle::getArrowkey(int& x1, int& y1)
 {

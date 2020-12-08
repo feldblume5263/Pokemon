@@ -1,4 +1,6 @@
 #include "map.h"
+#include <iostream>
+
 
 void		Map::relocate_p(MyPlayer *p, int x, int y)
 {
@@ -50,6 +52,11 @@ void			Map::change_map(MyPlayer *p, char *path, int open_flag, int x, int y)
 	strcat(temp, num);
 	cout << temp << endl;
 	map_file.open(temp);
+	if (!(map_file.is_open()))
+	{
+		cout << "file error\n" << endl;
+		exit(0);
+	}
 	while (map_file.peek() != EOF)
 	{
 		getline(map_file, buffer);
@@ -124,13 +131,13 @@ void		Map::handle_key(int key, int x, int y, MyPlayer *p, OtherPlayer *o)
 	else if (key == M_KEY_SPACE)
 	{
 		if (this->pokemon_map[y - 1][x] <= '9' && this->pokemon_map[y - 1][x] >= '1')
-			Battle(p, o);
+			Battle battle(p, o);
 		else if (this->pokemon_map[y + 1][x] <= '9' && this->pokemon_map[y + 1][x] >= '1')
-			Battle(p, o);
+			Battle battle(p, o);
 		else if (this->pokemon_map[y][x - 1] <= '9' && this->pokemon_map[y][x - 1] >= '1')
-			Battle(p, o);
+			Battle battle(p, o);
 		else if (this->pokemon_map[y][x + 1] <= '9' && this->pokemon_map[y][x + 1] >= '1')
-			Battle(p, o);
+			Battle battle(p, o);
 	}
 	else if (key == M_KEY_ESC)
 	{
@@ -158,21 +165,6 @@ void		Map::draw_map()
 void		Map::draw_player(int x, int y)
 {
 	this->pokemon_map[y][x] = 'O';
-}
-
-int			Map::noah_getch()
-{
-	struct	termios oldt;
-	struct	termios newt;
-	int		ch;
-
-	tcgetattr( STDIN_FILENO, &oldt);
-	newt = oldt;
-	newt.c_lflag &= ~( ICANON | ECHO);
-	tcsetattr( STDIN_FILENO, TCSANOW, &newt);
-	ch = getchar();
-	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
-	return (ch);
 }
 
 int				Map::check_valid(int argc, char *file_path)
@@ -216,8 +208,8 @@ void			Map::first_set_map_file(int argc, char *file_path)
 
 	this->cur_f = 1;
 	this->pre_f = 0;
-	if (!(this->check_valid(argc, file_path)))
-		exit(0);
+	//if (!(this->check_valid(argc, file_path)))
+	//	exit(0);
 	strcpy(temp, file_path);
 	strcat(temp, "A");
 	map_file.open(temp);
@@ -232,32 +224,3 @@ void			Map::first_set_map_file(int argc, char *file_path)
 		this->set_map_line(buffer);
 	}
 }
-
-// int				main(int argc, char *argv[])
-// {
-// 	Map			map;
-// 	int			idx;
-// 	// char		path[] = "../gold_version";
-
-// 	int flag = 0;
-
-// 	MyPlayer my_player;
-// 	OtherPlayer other_player;
-// 	my_player.SetPokemon();
-// 	my_player.SetPokemon();
-// 	other_player.SetPokemon();
-// 	other_player.SetPokemon();
-// 	my_player.SetPos(99, 6);
-// 	map.first_set_map_file(argc, argv[1]);
-// 	system("printf '\e[8;100;200t'");
-// 	system("clear");
-// 	while (1)
-// 	{
-// 		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
-// 		map.draw_map();
-// 		map.handle_key(map.noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
-// 		map.change_map(&my_player, argv[1], map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
-// 		system("clear");
-// 	}
-// 	return (0);
-// }

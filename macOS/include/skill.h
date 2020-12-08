@@ -76,5 +76,5 @@ public:
 };
 Type searchType(string type);
 DamageType searchDamageType(string damage_type);
-#endif
+#endif 
 

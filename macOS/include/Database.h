@@ -8,8 +8,8 @@
 //#include "../include/cpprestsdk_x64-windows/include/cpprest/http_client.h"
 //#include "../include/cpprestsdk_x64-windows/include/cpprest/filestream.h"
 
-#include "skill.h"
-#include "pokemon.h"
+#include "../include/skill.h"
+#include "../include/pokemon.h"
 #include <iostream>
 #include <random>
 #include <chrono>
@@ -33,7 +33,7 @@ private:
 	void requestBaseStats(Pokemon*, json::value&);
 	void requestSkills(Pokemon*, json::value&);
 	void requestSkillURL(Pokemon*, string_t&, size_t&);
-
+	
 	const string URI = "https://pokeapi.co/api/v2/";
 	mt19937 *gen;
 };

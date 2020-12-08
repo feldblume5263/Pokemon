@@ -189,7 +189,7 @@ void selectPokemons(MyPlayer* my_player, OtherPlayer* other_player)
 	getRandomPokemon(otherPokemons, numPokemon);
 	vector<string> selectedPokemons[2] = {myPokemons, otherPokemons};
 	Player* players[2] = {my_player, other_player};
-	
+
 
 	std::cout << "\npress Enter or Space bar to collet pokemon information for pokeAPI" << std::endl;
 	while (!getEnterSpacebar());
@@ -229,7 +229,7 @@ int				main(int argc, char* argv[])
 	std::cout << "Path : " << std::flush;
 	std::getline(std::cin, temp_path);
 
-	
+
 	char path[100] = "0";
 	int numSlash = 0;
 	for (int ix = 0; ix < temp_path.size(); ++ix)
@@ -251,7 +251,7 @@ int				main(int argc, char* argv[])
 	MyPlayer my_player;
 	OtherPlayer other_player;
 	selectPokemons(&my_player, &other_player);
-	my_player.SetPos(99, 6);
+	my_player.SetPos(99, 11);
 	system("cls");
 
 	// map display

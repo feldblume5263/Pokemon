@@ -1,8 +1,10 @@
 #pragma once
 
-#include <random>
 #include "pokemon.h"
 #include "player.h"
+
+#include <random>
+#include <vector>
 
 enum KeyboardKey
 {
@@ -50,13 +52,11 @@ private:
 
 public:
     Battle(MyPlayer* _my_player, OtherPlayer* _other_player);
-    Battle(MyPlayer* _my_player, CatchedPokemon* _other_pokemon);
     Battle(MyPlayer* _my_player);
     Battle();
 
 private:
     void startBattle();
-    void startHunting();
     void display();
     void printHPbar(CatchedPokemon* pokemon);
     void drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y);

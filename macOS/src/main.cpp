@@ -1,162 +1,268 @@
-﻿#include "../include/map.h"
+﻿#include "map.h"
+#include "mac_utils.h"
+#include <iostream>
+#include <termios.h>
+using namespace std;
+
+void gotoxy(int x,int y)
+{
+   printf("%c[%d;%df",0x1B,y,x);
+}
+
+bool getArrowkey(int& x1, int& y1)
+{
+	int c = 0;
+	switch ((c = noah_getch()))
+	{
+	case UP:
+		y1 -= 1;
+		break;
+	case DOWN:
+		y1 += 1;
+		break;
+	case ENTER:
+		return true;
+	case SPACEBAR:
+		return true;
+	default:
+		break;
+	}
+	return false;
+}
+
+bool getEnterSpacebar()
+{
+	int c = 0;
+	switch ((c = noah_getch()))
+	{
+	case ENTER:
+		return true;
+	case SPACEBAR:
+		return true;
+	default:
+		break;
+	}
+	return false;
+}
 
 void printPokemon() {
-	cout << "--------------------------------" << endl;
-	cout << "Pokemon List" << endl;
-	cout << "--------------------------------" << endl;
-	cout << "1.venusaur		(이상해꽃)" << endl;
-	cout << "2.charizard		(리자몽)" << endl;
-	cout << "3.blastoise		(거북왕)" << endl;
-	cout << "4.butterfree		(버터플)" << endl;
-	cout << "5.pidgeot		(피죤투)" << endl;
-	cout << "6.pikachu		(피카츄)" << endl;
-	cout << "7.alakazam		(후딘)" << endl;
-	cout << "8.scyther		(스라크)" << endl;
-	cout << "9.gyarados		(갸라도스)" << endl;
-	cout << "10.lapras		(라프라스)" << endl;
-	cout << "11.vaporeon		(샤미드)" << endl;
-	cout << "12.jolteon		(쥬피썬더)" << endl;
-	cout << "13.flareon		(부스터)" << endl;
-	cout << "14.snorlax		(잠만보)" << endl;
-	cout << "--------------------------------" << endl;
+	cout << "  --------------------------------" << endl;
+	cout << "  Pokemon List" << endl;
+	cout << "  --------------------------------" << endl;
+	cout << "  1.piplup		(팽도리)" << endl;
+	cout << "  2.bulbasaur		(이상해씨)" << endl;
+	cout << "  3.marill		(마릴)" << endl;
+	cout << "  4.totodile		(리아코)" << endl;
+	cout << "  5.squirtle		(꼬부기)" << endl;
+	cout << "  6.charmander		(파이리)" << endl;
+	cout << "  7.haunter		(고우스트)" << endl;
+	cout << "  8.charizard		(리자몽)" << endl;
+	cout << "  9.meowth		(나옹)" << endl;
+	cout << "  10.psyduck		(고라파덕)" << endl;
+	cout << "  11.dragonite		(망나뇽)" << endl;
+	cout << "  12.pikachu		(피카츄)" << endl;
+	cout << "  13.chikorita		(치코리타)" << endl;
+	cout << "  --------------------------------" << endl;
 }
 
-bool validPokemon(string poke_name) {
-
-
-	if (poke_name == "venusaur") return true;
-	if (poke_name == "charizard") return true;
-	if (poke_name == "blastoise") return true;
-	if (poke_name == "butterfree") return true;
-	if (poke_name == "pidgeot") return true;
-	if (poke_name == "pikachu") return true;
-	if (poke_name == "alakazam") return true;
-	if (poke_name == "scyther") return true;
-	if (poke_name == "gyarados") return true;
-	if (poke_name == "lapras") return true;
-	if (poke_name == "vaporeon") return true;
-	if (poke_name == "jolteon") return true;
-	if (poke_name == "flareon") return true;
-	if (poke_name == "snorlax") return true;
-	cout << "Invalide Pokemon Name" << endl;
-	return false;
-
-}
-
-vector<string> getRandomPokemon() {
-	string list[14] = { "venusaur","charizard","blastoise","butterfree","pidgeot","pikachu",
-		"alakazam","scyther","gyarados","lapras","vaporeon","jolteon","flareon","snorlax" };
-	vector<string> ret;
+void getRandomPokemon(vector<string>& pokemons, int numPokemon)
+{
+	const int numAllPokemon = 13;
+	string list[numAllPokemon] = { "piplup","bulbasaur","marill","totodile","squirtle","charmander",
+		"haunter","charizard","meowth","psyduck","dragonite","pikachu","chikorita"};
 	random_device rd;
 	mt19937 gen(rd());
-	uniform_int_distribution<int> dis(0, 13);
-	bool check[14] = { false, };
+	uniform_int_distribution<int> dis(0, numAllPokemon-1);
 	int idx;
-	for (int i = 0; i < 3;) {
+	for (int i = 0; i < numPokemon; ++i) {
 		idx = dis(gen);
-		if (!check[idx]) {
-			ret.push_back(list[idx]);
-			check[idx] = true;
-			i++;
-		}
-
+		pokemons.push_back(list[idx]);
 	}
-	return ret;
 }
 
-vector<string> selectPokemon() {
+void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
+	const int t_y = y;
 
-	vector<string> ret;
 	printPokemon();
 	cout << "You can choose 3 pokemons" << endl;
-	for (int i = 0; i < 3;) {
-		string temp;
-		cout << "Enter name of pokemon in English:";
-		cin >> temp;
-		if (validPokemon(temp)) {
-			ret.push_back(temp);
-			cout << "Pokemon added" << endl;
-			i++;
+	cout << "After select pokemon, press the Spacebar" << endl;
+
+	for (int i = 0; i < numPokemon; ++i) {
+
+		gotoxy(x, y + 1);
+		std::cout << "O\b";
+		while (getArrowkey(x, y) == false)
+		{
+			std::cout << " \b" << std::endl;
+
+			if (y < t_y)
+			{
+				y += 1;
+			}
+			else if (y > t_y + 12)
+			{
+				y -= 1;
+			}
+			gotoxy(x, y + 1);
+			std::cout << "O\b";
 		}
 
-	}
-	return ret;
+		switch (y - t_y)
+		{
+		case 0:
+			pokemons.push_back("piplup");
+			break;
+		case 1:
+			pokemons.push_back("bulbasaur");
+			break;
+		case 2:
+			pokemons.push_back("marill");
+			break;
+		case 3:
+			pokemons.push_back("totodile");
+			break;
+		case 4:
+			pokemons.push_back("squirtle");
+			break;
+		case 5:
+			pokemons.push_back("charmander");
+			break;
+		case 6:
+			pokemons.push_back("haunter");
+			break;
+		case 7:
+			pokemons.push_back("charizard");
+			break;
+		case 8:
+			pokemons.push_back("meowth");
+			break;
+		case 9:
+			pokemons.push_back("psyduck");
+			break;
+		case 10:
+			pokemons.push_back("dragonite");
+			break;
+		case 11:
+			pokemons.push_back("pikachu");
+			break;
+		case 12:
+			pokemons.push_back("chikorita");
+			break;
+		}
 
+		gotoxy(x, t_y + 17 + i);
+		std::cout << "Add the " << pokemons[i] << " in my pokemons" << std::endl;
+	}
 
 }
-//string getImoji(string poke_name) {
-//	string ret;
-//	if (poke_name == "venusaur")
-//		if (poke_name == "charizard")
-//			if (poke_name == "blastoise")
-//				if (poke_name == "butterfree")
-//					if (poke_name == "pidgeot")
-//						if (poke_name == "pikachu")
-//							if (poke_name == "alakazam")
-//								if (poke_name == "scyther")
-//									if (poke_name == "gyarados")
-//										if (poke_name == "lapras")
-//											if (poke_name == "vaporeon")
-//												if (poke_name == "jolteon")
-//													if (poke_name == "flareon")
-//														if (poke_name == "snorlax")
-//
-//															return ret;
-//
-//}
 
+void drawPokemonstBox()
+{
+	std::cout << "--------------------------------------------------------------" << std::endl;
+	std::cout << "|                                                            |" << std::endl;
+	std::cout << "|                                                            |" << std::endl;
+	std::cout << "|                         POKEMONSTER                        |" << std::endl;
+	std::cout << "|                                                            |" << std::endl;
+	std::cout << "|                                                            |" << std::endl;
+	std::cout << "--------------------------------------------------------------" << std::endl;
+}
+
+void selectPokemons(MyPlayer* my_player, OtherPlayer* other_player)
+{
+	drawPokemonstBox();
+
+	std::cout << "\n press Space bar to start the game" << std::endl;
+	std::cout << " GAME START" << std::endl;
+	while (!getEnterSpacebar());
+
+	system("clear");
+	drawPokemonstBox();
+	std::cout << "\n\n" << std::endl;
+
+	int x = 0; int y = 13;
+	int numPokemon = 3;
+	vector<string> myPokemons;
+	vector<string> otherPokemons;
+	selectPokemon(x, y, myPokemons, numPokemon);
+	getRandomPokemon(otherPokemons, numPokemon);
+	vector<string> selectedPokemons[2] = {myPokemons, otherPokemons};
+	Player* players[2] = {my_player, other_player};
+
+
+	std::cout << "\npress Space bar to collet pokemon information for pokeAPI" << std::endl;
+	while (!getEnterSpacebar());
+
+	system("clear");
+	drawPokemonstBox();
+
+	gotoxy(x, y - 5);
+	std::cout << "We are going to collet pokemon information." << std::endl;
+	gotoxy(x, y - 4);
+	std::cout << "Take some seconds.\n" << std::endl;
+
+	for (int i=0 ; i < 2; i++) {
+		for (int j = 0; j < numPokemon; j++)
+		{
+			std::cout << ". . ." << std::endl;
+			players[i]->SetPokemon(selectedPokemons[i][j]);
+			players[i]->GetPokemon(j)->setStat();
+			players[i]->GetPokemon(j)->setRemainHp(players[i]->GetPokemon(j)->getHealthPoint());
+			std::cout << players[i]->GetName() + "`s" << " pokemon " << j + 1 << " is stored.\n" << std::endl;
+		}
+	}
+
+	std::cout << "\nPress SpaceBar to Play" << std::endl;
+	while (!getEnterSpacebar());
+}
 
 
 int				main(int argc, char* argv[])
 {
 	system("printf '\e[8;100;200t'");
-	// system(" mode  con lines=65   cols=200 ");
+	std::string temp_path = "..\\gold_version\\";
+	std::cout << "Enter your map folder absolute path or relative path" << std::endl;
+	std::cout << " ex)/your/path of/gold_version\\" << std::endl;
+	std::cout << " ex)./gold_version/" << std::endl;
+	std::cout << "Path : " << std::flush;
+	std::getline(std::cin, temp_path);
 
-	//vector<string> myPokemons = selectPokemon();
-	////vector<string> otherPokemons = getRandomPokemon();
-	//vector<string> otherPokemons = selectPokemon();
 
-	//MyPlayer my_player;
-	//OtherPlayer other_player;
-
-	//for (int i = 0; i < 3; ++i)
-	//{
-	//	other_player.SetPokemon(otherPokemons[i]);
-	//	my_player.SetPokemon(myPokemons[i]);
-
-	//	my_player.GetPokemon(i)->setStat();
-	//	other_player.GetPokemon(i)->setStat();
-
-	//	my_player.GetPokemon(i)->setRemainHp(my_player.GetPokemon(i)->getHealthPoint());
-	//	other_player.GetPokemon(i)->setRemainHp(other_player.GetPokemon(i)->getHealthPoint());
-	//}
-
-	//system("pause");
+	char path[100] = "0";
+	int numSlash = 0;
+	for (int ix = 0; ix < temp_path.size(); ++ix)
+	{
+		if (temp_path[ix] == '\\')
+		{
+			path[ix + numSlash] = '\\';
+			path[ix + numSlash +1] = '\\';
+			numSlash += 1;
+		}
+		path[ix + numSlash] = temp_path[ix];
+	}
 	Map			map;
 	int			idx;
+	map.first_set_map_file(argc, path);
 
-	OtherPlayer other_player;
+
+	// push the pokemon in player
 	MyPlayer my_player;
-	my_player.SetPokemon();
-	my_player.SetPokemon();
-	other_player.SetPokemon();
-	other_player.SetPokemon();
-
-	//char path[] = "..\\gold_version\\";
-	// char path[] = "C:\\Users\\youju\\source\\repos\\push\\gold_version\\";
-
-
-	map.first_set_map_file(argc, argv[1]);
-	my_player.SetPos(99, 6);
+	OtherPlayer other_player;
+	selectPokemons(&my_player, &other_player);
+	my_player.SetPos(99, 11);
 	system("clear");
+
+	// map display
 	while (1)
 	{
 		map.draw_player(my_player.GetPos().x, my_player.GetPos().y);
 		map.draw_map();
-		map.handle_key(map.noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
-		map.change_map(&my_player, argv[1], map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
+		map.handle_key(noah_getch(), my_player.GetPos().x, my_player.GetPos().y, &my_player, &other_player);
+		map.change_map(&my_player, path, map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
 		system("clear");
 	}
-	return (0);
 
+	// Battle battle(&my_player, &other_player);
+
+
+	return (0);
 }
