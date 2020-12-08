@@ -4,7 +4,6 @@
 #include "../include/pokemon.h"
 #include "../DB/Database.h"
 
-#include <thread>
 #include "Item.h"
 #include <vector>
 #include <string>
@@ -21,9 +20,7 @@ class Player {
         string name;//플레이어 이름
         coord pos; //좌표
         vector<CatchedPokemon*> pokemons;
-        // change Pokemon* -> CatchedPokemon*
-        bool playerType;  //  관장인지 아닌지 구별 (관장은 false)
-
+        
     public:
         Player();
         Player(string name);
@@ -38,10 +35,7 @@ class Player {
         //포켓몬
         CatchedPokemon*GetPokemon(int ind);
         void SetPokemon(string name);
-        // 플레이어 타입
-        bool GetPlayerType();
-        void SetPlayerType(bool type);
-        // change : add function
+        
         void SetPokemon();
         void SetPokemon(CatchedPokemon* pokemonPtr, int ind);
         vector<CatchedPokemon*> getPokemonsVector();
@@ -67,11 +61,11 @@ public:
 class OtherPlayer : public Player
 {
 private:
-      bool liveState;
+      //bool liveState;
 
 public:
     OtherPlayer();
-    void setLiveState(bool _liveState);
-    bool getLiveState();
+    //void setLiveState(bool _liveState);
+    //bool getLiveState();
 };
 #endif

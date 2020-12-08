@@ -6,18 +6,18 @@ OtherPlayer::OtherPlayer()
     this->name = "ROSA";
     this->pos.x = 0;
     this->pos.y = 0;
-    SetPlayerType(false);
-    setLiveState(true);
+    //SetPlayerType(false);
+    //setLiveState(true);
 }
 
-void OtherPlayer::setLiveState(bool _liveState)
-{
-    liveState = _liveState;
-}
-bool OtherPlayer::getLiveState()
-{
-    return (liveState);
-}
+//void OtherPlayer::setLiveState(bool _liveState)
+//{
+//    liveState = _liveState;
+//}
+//bool OtherPlayer::getLiveState()
+//{
+//    return (liveState);
+//}
 
 Player::Player()
 {
@@ -84,13 +84,13 @@ void Player::SetPokemon1(string name) {
 */
 
 
-bool Player::GetPlayerType() {
-    return this->playerType;
-}
-
-void Player::SetPlayerType(bool type) {
-    this->playerType = type;
-}
+//bool Player::GetPlayerType() {
+//    return this->playerType;
+//}
+//
+//void Player::SetPlayerType(bool type) {
+//    this->playerType = type;
+//}
 
 // change : add function
 vector<CatchedPokemon*> Player::getPokemonsVector()
@@ -100,10 +100,10 @@ vector<CatchedPokemon*> Player::getPokemonsVector()
 
 MyPlayer::MyPlayer()
 {
-    this->name = "Me";
+    this->name = "my player";
     this->pos.x = 0;
     this->pos.y = 0;
-    SetPlayerType(true);
+    //SetPlayerType(true);
 
     initItems();
 }

@@ -1,14 +1,7 @@
 #include <conio.h>
 #include "../include/map.h"
-#include <cpprest/http_client.h>
-#include <cpprest/filestream.h>
 
 #include <iostream>
-using namespace utility;
-using namespace web;
-using namespace web::http;
-using namespace web::http::client;
-using namespace concurrency::streams;
 
 
 void		Map::relocate_p(MyPlayer *p, int x, int y)
@@ -176,31 +169,6 @@ void		Map::draw_player(int x, int y)
 	this->pokemon_map[y][x] = 'O';
 }
 
-//int			map::noah_getch()
-//{
-//	struct	termios oldt;
-//	struct	termios newt;
-//	int		ch;
-//
-//	tcgetattr( STDIN_FILENO, &oldt);
-//	newt = oldt;
-//	newt.c_lflag &= ~( ICANON | ECHO);
-//	tcsetattr( STDIN_FILENO, TCSANOW, &newt);
-//	ch = getchar();
-//	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
-//	return (ch);
-//}
-
-//Map::Map()
-//{
-//	cur_f = 1;
-//	pre_f = 0;
-//}
-//
-//Map::~Map()
-//{
-//}
-
 int				Map::check_valid(int argc, char *file_path)
 {
 	int			idx;
@@ -258,56 +226,3 @@ void			Map::first_set_map_file(int argc, char *file_path)
 		this->set_map_line(buffer);
 	}
 }
-
-//int				main(int argc, char *argv[])
-//{
-//	system(" mode  con lines=65   cols=200 ");
-//	const string URI = "https://pokeapi.co/api/v2/";
-//	string queryParams = "pokemon/ditto";
-//
-//	uri_builder builder(U("https://pokeapi.co/api/v2/pokemon/ditto"));
-//	//wcout << builder.to_string() << "\n";
-//	uri u(builder.to_uri());
-//	http_client client(u);
-//
-//	pplx::task<http_response> responseTask = client.request(methods::GET);
-//	http_response response = responseTask.get();
-//	utility::string_t str = response.extract_string().get();
-//
-//	//wcout << str.c_str() << endl;
-//
-//	Map			map;
-//	int			x;
-//	int			y;
-//	int			idx;
-//
-//	int flag = 0;
-//
-//	OtherPlayer other_player;
-//	MyPlayer my_player;
-//	my_player.SetPokemon();
-//	my_player.SetPokemon();
-//	other_player.SetPokemon();
-//	other_player.SetPokemon();
-//
-//	//Battle battle(&my_player, &other_player);
-//	char path[] = "..\\gold_version\\";
-//
-//
-//	x = 99;
-//	y = 6;
-//	map.first_set_map_file(argc, path);
-//
-//	system("cls");
-//	while (1)
-//	{
-//		map.draw_player(x, y);
-//		map.draw_map();
-//		map.handle_key(getch(), &x, &y, my_player, other_player);
-//		map.change_map(path, map.find_door(&x, &y, my_player), &x, &y);
-//		system("cls");
-//	}
-//
-//
-//	return (0);
-//}

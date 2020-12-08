@@ -1,6 +1,5 @@
 ﻿#include "../include/map.h"
 #include <iostream>
-#include <filesystem>
 using namespace std;
 
 
@@ -68,25 +67,6 @@ void printPokemon() {
 	cout << "  --------------------------------" << endl;
 }
 
-//bool validPokemon(string poke_name) {
-//
-//	if (poke_name == "piplup") return true;
-//	if (poke_name == "bulbasaur") return true;
-//	if (poke_name == "marill") return true;
-//	if (poke_name == "totodile") return true;
-//	if (poke_name == "squirtle") return true;
-//	if (poke_name == "charmander") return true;
-//	if (poke_name == "haunter") return true;
-//	if (poke_name == "charizard") return true;
-//	if (poke_name == "meowth") return true;
-//	if (poke_name == "psyduck") return true;
-//	if (poke_name == "dragonite") return true;
-//	if (poke_name == "pikachu") return true;
-//	if (poke_name == "chikorita") return true;
-//	cout << "Invalide Pokemon Name" << endl;
-//	return false;
-//}
-
 void getRandomPokemon(vector<string>& pokemons, int numPokemon)
 {
 	const int numAllPokemon = 13;
@@ -111,7 +91,7 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 
 	for (int i = 0; i < numPokemon; ++i) {
 
-		gotoxy(x, y + 1);
+		gotoxy(x, y);
 		std::cout << "O\b";
 		while (getArrowkey(x, y) == false)
 		{
@@ -125,7 +105,7 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 			{
 				y -= 1;
 			}
-			gotoxy(x, y + 1);
+			gotoxy(x, y);
 			std::cout << "O\b";
 		}
 
@@ -172,7 +152,7 @@ void selectPokemon(int x, int y, vector<string>& pokemons, int numPokemon) {
 			break;
 		}
 
-		gotoxy(x, y + 15 + i);
+		gotoxy(x, t_y + 17 + i);
 		std::cout << "Add the " << pokemons[i] << " in my pokemons" << std::endl;
 	}
 
@@ -189,7 +169,7 @@ void drawPokemonstBox()
 	std::cout << "--------------------------------------------------------------" << std::endl;
 }
 
-void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
+void selectPokemons(MyPlayer* my_player, OtherPlayer* other_player)
 {
 	drawPokemonstBox();
 
@@ -207,6 +187,9 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 	vector<string> otherPokemons;
 	selectPokemon(x, y, myPokemons, numPokemon);
 	getRandomPokemon(otherPokemons, numPokemon);
+	vector<string> selectedPokemons[2] = {myPokemons, otherPokemons};
+	Player* players[2] = {my_player, other_player};
+	
 
 	std::cout << "\npress Enter or Space bar to collet pokemon information for pokeAPI" << std::endl;
 	while (!getEnterSpacebar());
@@ -215,28 +198,19 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 	drawPokemonstBox();
 
 	gotoxy(x, y - 5);
-	std::cout << "We are going to collet pokemon information from pokeAPI." << std::endl;
+	std::cout << "We are going to collet pokemon information." << std::endl;
 	gotoxy(x, y - 4);
 	std::cout << "Take some seconds.\n" << std::endl;
 
-
-	for (int i = 0; i < numPokemon; ++i)
-	{
-		std::cout << ". . ." << std::endl;
-		my_player.SetPokemon(myPokemons[i]);
-		my_player.GetPokemon(i)->setStat();
-		my_player.GetPokemon(i)->setRemainHp(my_player.GetPokemon(i)->getHealthPoint());
-		//gotoxy(x, y + i * 2);
-		std::cout << "My" << " pokemon " << i + 1 << " is stored.\n" << std::endl;
-	}
-
-	for (int i = 0; i < numPokemon; ++i)
-	{
-		std::cout << ". . ." << std::endl;
-		other_player.SetPokemon(otherPokemons[i]);
-		other_player.GetPokemon(i)->setStat();
-		other_player.GetPokemon(i)->setRemainHp(other_player.GetPokemon(i)->getHealthPoint());
-		std::cout << "Other" << " pokemon " << i + 1 << " is stored.\n" << std::endl;
+	for (int i=0 ; i < 2; i++) {
+		for (int j = 0; j < numPokemon; j++)
+		{
+			std::cout << ". . ." << std::endl;
+			players[i]->SetPokemon(selectedPokemons[i][j]);
+			players[i]->GetPokemon(j)->setStat();
+			players[i]->GetPokemon(j)->setRemainHp(players[i]->GetPokemon(j)->getHealthPoint());
+			std::cout << players[i]->GetName() + "`s" << " pokemon " << j + 1 << " is stored.\n" << std::endl;
+		}
 	}
 
 	std::cout << "\nPress Enter or SpaceBar to Play" << std::endl;
@@ -246,17 +220,16 @@ void selectPokemons(MyPlayer& my_player, OtherPlayer& other_player)
 
 int				main(int argc, char* argv[])
 {
-	//system("printf '\e[8;100;200t'");
 	system(" mode  con lines=65   cols=200 ");
 
-	//char path[] = "C:\Users\youju\\source\repos\push\gold_version\";
 	std::string temp_path = "..\\gold_version\\";
 	std::cout << "Enter your map folder absolute path or relative path" << std::endl;
-	std::cout << " ex)\\repos\\push\\gold_version\\" << std::endl;
+	std::cout << " ex)\\repos\\pokemon\\gold_version\\" << std::endl;
 	std::cout << " ex)..\\gold_version\\" << std::endl;
-	std::cout << "GAME VERSION : " << std::flush;
+	std::cout << "Path : " << std::flush;
 	std::getline(std::cin, temp_path);
 
+	
 	char path[100] = "0";
 	int numSlash = 0;
 	for (int ix = 0; ix < temp_path.size(); ++ix)
@@ -269,15 +242,15 @@ int				main(int argc, char* argv[])
 		}
 		path[ix + numSlash] = temp_path[ix];
 	}
+	Map			map;
+	int			idx;
+	map.first_set_map_file(argc, path);
+
 
 	// push the pokemon in player
 	MyPlayer my_player;
 	OtherPlayer other_player;
-	selectPokemons(my_player, other_player);
-
-	Map			map;
-	int			idx;
-	map.first_set_map_file(argc, path);
+	selectPokemons(&my_player, &other_player);
 	my_player.SetPos(99, 6);
 	system("cls");
 
@@ -290,6 +263,9 @@ int				main(int argc, char* argv[])
 		map.change_map(&my_player, path, map.find_door(my_player.GetPos().x, my_player.GetPos().y, &my_player), my_player.GetPos().x, my_player.GetPos().y);
 		system("cls");
 	}
+
+	// Battle battle(&my_player, &other_player);
+
 
 	return (0);
 }

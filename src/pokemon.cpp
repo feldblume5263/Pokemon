@@ -71,7 +71,7 @@ Pokemon::Pokemon(string name) {
 	setEffStat();
 	setNature();
 
-	emoji = getEmoji(name);
+	setEmoji(name);
 
 	num_lines_emoji = emoji.length() / 40;
 }
@@ -269,8 +269,7 @@ Skill* Pokemon::getSkill(int idx) {
 	return this->moves[idx];
 }
 
-string Pokemon::getEmoji(string poke_name) {
-	string emoji;
+void Pokemon::setEmoji(string poke_name) {
 	if (poke_name == "piplup") emoji = "MMMMMMMMN0kdlc:;;,,,,,,,;;:loxOXWMMMMMMMMMMMMN0dc;;::ccccccccccccccc:;;:lkXWMMMMMMMNOo:::cccccccccccccccccccccc:;,:xXMMMMWKd::ccccccccccccccccccccccccccc:;:d0WMW0lccc::::::::ccccccccccccccccccc:d0OxON0lcc:cdk0KK0kdc::cccccccc:llc:::;c0NX0dOdcccxXWMMMMMMWXkc:ccc::::oOKOdlclkNNOkkdc:cOWMMMMMMMMMMMXkdxkkddx0KKKK00O0NOocdd;:xWMMMMMMNOooxXMWKxdkKKKKKKKKKK0KKl,.cd,:OMMMMMMMOdkl.cKMMX0xkKK0OOOkxxxKK; .cd,:OMMMMMMWx;:'..lNMMMNkkkkOKKKkdlkXl.'odc,dWMMMMMMO,.  .:0MMMMNxoOXXXXKOod0kldxkO;;kWMMMMMNd'...:KMMMMM0ox00KK0kolOKKOkKW0c;xNMMMMMNOl:lOWMMMMMNOooooollok00kkKMMMXxclkXMMMMMWNWMMMMMMMMMNK0OkkO00kk0NMMMMMMNOoodk0XNWMMMMMMMMMMMMWNX0kdlcxXMMMMMMMMMWKxc;;cloddxkkkkkkxxdolc:,''':kWMMMMW0kkxdlcll::::;;;;,,,,,,'.',,,,,,':0MMMxd:,:cldOXKd:;:ccccccc:;,,cc;'',,,',xNMMc:,,:d0XNXXKkl:;;;;;,;;;cx0KOdc:;;;loOWMKo,;kXNNXX0xOKOxlcloooox0KKKKKOkOxclddKMMKokNNNXX0ddKKK0kKWMMMNOOKKKK0kOKkccxdOWWOkXNXXX0do0KKKOONMMMMW0kKKKKKkxkd:cxoxNXxOXXKKOolkKKKK0O0XNNXKO0KKKKKOddl;:dlxW0xOKK0kllkKKKKKKK000000KKKKK0kxxdcoxodKM0xOKkolcokO00KKKKKKKKKK0OkxxxoldXWNNMMNxoookXKl:cloxkkkkkkkkkkxxxdolcclONMMMMMMX00NMW0dool:cddddooooodolc:cldkdodKMMMMMMMMMM0ddk0xcl0NNXXKKKXXXK00OOOOOkOXMMMMMMMMMMXxlodlcxNMMMMMMMMMMMMMMMMMMMMMMMMM";
 	if (poke_name == "bulbasaur") emoji = "MMMWXOxdd0NWWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMNklcllodkOO000KKKKXNWMMMMMMMMMMMMMMMMMMMM0c:cloooooooooodddxkOXWMMMMMMMMMMMMMMMMXd::cloodddoooooooolloxKNNNWNNXXNWMMMMWKo:;:cllooooookOOOkkkkkkO000K0OOO0XWMMW0l:;;coooollccoxOOOOOOOkdllodxkO000KNMMOl:;:coxkxol:::lxOOOOOOOOxoc;,;:dO000KWMc:lodddolc:::cccdkOOO0kxkOOkdlcdkdokkOKW;,;;;;;;,,,:llccokOKNKocxkOOdc:okxxkdd0X;,,,,,''''',;ccclx0NM0clkxkOkddkOOOOxdOKd;,,,,'''',;;;::cokKXOooookOOOOOOOOOxxOON0x:;;,,,,;;:::::clodddddxkkkkOkkOkxxdk0MNkc;:;;;;;:loolc::::::cccllooddddddk0NWM0l:::cc:;;col:cll:;;::cclllloodddx0WMMMWkc::;;:c:;coddxkko:;;;;::ccloddodkKWMMMM0c:c;,,::;;lxO0Oo:;,,,;ldo::col;;lKMMMMMNkc:::::cclloxOOd:;,,;xXWNkccoolcxXMMMMMMNOollllxXWXOddxkxdookNMMMW0ddxkOXMMMMMMMMWXKK00NMMMWKkxkOOOKNMMMMMWNXXXNWMMMMM";
 	if (poke_name == "marill") emoji = "MWNXKKXNWMMMMWXOdlccccoxKWMMMMMMMWNXXWMMKkdllllokXWMW0oc::::::::oKMMMMMWKxooodOXollllccccdXWKd:::ccllolccxKXNWWKoc::::cdccccccc::l0W0l::cldddddlccloodxdc::cllccdccc:::::xXMXxc:lddollccccccccccc:coodolXkc;:cldONMMMXd::ccc:ccccccccccccccooookMWOlkKXWMMMMWOl:::cccccc:clcccccclclxOKWMMXolKMMMMMWKoccccccccc:,,;:cccc:;;l0WMMMMM0lOWMMMMNkcccccccccccc:ccccccc::cOWMMMMMk;cdKWNNNxcccccccccccccccccccccccxXNWMMWKO0ololooc::::::cllodxxkkkkkxdl::clodMMMMMMNo;kXOoc:coxO0KXXNWWWWNNNXX0xOKOk0MMMMMMMNNWMMWKxxKXXNXNNNXXXXXXKKKKNWMMMMMMMMMMMMMMMMMXdldOKKKKKKKKKK00O0XWMMMMMMMMMMMMMMMMMMWOc:l0NNXXXXXXXKkl:xNMMMMMMMMMMMMMMMMMMMW0l:xNMMMMMMMMMMKdd0WMMMMMMM";
@@ -284,10 +283,17 @@ string Pokemon::getEmoji(string poke_name) {
 	if (poke_name == "dragonite") emoji = "MMMMMMMMMMMMMMMMMMMMMMWWMMMMMMMMMMMMMMMMMMMMMMWWMMMMMWWWWWWWWNXNMMMMMMMMMMMMMMMMMMMMMWXXNNNNXK000XWWNNWWMMMMMMMMMMMMMMMMMMMMMMWNNWNKO0Oxk0NMMMMMWNNWMMMMMMMMMMMMMMMMMMMMMMWKO0OxdkKWMMMMKddOXWMMMMMMMMMMMMMMMMMMMMW0OOOkxx0NMMWKdllld0WMMMMMMMMMMMMMMWKKKXOlcdkOkkOKXKkollllooOWMMMMMMMMMMMMMNKOOkdlokKX0O00OxodxdoxOkxXMMMMMMMMMMMMMMWX0Okk0XXX0OO0000XNXXWMWXNMMMMMMMMMMMMMMMMMWNXXXXX0OOOOOO0KWMMMMWMMWWMMMMMMMMMMMMMMNXNNNNX0OOOkkOOOKWMMMMWX0KWMMMMMMMMMMMWXKXNNNXXKOOOOOkkOKWWWXKkxkNMMMMMMMMMMMMNK0KXNXXXK00000OOOOOOxdookXMMMMMMMMMMMMMN0O0KXXXXK0000000kdoooox0NMMMMMMMMMMMMMMWX0xxkO000kkkOOOOkdodk0NMMMMMMMMMMMMMMMWNNKkooxO0OkxxxxxxkOKNWMMMMMMMMMMMMMMMMMNK00OO0XWMWWNXK0kkOXMMMMMMMMMMMMMMMMMMMMMWWWWWMMMMMMMNK0OOk0NMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWWNXKKXWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM";
 	if (poke_name == "pikachu") emoji = "MMMMMMMMMMMMMMMMMMXko:.cXMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXkooodKWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXKKK0KNMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXK00KXNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMWXK000KXNNWMMMMMMMMMMMMMMMMMMMMMMMMMMMMWNK0KKKKKKKKXNWMMMMMMMMMMMMMMMMMMMWWNNWWNOolk0KKKKKKKKKXNWMMMMMMMMMMMMMMMMNKKKKOddook000KKOkkO00KXNWMMMMMMMMMMMMMMNKKK0kooOOdclxO0kclOK00KKXWMMMMMMMMMMMMMNK0KK0OO0Oo::okOkolkKX0xolo0MMMMMMMMMMMMWX00KKK000kxk0K0dlld0K0OxlckWMMMMMMMMMMMMWKO0KKK00O000000OOOOO0KKKNMMMMMMMMMMMMMMMN0OKKKK0000KKKKKKKK0OOKNMMMMMMMMMMMMMMMMNK0KKKKKKKKKKK0OO0000KNMMMMMMMMMMMMMMMMWXKKKKKKKKKKKKK0kdOXXNWMMMMMMMMMMMMMMMMWXKKKKKKKKKKKKKKK0KNMMMMMMMMMMMMMMMMMMMMNK0KKKKKKKKKKKKKKKNMMMMMMMMMMMMMMMMMMMMMWKOkOkOOkOOOOOOOO0NMMMMMMMMMMMMMMMMMMMMWX0OkO0KKKKK0Okxxx0NWMMMMMMMMMMMMMMMMMMMWXXNNWWMMMMMMWXK0OO0XMMMMMMMMMMMMMM";
 	if (poke_name == "chikorita") emoji = "MMMMMMMMMMN0kdocccccccclodkO0XNMMMMMMMMMMMMMMMMN0xodxxxdl:clooddddddddkOKWMMMMMMMMMWXXX0xxOKKXNWXOo:;:lddddddddddk0NMMMMMN00KXXNNX0dlx0XNMW0ko::oddddddddddkKWMMXoc0NNNNNKkc;lOKKNMMMNOc:coddddddddddONMk;cKNNNNX0kl,;xXKKWMMMWXx::ldddddddoddONx:dKNNNNX0OdloOXX0XMMMMMWKo:codddddocldO0kOxollox0XXXXXNNKKWMMMMMMW0dlloddddl:cdKKXk;..,cONNNNNXNKk0NWMMMMMMWKkooddddl::XKXXk::ld0NNNNNXKOxOXNMMWMMMMMMXOoodddc,kOXNX0kk0XNXXXXKxxO00KK0XWMMMMMMWXxoddo:OkOOKNNXXXNKkdOK00KK0K0kKMMMMMMMMMWOoddoXOdd0NKxdOXXOkO0KXXNNNKO0XNWMMMMMMMWkookX0XXNNX0OKXNNXKXNNNNNX00Okk0NMMMMMMMXddKX0XNNNNNNNNNNNXXKK0OOO0XX0xkXMMMMMMMNOKWNKXKKXNNNXNNNXKOkxxkO0XNNX0ONMMMMMMMWWMMWK0OxOKXXXNNNXXK0O0XXNXXXXXKXMMMMMMMMMMMMN0Okddxk00KKXXXXXXKKK0OO0XKKWMMMMMMMMMMMMXOkkxxddkkxxxkkxkkxxxkkk0KXMMMMMMMMMMMMMMXkxxxkKNXxoddxOKKKOxxxxOXWMMMMMMMMMMMMMMNkoxONMMW0xk0XWMMMWXxod0WMMMMMMMMMMMM";
+}
 
+string Pokemon::getEmoji()
+{
 	return emoji;
 }
 
+int Pokemon::getNumLine()
+{
+	return num_lines_emoji;
+}
 
 
 void Pokemon::setBaseStat(string name, int num) {
@@ -300,15 +306,6 @@ void Pokemon::setBaseStat(string name, int num) {
 
 
 }
-
-
-
-
-
-
-
-
-
 
 CatchedPokemon::CatchedPokemon() {
 
@@ -354,16 +351,6 @@ bool CatchedPokemon::Alive() {
 	return this->alive;
 }
 
-//void CatchedPokemon::setRemainHp(double rate) {
-//	if (this->remain_hp - (int)ceil(this->remain_hp * rate) > 0) {
-//		this->remain_hp = (int)(this->remain_hp - ceil(this->remain_hp * rate));
-//	}
-//	else {
-//		this->remain_hp = 0;
-//		this->setAlive(false);
-//	}
-//
-//}
 void CatchedPokemon::setRemainHp(int remain_hp) {
 	this->remain_hp = remain_hp;
 
@@ -378,70 +365,3 @@ void CatchedPokemon::reset() {
 		this->moves[i]->resetPP();
 	}
 }
-
-
-//bool CatchedPokemon::attack(CatchedPokemon& target, Skill* attack) {
-//	double attack_power;
-//	double defense_power;
-//	double rate;
-//	random_device rd;
-//	mt19937 gen(rd());
-//	uniform_int_distribution<int> dis(0, 99);
-//	uniform_int_distribution<int> dis_1(85, 100);
-//	if (dis(gen) < attack->getAccuracy()) {
-//
-//		if (attack->getDamageType() == Physical) {
-//
-//			if (this->getType1() == attack->getType() || this->getType2() == attack->getType()) {
-//				attack_power = ceil((double)(this->getAttack() * attack->getPower() * 1.5) * (double)dis_1(gen) / 100);
-//			}
-//			else {
-//				attack_power = ceil((double)(this->getAttack() * attack->getPower()) * (double)dis_1(gen) / 100);
-//			}
-//			defense_power = ceil(target.getBlock() * target.getRemainHp() / 0.411);
-//			rate = attack_power / defense_power * type_damage_rate[attack->getType()][target.getType1()] *
-//				type_damage_rate[attack->getType()][target.getType2()];
-//			target.setRemainHp(rate);
-//
-//		}
-//		else {
-//
-//			if (this->getType1() == attack->getType() || this->getType2() == attack->getType()) {
-//				attack_power = ceil((double)(this->getContact() * attack->getPower() * 1.5) * (double)dis_1(gen) / 100);
-//			}
-//			else {
-//				attack_power = ceil((double)(this->getContact() * attack->getPower()) * (double)dis_1(gen) / 100);
-//			}
-//			defense_power = ceil(target.getDefense() * target.getRemainHp() / 0.411);
-//			rate = attack_power / defense_power * type_damage_rate[attack->getType()][target.getType1()] *
-//				type_damage_rate[attack->getType()][target.getType2()];
-//			target.setRemainHp(rate);
-//
-//		}
-//		return true;
-//	}
-//	else {
-//
-//		false;
-//	}
-//
-//
-//
-//}
-//
-//int main() {
-//
-//
-//	CatchedPokemon test = CatchedPokemon();
-//	CatchedPokemon test1 = CatchedPokemon();
-//	CatchedPokemon test2 = CatchedPokemon();
-//	test.showInfo();
-//	cout << "////////////////////////////////////////////\n";
-//	test1.showInfo();
-//	cout << "////////////////////////////////////////////\n";
-//	test2.showInfo();
-//	return 0;
-//}
-//
-
-

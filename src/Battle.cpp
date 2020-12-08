@@ -57,43 +57,19 @@ Battle::Battle(MyPlayer* _my_player)
     std::cout << "\a" << std::endl;
 }
 
-//int			noah_()
-//{
-//	struct	termios oldt;
-//	struct	termios newt;
-//	int		ch;
-//
-//	tcgetattr( STDIN_FILENO, &oldt);
-//	newt = oldt;
-//	newt.c_lflag &= ~( ICANON | ECHO);
-//	tcsetattr( STDIN_FILENO, TCSANOW, &newt);
-//	ch = getchar();
-//	tcsetattr( STDIN_FILENO, TCSANOW, &oldt);
-//	return (ch);
-//}
-
 Battle::Battle(MyPlayer* _my_player, OtherPlayer* _other_player)
     :mersenne(static_cast<unsigned int>(std::time(nullptr)))
 {
 
     my_player = _my_player;
     other_player = _other_player;
-    if (other_player->getLiveState() == false)
-    {
-        std::cout << "\a" << std::endl;
-        while (!getEnterSpacebar());
-        return;
-    }
+    //if (other_player->getLiveState() == false)
+    //{
+    //    std::cout << "\a" << std::endl;
+    //    while (!getEnterSpacebar());
+    //    return;
+    //}
     startBattle();
-}
-
-Battle::Battle(MyPlayer* _my_player, CatchedPokemon* _other_pokemon)
-{
-    my_player = _my_player;
-    other_selected_pokemon = _other_pokemon;
-    my_selected_pokemon = my_player->GetPokemon(0);
-
-    startHunting();
 }
 
 void Battle::startBattle()
@@ -113,16 +89,23 @@ void Battle::startBattle()
     else
         std::cout << "My Loose" << std::endl;
 
-    other_player->setLiveState(false);
+    //other_player->setLiveState(false);
+
+    // origin state
+    for (auto pokemon : other_player->getPokemonsVector())
+    {
+        pokemon->setAlive(true);
+        pokemon->setRemainHp(pokemon->getHealthPoint());
+        for (int i = 0; i < 4; i++)
+        {
+            if (pokemon->getSkill(i) != nullptr)
+                pokemon->getSkill(i)->setRemainPP(pokemon->getSkill(i)->getPP());
+        }
+    }
 
     my_selected_pokemon = nullptr;
     other_selected_pokemon = nullptr;
     while (!getEnterSpacebar());
-}
-
-void Battle::startHunting()
-{
-    // todo 
 }
 
 void Battle::display()
@@ -229,12 +212,15 @@ void Battle::printHPbar(CatchedPokemon* pokemon)
 
 void Battle::drawPokemon_emoji(CatchedPokemon* pokemon, int place_x, int place_y)
 {
-    for (int i = 0; i < pokemon->num_lines_emoji; ++i)
+    std::string emoji = pokemon->getEmoji();
+    int numLines = (pokemon->getNumLine() >= 20) ? 20 : pokemon->getNumLine();
+
+    for (int i = 0; i < numLines; ++i) 
     {
         for (int j = 0; j < 40; ++j)
         {
             gotoxy(place_x + j, place_y + i);
-            char c = pokemon->emoji[j + i * 40];
+            char c = emoji[j + i * 40];
             if (c == 'M')
             {
                 std::cout << ' ';
@@ -519,15 +505,6 @@ void Battle::attack(CatchedPokemon* attakingPokemon, CatchedPokemon* defendingPo
     defendingPokemon->setRemainHp(defendingPokemon->getRemainHp() - damage);
     move->reducePP();
     checkAlive(defendingPokemon);
-
-    // hp bar will be diminished slowly
-    //for (int i = 0; i < damage; ++i)
-    //{
-    //    defendingPokemon->setRemainHp(--tempHP);
-    //    Sleep(3);
-    //    display();
-    //    if (tempHP == 0) break;
-    //}
 }
 
 int Battle::calculateDamage(CatchedPokemon*  attakingPokemon, CatchedPokemon*  defendingPokemon, Skill* move)
@@ -758,6 +735,8 @@ void Battle::changePokemon(MyPlayer* player)
 
     // change current pokemon
     my_selected_pokemon = player->GetPokemon(0);
+    my_selected_pokemon->setAlive(true);
+
 
     // other pokemon attack
     int idx = setRandomMoveNumber();
@@ -772,6 +751,7 @@ void Battle::changePokemon(MyPlayer* player)
         return;
     }
     attack(other_selected_pokemon, my_selected_pokemon, other_selected_pokemon->getSkill(idx));
+
     if (my_selected_pokemon->Alive() == false)
     {
         display();
@@ -996,10 +976,6 @@ void Battle::selectRun()
      SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
  }
 
-//void Battle::gotoxy(int x,int y)
-//{
-//    printf("%c[%d;%df",0x1B,y,x);
-//}
 
 bool Battle::getArrowkey(int& x1, int& y1)
 {
